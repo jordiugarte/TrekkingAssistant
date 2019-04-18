@@ -2,7 +2,7 @@ package com.galacticCat.chatbleu;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
+//Actividad principal
 public class MainActivity extends AppCompatActivity {
 
     @Override
