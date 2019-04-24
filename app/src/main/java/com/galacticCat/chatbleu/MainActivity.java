@@ -1,169 +1,195 @@
 package com.galacticCat.chatbleu;
 
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
-import android.bluetooth.BluetoothServerSocket;
-import android.bluetooth.BluetoothSocket;
+import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
-import android.os.Message;
+import android.provider.Settings;
+import android.renderscript.Sampler;
+import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ToggleButton;
 
-import java.io.IOException;
-import java.util.Set;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button listen_Btn, send_Btn, listDevces_Btn;
-    private ListView listView;
-    private TextView msg_box, status;
-    private EditText msgField;
+    //Data
+    private String time;
+    private String date;
+    private boolean sosActive;
 
-    private BluetoothAdapter bluetoothAdapter;
-    private BluetoothDevice[] bluetoothArray;
+    //Listeners
+        //Background
+    private ConstraintLayout layout;
+        //Text Viewers
+    private TextView timeView;
+    private TextView dateView;
+        //Buttons
+    private ToggleButton flashlightButton;
+    private ToggleButton campingButton;
 
-    static final int STATE_LISTENING = 1;
-    static final int STATE_CONNECTING = 2;
-    static final int STATE_CONNECTED = 3;
-    static final int STATE_CONNECTION_FAILED = 4;
-    static final int STATE_MESSAGE_RECEIVED = 5;
+    private Button sosButton;
 
-    private int REQUEST_ENABLE_BLUETOOTH = 1;
 
-    private static final String APP_NAME = "ChatBleu";
-    private static final UUID MY_UUID = UUID.fromString("7376f6a4-6525-11e9-a923-1681be663d3e");
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //Basic Activity Set
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-        findViewByIdes();
-        bluetoothAdapter = bluetoothAdapter.getDefaultAdapter();
+        context = getApplicationContext();
+        setListeners();
+        context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM yyyy");
+        final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 
-        if (!bluetoothAdapter.isEnabled()){
-            Intent enableIntent = new Intent(bluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BLUETOOTH);
-
-        }
-
-        implementListeners();
-    }
-
-    private void implementListeners() {
-    listDevces_Btn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            makeToast("Listing devices");
-            Set<BluetoothDevice> bt = bluetoothAdapter.getBondedDevices();
-            String[] strings = new String[bt.size()];
-            int index = 0;
-
-            if (bt.size() > 0) {
-                for (BluetoothDevice device : bt) {
-                    bluetoothArray[index] = device;
-                    strings[index] = device.getName();
-                    index++;
-                }
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, strings);
-                listView.setAdapter(arrayAdapter);
-            }
-        }
-    });
-
-    listen_Btn.setOnClickListener(new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            makeToast("Searching");
-            ServerClass serverClass = new ServerClass();
-            serverClass.start();
-        }
-    });
-    }
-
-    Handler handler = new Handler (new Handler.Callback(){
-        @Override
-        public boolean handleMessage(Message msg) {
-
-        switch(msg.what){
-            case STATE_LISTENING:
-                status.setText("Listening");
-                break;
-            case STATE_CONNECTED:
-                status.setText("Connecting");
-                break;
-            case STATE_CONNECTION_FAILED:
-                status.setText("Connection Failed");
-                break;
-            case STATE_MESSAGE_RECEIVED:
-                //status.setText("Message Received");
-                break;
-        }
-            return true;
-        }
-    });
-
-    private void findViewByIdes() {
-        listen_Btn = (Button) findViewById(R.id.listen);
-        send_Btn = (Button) findViewById(R.id.send);
-        listView = (ListView) findViewById(R.id.listview);
-        msg_box = (TextView) findViewById(R.id.msg);
-        status = (TextView) findViewById(R.id.status);
-        msgField = (EditText) findViewById(R.id.writemsg);
-        listDevces_Btn = (Button) findViewById(R.id.listDevices);
-    }
-
-    public void makeToast(String message){
-        Toast toast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
-        toast.show();
-    }
-
-    private class ServerClass extends Thread {
-        private BluetoothServerSocket serverSocket;
-
-        public ServerClass() {
-            try {
-                serverSocket = bluetoothAdapter.listenUsingInsecureRfcommWithServiceRecord(APP_NAME, MY_UUID);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        public void run() {
-            BluetoothSocket socket = null;
-
-            while (socket == null) {
+        Thread t = new Thread(){
+            @Override
+            public void run(){
                 try {
-                    Message message = Message.obtain();
-                    message.what = STATE_CONNECTING;
-                    handler.sendMessage(message);
-
-                    socket = serverSocket.accept();
-                } catch (IOException e) {
+                    while (!isInterrupted()){
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                long systemTime = System.currentTimeMillis();
+                                date = dateFormat.format(systemTime);
+                                time = timeFormat.format(systemTime);
+                                timeView.setText(time);
+                                dateView.setText(date);
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                    Message message = Message.obtain();
-                    message.what = STATE_CONNECTING;
-                    handler.sendMessage(message);
-                }
-
-                if(socket != null) {
-                    Message message = Message.obtain();
-                    message.what = STATE_CONNECTED;
-                    handler.sendMessage(message);
-
-                    //TODO Codigo para enviar y recibir
-                    break;
                 }
             }
+        };
+        t.start();
+        //FlashLight
+        boolean flashAvailable = getPackageManager().hasSystemFeature(getPackageManager().FEATURE_CAMERA_FLASH);
+        boolean cameraLight = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+        ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.CAMERA}, 60);
+        final CameraManager cameraManager =  (CameraManager) getSystemService(CAMERA_SERVICE);
+
+        //Flashlight
+        flashlightButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    String cameraID = cameraManager.getCameraIdList()[0];
+                    if (flashlightButton.isChecked()) {
+                        cameraManager.setTorchMode(cameraID, true);
+                    } else {
+                        cameraManager.setTorchMode(cameraID, false);
+                    }
+                } catch (CameraAccessException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //S.O.S.
+        sosButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sosActive) {
+                    sosActive = false;
+                } else {
+                    sosActive = true;
+                }
+                try {
+                    final String cameraID = cameraManager.getCameraIdList()[0];
+                    while (sosActive) {
+                        sosLantern(cameraManager, cameraID);
+                    }
+                } catch (CameraAccessException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //Set Camping Mode
+        campingButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (campingButton.isChecked()) {
+                    campingMode(true);
+                } else {
+                    campingMode(false);
+                }
+            }
+        });
+    }
+
+    private void setListeners() {
+        timeView = (TextView)findViewById(R.id.clock);
+        dateView = (TextView)findViewById(R.id.date);
+        flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
+        sosButton = (Button) findViewById(R.id.sos_btn);
+        campingButton = (ToggleButton) findViewById(R.id.camping_toggle);
+        layout = (ConstraintLayout) findViewById(R.id.mainLayout);
+        //TODO
+        campingMode(false);
+    }
+
+    private void makeToast(String message) {
+        Toast t = Toast.makeText(context, message, Toast.LENGTH_SHORT);
+        t.show();
+    }
+
+    private void sosLantern(CameraManager cameraManager, String cameraID){
+        try {
+            cameraManager.setTorchMode(cameraID, true);
+            Thread.sleep(300);
+            cameraManager.setTorchMode(cameraID, false);
+            Thread.sleep(300);
+        } catch (Exception e){
+            e.printStackTrace();
         }
+    }
+
+    private void campingMode(boolean active) {
+        int defaultColorText = 0;
+        int defaultColorBackground = 0;
+        if (active) {
+            Calendar rightNow = Calendar.getInstance();
+            int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
+
+            if (currentHourIn24Format > 17 || currentHourIn24Format < 7){
+                defaultColorText = getResources().getColor(R.color.defaultWhite);
+                defaultColorBackground = getResources().getColor(R.color.defaultBlack);
+            } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
+                defaultColorText = getResources().getColor(R.color.defaultBlack);
+                defaultColorBackground = getResources().getColor(R.color.defaultWhite);
+            }
+            layout.setBackgroundColor(defaultColorBackground);
+        } else {
+            defaultColorText = getResources().getColor(R.color.defaultWhite);
+            layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
+        }
+        timeView.setTextColor(defaultColorText);
+        dateView.setTextColor(defaultColorText);
     }
 }

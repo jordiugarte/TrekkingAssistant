@@ -6,4 +6,5 @@
     <string name="listDevices_btn">List Devices</string>
     <string name="message_label">Message</string>
     <string name="message_writetext">Write message...</string>
+    <string name="permdesc_flashlight">Flash Light</string>
 </resources>
