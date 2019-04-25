@@ -7,4 +7,5 @@
     <string name="message_label">Message</string>
     <string name="message_writetext">Write message...</string>
     <string name="permdesc_flashlight">Flash Light</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

@@ -10,12 +10,10 @@
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/mainWidget"
-        android:layout_width="0dp"
-        android:layout_height="83dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
         android:background="@color/colorWidget"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
@@ -53,7 +51,7 @@
 
         <LinearLayout
             android:id="@+id/tools"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -62,72 +60,30 @@
 
             <ToggleButton
                 android:id="@+id/flashlight_btn"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                android:autoText="false"
-                android:background="@drawable/flashlight"
-                android:contextClickable="false"
-                android:elegantTextHeight="false"
-                android:freezesText="false"
-                android:textAlignment="center"
-                android:textOff=" "
-                android:textOn=" "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ToggleButton"
+                android:textOff="Off"
+                android:textOn="On"
                 tools:layout_editor_absoluteX="16dp"
                 tools:layout_editor_absoluteY="29dp" />
 
-            <ImageView
-                android:id="@+id/compass"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginTop="5dp"
-                app:srcCompat="@drawable/compass" />
-
-            <ToggleButton
+            <Button
                 android:id="@+id/sos_btn"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/sos"
-                android:maxWidth="60dp"
-                android:minWidth="60dp"
-                android:textOff=" "
-                android:textOn=" " />
+                android:text="Button" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/stats"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintTop_toBottomOf="@id/tools">
-
-            <TextView
-                android:id="@+id/stepsView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Steps: " />
-
-            <TextView
-                android:id="@+id/distanceView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Distance:" />
-
-            <TextView
-                android:id="@+id/weightView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:text="Weight: " />
-        </LinearLayout>
+        <ImageView
+            android:id="@+id/compass"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tools"
+            app:srcCompat="@drawable/compass" />
 
     </android.support.constraint.ConstraintLayout>
 
@@ -135,17 +91,13 @@
         android:id="@+id/mainButtons"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <ToggleButton
             android:id="@+id/camping_toggle"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:background="@drawable/camp_mode"
-            android:textColorHighlight="@color/defaultBlack"
-            android:textOff=" "
-            android:textOn=" "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ToggleButton"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

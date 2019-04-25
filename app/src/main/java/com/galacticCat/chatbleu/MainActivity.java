@@ -24,6 +24,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.galacticCat.chatbleu.map.MapsActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -104,6 +106,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         flashlightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent map = new Intent(context, MapsActivity.class);
+                startActivity(map);
+
                 try {
                     String cameraID = cameraManager.getCameraIdList()[0];
                     if (flashlightButton.isChecked()) {
