@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
@@ -35,6 +37,11 @@ public class MainActivity extends AppCompatActivity {
     private String time;
     private String date;
     private boolean sosActive;
+    private float[] gravity = new float[3];
+    private float[] geomagnetic = new float[3];
+    private float azimuth = 0f;
+    private float curentAzimuth = 0f;
+    private SensorManager sensorManager;
 
     //Listeners
         //Background
@@ -45,9 +52,9 @@ public class MainActivity extends AppCompatActivity {
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
-
     private Button sosButton;
-
+        //Images
+    private Image compass;
 
     Context context;
 
@@ -150,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         sosButton = (Button) findViewById(R.id.sos_btn);
         campingButton = (ToggleButton) findViewById(R.id.camping_toggle);
         layout = (ConstraintLayout) findViewById(R.id.mainLayout);
+        //compass = (Image) findViewById(R.id.compass);
         //TODO
         campingMode(false);
     }

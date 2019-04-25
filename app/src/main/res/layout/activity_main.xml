@@ -44,7 +44,7 @@
     <android.support.constraint.ConstraintLayout
         android:id="@+id/toolsWidget"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:background="@color/colorWidget"
         app:layout_constraintTop_toBottomOf="@+id/mainWidget">
@@ -76,6 +76,14 @@
                 android:text="Button" />
 
         </LinearLayout>
+
+        <ImageView
+            android:id="@+id/compass"
+            android:layout_width="75"
+            android:layout_height="75"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tools"
+            app:srcCompat="@drawable/compass" />
 
     </android.support.constraint.ConstraintLayout>
 
