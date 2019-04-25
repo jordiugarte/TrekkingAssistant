@@ -1,20 +1,14 @@
 package com.galacticCat.chatbleu;
 
 import android.Manifest;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
-import android.media.Image;
-import android.net.Uri;
-import android.os.Build;
-import android.os.Handler;
-import android.provider.Settings;
-import android.renderscript.Sampler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,8 +16,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.SeekBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -31,7 +27,7 @@ import android.widget.ToggleButton;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SensorEventListener {
 
     //Data
     private String time;
@@ -40,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private float[] gravity = new float[3];
     private float[] geomagnetic = new float[3];
     private float azimuth = 0f;
-    private float curentAzimuth = 0f;
+    private float currectAzimuth = 0f;
     private SensorManager sensorManager;
 
     //Listeners
@@ -49,12 +45,15 @@ public class MainActivity extends AppCompatActivity {
         //Text Viewers
     private TextView timeView;
     private TextView dateView;
+    private TextView stepsView;
+    private TextView distanceView;
+    private TextView weightView;
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
-    private Button sosButton;
+    private ToggleButton sosButton;
         //Images
-    private Image compass;
+    private ImageView compass;
 
     Context context;
 
@@ -70,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         final SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM yyyy");
         final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
 
         Thread t = new Thread(){
             @Override
@@ -150,14 +150,30 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(this);
+    }
+
     private void setListeners() {
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
-        sosButton = (Button) findViewById(R.id.sos_btn);
+        sosButton = (ToggleButton) findViewById(R.id.sos_btn);
         campingButton = (ToggleButton) findViewById(R.id.camping_toggle);
         layout = (ConstraintLayout) findViewById(R.id.mainLayout);
-        //compass = (Image) findViewById(R.id.compass);
+        compass = (ImageView) findViewById(R.id.compass);
+        stepsView = (TextView) findViewById(R.id.stepsView);
+        distanceView = (TextView) findViewById(R.id.distanceView);
+        weightView = (TextView) findViewById(R.id.weightView);
         //TODO
         campingMode(false);
     }
@@ -199,5 +215,55 @@ public class MainActivity extends AppCompatActivity {
         }
         timeView.setTextColor(defaultColorText);
         dateView.setTextColor(defaultColorText);
+        stepsView.setTextColor(defaultColorText);
+        distanceView.setTextColor(defaultColorText);
+        weightView.setTextColor(defaultColorText);
+
+        //flashlightButton.setBackgroundColor(defaultColorText);
+        //sosButton.setBackgroundColor(defaultColorText);
+        //compass.setBackgroundColor(defaultColorText);
+
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        final float alpha = 0.97f;
+        synchronized (this){
+            if(sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
+                gravity[0] = alpha*gravity[0] + (1 - alpha)*sensorEvent.values[0];
+                gravity[1] = alpha*gravity[1] + (1 - alpha)*sensorEvent.values[1];
+                gravity[2] = alpha*gravity[2] + (1 - alpha)*sensorEvent.values[2];
+            }
+
+            if(sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
+                geomagnetic[0] = alpha*geomagnetic[0] + (1 - alpha)*sensorEvent.values[0];
+                geomagnetic[1] = alpha*geomagnetic[1] + (1 - alpha)*sensorEvent.values[1];
+                geomagnetic[2] = alpha*geomagnetic[2] + (1 - alpha)*sensorEvent.values[2];
+            }
+
+            float R[] = new float[9];
+            float I[] = new float[9];
+            boolean success = SensorManager.getRotationMatrix(R, I, gravity, geomagnetic);
+            if (success) {
+                float orientation[] = new float[3];
+                SensorManager.getOrientation(R, orientation);
+                azimuth = (float)Math.toDegrees(orientation[0]);
+                azimuth = (azimuth + 360)%360;
+
+                Animation anim = new RotateAnimation(-currectAzimuth, -azimuth, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5F);
+                currectAzimuth = azimuth;
+
+                anim.setDuration(500);
+                anim.setRepeatCount(0);
+                anim.setFillAfter(true);
+
+                compass.startAnimation(anim);
+            }
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }
