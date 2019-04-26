@@ -1,17 +1,13 @@
 package com.galacticCat.chatbleu;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 import android.support.constraint.ConstraintLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,6 +21,8 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.map.MapsActivity;
+import com.galacticCat.chatbleu.tools.Flashlight;
+import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -96,28 +94,16 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             }
         };
         t.start();
-        //FlashLight
-        boolean flashAvailable = getPackageManager().hasSystemFeature(getPackageManager().FEATURE_CAMERA_FLASH);
-        boolean cameraLight = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
-        ActivityCompat.requestPermissions(this, new String[]{ Manifest.permission.CAMERA}, 60);
-        final CameraManager cameraManager =  (CameraManager) getSystemService(CAMERA_SERVICE);
+
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent map = new Intent(context, MapsActivity.class);
-                startActivity(map);
-
-                try {
-                    String cameraID = cameraManager.getCameraIdList()[0];
-                    if (flashlightButton.isChecked()) {
-                        cameraManager.setTorchMode(cameraID, true);
-                    } else {
-                        cameraManager.setTorchMode(cameraID, false);
-                    }
-                } catch (CameraAccessException e){
-                    e.printStackTrace();
+                if (flashlightButton.isChecked()){
+                    new Flashlight(MainActivity.this, context, true);
+                } else {
+                    new Flashlight(MainActivity.this, context, false);
                 }
             }
         });
@@ -126,18 +112,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         sosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sosActive) {
-                    sosActive = false;
+                if (sosButton.isChecked()){
+                    new SOSFlashlight(MainActivity.this, context, true);
                 } else {
-                    sosActive = true;
-                }
-                try {
-                    final String cameraID = cameraManager.getCameraIdList()[0];
-                    while (sosActive) {
-                        sosLantern(cameraManager, cameraID);
-                    }
-                } catch (CameraAccessException e){
-                    e.printStackTrace();
+                    new SOSFlashlight(MainActivity.this, context, false);
                 }
             }
         });
