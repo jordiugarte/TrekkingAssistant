@@ -1,6 +1,7 @@
 package com.galacticCat.chatbleu;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.camera2.CameraManager;
 import android.support.constraint.ConstraintLayout;
