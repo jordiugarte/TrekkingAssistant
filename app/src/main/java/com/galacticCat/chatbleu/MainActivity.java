@@ -2,43 +2,31 @@ package com.galacticCat.chatbleu;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.hardware.camera2.CameraManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.RotateAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.galacticCat.chatbleu.map.MapsActivity;
+import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.tools.Clock;
+import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity implements SensorEventListener {
+public class MainActivity extends AppCompatActivity {
 
-    //Data
-    private String time;
-    private String date;
-    private boolean sosActive;
-    private float[] gravity = new float[3];
-    private float[] geomagnetic = new float[3];
-    private float azimuth = 0f;
-    private float currectAzimuth = 0f;
-    private SensorManager sensorManager;
-
+    private Stats stats = new Stats();
+    //Tools
+    private Clock clockTool;
+    private Compass compassTool;
     //Listeners
         //Background
     private ConstraintLayout layout;
@@ -65,36 +53,11 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         context = getApplicationContext();
-        setListeners();
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("EEEE, d MMMM yyyy");
-        final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-        sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+        setListeners();
 
-        Thread t = new Thread(){
-            @Override
-            public void run(){
-                try {
-                    while (!isInterrupted()){
-                        Thread.sleep(1000);
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                long systemTime = System.currentTimeMillis();
-                                date = dateFormat.format(systemTime);
-                                time = timeFormat.format(systemTime);
-                                timeView.setText(time);
-                                dateView.setText(date);
-                            }
-                        });
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        };
-        t.start();
-
+        clockTool = new Clock(dateView, timeView, MainActivity.this, stats);
+        compassTool = new Compass(context, compass);
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -113,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             @Override
             public void onClick(View v) {
                 if (sosButton.isChecked()){
-                    new SOSFlashlight(MainActivity.this, context, true);
+                    SOSFlashlight.getInstance().flashLight(MainActivity.this, context);
                 } else {
-                    new SOSFlashlight(MainActivity.this, context, false);
+                    SOSFlashlight.getInstance().stopFlashLight();
                 }
             }
         });
@@ -136,14 +99,15 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     @Override
     protected void onResume(){
         super.onResume();
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_GAME);
+        compassTool.resume();
+
+
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensorManager.unregisterListener(this);
+        compassTool.pause();
     }
 
     private void setListeners() {
@@ -164,17 +128,6 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private void makeToast(String message) {
         Toast t = Toast.makeText(context, message, Toast.LENGTH_SHORT);
         t.show();
-    }
-
-    private void sosLantern(CameraManager cameraManager, String cameraID){
-        try {
-            cameraManager.setTorchMode(cameraID, true);
-            Thread.sleep(300);
-            cameraManager.setTorchMode(cameraID, false);
-            Thread.sleep(300);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
     private void campingMode(boolean active) {
@@ -208,45 +161,5 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent sensorEvent) {
-        final float alpha = 0.97f;
-        synchronized (this){
-            if(sensorEvent.sensor.getType() == Sensor.TYPE_ACCELEROMETER){
-                gravity[0] = alpha*gravity[0] + (1 - alpha)*sensorEvent.values[0];
-                gravity[1] = alpha*gravity[1] + (1 - alpha)*sensorEvent.values[1];
-                gravity[2] = alpha*gravity[2] + (1 - alpha)*sensorEvent.values[2];
-            }
 
-            if(sensorEvent.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD){
-                geomagnetic[0] = alpha*geomagnetic[0] + (1 - alpha)*sensorEvent.values[0];
-                geomagnetic[1] = alpha*geomagnetic[1] + (1 - alpha)*sensorEvent.values[1];
-                geomagnetic[2] = alpha*geomagnetic[2] + (1 - alpha)*sensorEvent.values[2];
-            }
-
-            float R[] = new float[9];
-            float I[] = new float[9];
-            boolean success = SensorManager.getRotationMatrix(R, I, gravity, geomagnetic);
-            if (success) {
-                float orientation[] = new float[3];
-                SensorManager.getOrientation(R, orientation);
-                azimuth = (float)Math.toDegrees(orientation[0]);
-                azimuth = (azimuth + 360)%360;
-
-                Animation anim = new RotateAnimation(-currectAzimuth, -azimuth, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5F);
-                currectAzimuth = azimuth;
-
-                anim.setDuration(500);
-                anim.setRepeatCount(0);
-                anim.setFillAfter(true);
-
-                compass.startAnimation(anim);
-            }
-        }
-    }
-
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
 }
