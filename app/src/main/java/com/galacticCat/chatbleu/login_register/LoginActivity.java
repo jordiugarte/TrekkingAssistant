@@ -16,6 +16,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.galacticCat.chatbleu.Constants;
+import com.galacticCat.chatbleu.MainActivity;
 import com.galacticCat.chatbleu.R;
 import com.galacticCat.chatbleu.model.User;
 import com.google.gson.Gson;
@@ -26,7 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Context mContext;
     private User mUser;
 
-    private ImageView mFotoImageView;
+    private ImageView mLogoImageView;
 
     private EditText mUsuarioEditText;
     private EditText mPasswordEditText;
@@ -86,7 +88,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-        mFotoImageView = findViewById(R.id.foto);
+        mLogoImageView = findViewById(R.id.logo);
         mUsuarioEditText = findViewById(R.id.usuario);
         mPasswordEditText = findViewById(R.id.password);
         mIniciarSesionButton = findViewById(R.id.iniciarSesion);
@@ -102,92 +104,41 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String password = mPasswordEditText.getText().toString();
         Log.e("Mis datos", usuario + " " + password);
 
-        Intent intent = new Intent(mContext, ListaActivity.class);
-        intent.putExtra(SyncStateContract.Constants.KEY_USUARIO, usuario);
-        intent.putExtra(SyncStateContract.Constants.KEY_PASSWORD, password);
+        Intent intent = new Intent(mContext, MainActivity.class);
+        intent.putExtra(Constants.KEY_USUARIO, usuario);
+        intent.putExtra(Constants.KEY_PASSWORD, password);
         startActivity(intent);
     }
 
     private void createObject() {
         mUser = new User();
-        mUser.setNombreUsuario("dilanAA");
-        mUser.setPassword("bbcita420");
-        mUser.setEdad(19);
-        mUser.setEmail("nalid102@gmail.com");
-        mUser.setPeso(46);
 
         String json = new Gson().toJson(mUser);
         Log.e("Mi Usuario", json);
     }
 
     private void createObjectFromString() {
-        String json = "{\"nombreUsuario\":\"IgnacioElBroko\",\"password\":\"todopoderosoYO\",\"edad\":19,\"email\":\"nachitotigredelriozenteno@gmail.com\",\"codigoUpb\":46036,\"celular\":77511999}";
+        String json = "{\"nombreUsuario\",\"password\",\"edad\",\"email\",\"codigoUpb\",\"celular\"}";
         mUser = new Gson().fromJson(json, User.class);
         Toast.makeText(mContext, mUser.getPassword(), Toast.LENGTH_LONG).show();
     }
 
-    public void registrarClick(View view) {
-        Toast.makeText(mContext, "El click funciona", Toast.LENGTH_LONG).show();
-        Intent intent = new Intent(mContext, RegisterActivity.class);
-        startActivityForResult(intent, SyncStateContract.Constants.CODIGO_TRANSACCION);
-    }
-
-    public void llamarAJordiClick(View view) {
-        Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + "78898825"));
-        startActivity(intent);
-    }
-
-    public void compartirTextClick(View view) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_TEXT, "Hola muchachos!");
-        intent.setType("text/plain");
-        startActivity(intent);
-
-    }
-
-    public void tomarUnaFotoClick(View view) {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, Constants.CODIGO_TRANSACCION_FOTO);
-    }
-
-    public void llevameAlaU(View view) {
-        /*String name = "Campus UPB";
-        Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
-                Uri.parse("geo:0,0?q=-16.575137, -68.126868 (" + name + ")"));
-        startActivity(intent);*/
-
-        String url = "http://www.upb.edu/";
-        Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setData(Uri.parse(url));
-        startActivity(i);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == SyncStateContract.Constants.CODIGO_TRANSACCION) {
+        if (requestCode == Constants.CODIGO_TRANSACCION) {
             //Objeto usuario
             if (resultCode == RESULT_OK) {
                 if (data != null) {
-                    String json = data.getStringExtra(SyncStateContract.Constants.KEY_REGISTRAR_USUARIO);
+                    String json = data.getStringExtra(Constants.KEY_REGISTRAR_USUARIO);
                     Log.e("Usuario recibido", json);
 
                     User usuarioRecibido = new Gson().fromJson(json, User.class);
                     mUsuarioEditText.setText(usuarioRecibido.getNombreUsuario());
                     mPasswordEditText.setText(usuarioRecibido.getPassword());
                 }
-            }
-        } else if (requestCode == SyncStateContract.Constants.CODIGO_TRANSACCION_FOTO) {
-            //Foto
-            if (resultCode == RESULT_OK) {
-                Log.e("Foto", "Valida");
-                Bitmap thumbnail = data.getParcelableExtra("data"); // Obtenemos el Bitmap (imagen) capturada
-                // Mostramos nuestra imagen en el imageView
-                mFotoImageView.setImageBitmap(thumbnail);
-            } else {
-                Log.e("Foto cancelada", "Canceled");
             }
         }
     }
