@@ -97,7 +97,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/stepsView"
+                android:id="@+id/stepscountView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="TextView"
@@ -142,6 +142,12 @@
 
         <TextView
             android:id="@+id/weightView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="TextView" />
+
+        <TextView
+            android:id="@+id/timeOfTravelView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="TextView" />
