@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/backgroundforest"
     android:padding="@dimen/space_lg"
-    tools:context=".LoginActivity">
+    tools:context=".login_register.LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -72,7 +72,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#22FFFFFF"
-            android:onClick="registrarClick"
             android:text="Registrar" />
     </LinearLayout>
 </RelativeLayout>
