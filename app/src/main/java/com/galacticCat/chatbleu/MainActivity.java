@@ -23,6 +23,7 @@ import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
+import com.galacticCat.chatbleu.tools.Mochila;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
     private ToggleButton sosButton;
+    private Button listsButton;
     private Button iniciarSesionButton;
         //Images
     private ImageView compass;
@@ -114,6 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
         //Iniciar Sesion
         iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +125,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Mochila
+        listsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, Mochila.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -148,6 +159,8 @@ public class MainActivity extends AppCompatActivity {
         campingButton = (ToggleButton) findViewById(R.id.camping_toggle);
         layout = (ConstraintLayout) findViewById(R.id.mainLayout);
         compass = (ImageView) findViewById(R.id.compass);
+        listsButton = (Button)findViewById(R.id.mochila_btn);
+        iniciarSesionButton = (Button) findViewById(R.id.buttonUser);
 
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
@@ -255,7 +268,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void openActivityLogin(){
-        Intent intent1 = new Intent(this, LoginActivity.class);
+        Intent intent1 = new Intent(context, LoginActivity.class);
         startActivity(intent1);
     }
 
