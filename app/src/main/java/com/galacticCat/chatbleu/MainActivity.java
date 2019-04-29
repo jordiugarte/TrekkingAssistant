@@ -3,18 +3,21 @@ package com.galacticCat.chatbleu;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.login_register.LoginActivity;
 import com.galacticCat.chatbleu.services.Notification;
 import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
     private ToggleButton sosButton;
+    private Button iniciarSesionButton;
         //Images
     private ImageView compass;
 
@@ -110,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        //Iniciar Sesion
+        iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              openActivityLogin();
+            }
+        });
+
     }
 
     @Override
@@ -240,6 +252,10 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+    public void openActivityLogin(){
+        Intent intent1 = new Intent(this, LoginActivity.class);
+        startActivity(intent1);
     }
 
 }

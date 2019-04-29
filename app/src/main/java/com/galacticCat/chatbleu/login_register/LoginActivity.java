@@ -130,11 +130,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void createObjectFromString() {
-        String json = "{\"nombreUsuario\",\"password\",\"edad\",\"email\",\"codigoUpb\",\"celular\"}";
+        String json = "{\"nombreUsuario\",\"password\",\"edad\",\"peso\"}";
         mUser = new Gson().fromJson(json, User.class);
         Toast.makeText(mContext, mUser.getPassword(), Toast.LENGTH_LONG).show();
     }
-
+    public void registrarClick(View view) {
+        Intent intent = new Intent(mContext, RegisterActivity.class);
+        startActivityForResult(intent, Constants.CODIGO_TRANSACCION);
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
