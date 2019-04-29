@@ -6,4 +6,125 @@
     android:layout_height="match_parent"
     tools:context=".Mochila">
 
+    <LinearLayout
+        android:id="@+id/addSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@id/lists"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/nameItemView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Name" />
+
+                <EditText
+                    android:id="@+id/itemName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/weightItemView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Weight" />
+
+                <EditText
+                    android:id="@+id/itemWeight"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:inputType="textPersonName" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/addItemButton"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Add" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listsView"
+        android:layout_width="410dp"
+        android:layout_height="527dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toTopOf="@id/addSection"
+        app:layout_constraintHorizontal_bias="0.428"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <LinearLayout
+        android:id="@+id/lists"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/foodList"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/comida" />
+
+        <Button
+            android:id="@+id/toolsButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/herramientas" />
+
+        <Button
+            android:id="@+id/botiquinBotton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/primeros_auxilios" />
+
+        <Button
+            android:id="@+id/clothesButton"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:background="@drawable/ropa" />
+
+        <Button
+            android:id="@+id/button5"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_weight="1"
+            android:text="others" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>
