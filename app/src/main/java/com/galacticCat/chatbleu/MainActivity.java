@@ -214,6 +214,7 @@ public class MainActivity extends AppCompatActivity {
         distanceView.setTextColor(defaultColorText);
         weightView.setTextColor(defaultColorText);
         altitudeView.setTextColor(defaultColorText);
+        timeOfTravelView.setTextColor(defaultColorText);
 
     }
 
