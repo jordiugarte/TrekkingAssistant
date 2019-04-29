@@ -2,9 +2,11 @@ package com.galacticCat.chatbleu.login_register;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
@@ -88,10 +90,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-//        mLogoImageView = findViewById(R.id.logo);
-//        mUsuarioEditText = findViewById(R.id.usuario);
-//        mPasswordEditText = findViewById(R.id.password);
-//        mIniciarSesionButton = findViewById(R.id.iniciarSesion);
+        mLogoImageView = findViewById(R.id.logo);
+        mUsuarioEditText = findViewById(R.id.usuario);
+        mPasswordEditText = findViewById(R.id.password);
+        mIniciarSesionButton = findViewById(R.id.iniciarSesion);
     }
 
     private void addEvents() {
@@ -108,6 +110,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intent.putExtra(Constants.KEY_USUARIO, usuario);
         intent.putExtra(Constants.KEY_PASSWORD, password);
         startActivity(intent);
+
+        if (validarUsuario(usuario, password)) {
+
+            intent.putExtra(Constants.KEY_USUARIO, usuario);
+            intent.putExtra(Constants.KEY_PASSWORD, password);
+            startActivity(intent);
+        } else {
+            Toast.makeText(mContext, "Usuario o password invalido", Toast.LENGTH_SHORT)
+                    .show();
+        }
     }
 
     private void createObject() {
@@ -141,5 +153,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 }
             }
         }
+    }
+    private boolean validarUsuario(String usuario, String password) {
+        if (usuario == null || usuario.isEmpty()) {
+            return false;
+        }
+
+        if (password == null || password.isEmpty()) {
+            return false;
+        }
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String usuarioGuardado = prefs.getString(Constants.PREF_USUARIO, "");
+        String passwordGuardado = prefs.getString(Constants.PREF_PASSWORD, "");
+
+        return usuario.equals(usuarioGuardado) && password.equals(passwordGuardado);
+    }
+
+    public void eliminarDatos(View view) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.clear();
+        editor.apply();
     }
 }

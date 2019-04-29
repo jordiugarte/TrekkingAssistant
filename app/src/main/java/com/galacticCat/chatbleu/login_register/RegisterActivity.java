@@ -3,7 +3,9 @@ package com.galacticCat.chatbleu.login_register;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputFilter;
@@ -60,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT)); //Height
         padre.setOrientation(LinearLayout.VERTICAL);
         padre.setPadding(25, 25, 25, 25);
-        //padre.setBackgroundColor(mContext.getResources().getColor(R.color.colorPrimary));
+
 
 
         //Usuario
@@ -243,6 +245,10 @@ public class RegisterActivity extends AppCompatActivity {
         String json = new Gson().toJson(user);
         Log.e("UsuarioEnviado", json);
 
+        llenarUsuario(usuario.getText().toString(),
+                password.getText().toString());
+
+
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY_REGISTRAR_USUARIO, json);
         setResult(RESULT_OK, intent); //OK: funciono, intent --> retornando el valor
@@ -285,6 +291,13 @@ public class RegisterActivity extends AppCompatActivity {
         });
         dialogo.setCancelable(false);
         dialogo.show();
+    }
+    private void llenarUsuario(String usuario, String password) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.PREF_USUARIO, usuario);
+        editor.putString(Constants.PREF_PASSWORD, password);
+        editor.apply();
     }
 
 }

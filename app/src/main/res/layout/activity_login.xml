@@ -73,5 +73,12 @@
             android:layout_height="wrap_content"
             android:background="#22FFFFFF"
             android:text="Registrar" />
+
+        <Button
+            android:id="@+id/eliminar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="eliminarDatos"
+            android:text="Eliminar Datos" />
     </LinearLayout>
 </RelativeLayout>
