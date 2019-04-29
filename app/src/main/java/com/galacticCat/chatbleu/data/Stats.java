@@ -2,7 +2,8 @@ package com.galacticCat.chatbleu.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-
+import android.app.Activity;
+import android.content.Context;
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 
 import java.io.BufferedReader;

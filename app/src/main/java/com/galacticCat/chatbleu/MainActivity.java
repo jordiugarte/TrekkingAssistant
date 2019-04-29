@@ -3,18 +3,21 @@ package com.galacticCat.chatbleu;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.login_register.LoginActivity;
 import com.galacticCat.chatbleu.services.Notification;
 import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
     private ToggleButton sosButton;
+    private Button iniciarSesionButton;
         //Images
     private ImageView compass;
 
@@ -77,10 +81,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (flashlightButton.isChecked()){
                     new Flashlight(MainActivity.this, context, true);
-                    makeToast("Flashligh: ON");
+                    new Notification(context, "Flashlight: ON", R.drawable.flashlight);
                 } else {
                     new Flashlight(MainActivity.this, context, false);
-                    makeToast("Flashlight: OFF");
+                    new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
                 }
             }
         });
@@ -91,10 +95,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (sosButton.isChecked()){
                     SOSFlashlight.getInstance().flashLight(MainActivity.this, context);
-                    makeToast("SOS Flashlight: ON");
+                    new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
                 } else {
                     SOSFlashlight.getInstance().stopFlashLight();
-                    makeToast("SOS Flashlight: OFF");
+                    new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
                 }
             }
         });
@@ -110,6 +114,14 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+        //Iniciar Sesion
+        iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              openActivityLogin();
+            }
+        });
+
     }
 
     @Override
@@ -128,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
@@ -189,7 +202,8 @@ public class MainActivity extends AppCompatActivity {
             }
             layout.setBackgroundColor(defaultColorBackground);
 
-            new Notification(context, "Camping Mode: ON", R.id.camping_toggle);
+            new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
+
         } else {
             defaultCompass = R.drawable.compass;
             defaultFlashlight = R.drawable.flashlight;
@@ -197,6 +211,7 @@ public class MainActivity extends AppCompatActivity {
             defaultCamping = R.drawable.camp_mode;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
             layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
+            new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
         }
 
         //Button Views
@@ -214,6 +229,7 @@ public class MainActivity extends AppCompatActivity {
         distanceView.setTextColor(defaultColorText);
         weightView.setTextColor(defaultColorText);
         altitudeView.setTextColor(defaultColorText);
+
         timeOfTravelView.setTextColor(defaultColorText);
 
     }
@@ -237,6 +253,10 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog alert = builder.create();
         alert.show();
 
+    }
+    public void openActivityLogin(){
+        Intent intent1 = new Intent(this, LoginActivity.class);
+        startActivity(intent1);
     }
 
 }
