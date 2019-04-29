@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
+
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
