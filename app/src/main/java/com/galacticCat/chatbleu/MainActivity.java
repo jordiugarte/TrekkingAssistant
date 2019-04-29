@@ -77,10 +77,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (flashlightButton.isChecked()){
                     new Flashlight(MainActivity.this, context, true);
-                    makeToast("Flashligh: ON");
+                    new Notification(context, "Flashlight: ON", R.drawable.flashlight);
                 } else {
                     new Flashlight(MainActivity.this, context, false);
-                    makeToast("Flashlight: OFF");
+                    new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
                 }
             }
         });
@@ -91,10 +91,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (sosButton.isChecked()){
                     SOSFlashlight.getInstance().flashLight(MainActivity.this, context);
-                    makeToast("SOS Flashlight: ON");
+                    new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
                 } else {
                     SOSFlashlight.getInstance().stopFlashLight();
-                    makeToast("SOS Flashlight: OFF");
+                    new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
                 }
             }
         });
@@ -189,7 +189,8 @@ public class MainActivity extends AppCompatActivity {
             }
             layout.setBackgroundColor(defaultColorBackground);
 
-            new Notification(context, "Camping Mode: ON", R.id.camping_toggle);
+            new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
+
         } else {
             defaultCompass = R.drawable.compass;
             defaultFlashlight = R.drawable.flashlight;
@@ -197,6 +198,7 @@ public class MainActivity extends AppCompatActivity {
             defaultCamping = R.drawable.camp_mode;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
             layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
+            new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
         }
 
         //Button Views
