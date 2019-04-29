@@ -88,10 +88,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void initViews() {
-        mLogoImageView = findViewById(R.id.logo);
-        mUsuarioEditText = findViewById(R.id.usuario);
-        mPasswordEditText = findViewById(R.id.password);
-        mIniciarSesionButton = findViewById(R.id.iniciarSesion);
+//        mLogoImageView = findViewById(R.id.logo);
+//        mUsuarioEditText = findViewById(R.id.usuario);
+//        mPasswordEditText = findViewById(R.id.password);
+//        mIniciarSesionButton = findViewById(R.id.iniciarSesion);
     }
 
     private void addEvents() {
