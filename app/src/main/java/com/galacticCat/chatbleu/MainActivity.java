@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         weightView = (TextView) findViewById(R.id.weightView);
         altitudeView = (TextView) findViewById(R.id.altitudeView);
         timeOfTravelView = (TextView) findViewById(R.id.timeOfTravelView);
+
         //TODO
         //campingMode(false);
     }
