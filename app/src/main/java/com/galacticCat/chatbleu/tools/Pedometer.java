@@ -13,13 +13,15 @@ import com.galacticCat.chatbleu.data.Stats;
 public class Pedometer extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
     private TextView stepsView;
+    private TextView distanceView;
     private boolean running = false;
     private int steps;
     private int initialSteps;
 
-    public Pedometer(Context context, TextView view, TextView stepsView, Stats stats) {
+    public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats) {
         sensorManager = (SensorManager)context.getSystemService(context.SENSOR_SERVICE);
         this.stepsView = stepsView;
+        this.distanceView = distanceView;
     }
 
     public void resume(){
@@ -39,7 +41,10 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(running){
-            stepsView.setText(String.valueOf(event.values[0]));
+            steps = (int)(event.values[0]);
+
+            distanceView.setText(steps / 2 + "m");
+            stepsView.setText(""+steps);
         }
     }
 
