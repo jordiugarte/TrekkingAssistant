@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ChatBleu</string>
+    <string name="app_name">Pocket Trekk</string>
     <string name="listen_btn">Listen</string>
     <string name="send_btn">Send</string>
     <string name="status_label">Status</string>

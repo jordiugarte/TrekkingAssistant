@@ -44,7 +44,7 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
             steps = (int)(event.values[0]);
 
             distanceView.setText(steps / 2 + "m");
-            stepsView.setText(""+steps);
+            stepsView.setText("" + steps);
         }
     }
 
