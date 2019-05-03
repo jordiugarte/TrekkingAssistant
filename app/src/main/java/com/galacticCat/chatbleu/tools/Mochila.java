@@ -68,9 +68,6 @@ public class Mochila extends AppCompatActivity {
 
             }
         });
-
-
-
     }
 
     class CustomAdapter extends BaseAdapter {

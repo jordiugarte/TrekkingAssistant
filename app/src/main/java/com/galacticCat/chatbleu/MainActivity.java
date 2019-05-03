@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
     private Button iniciarSesionButton;
         //Images
     private ImageView compass;
+    private ImageView steps;
 
     private Context context;
     private Stats stats;
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         compassTool.resume();
         pedometer.resume();
-        weightView.setText("Weight: " + 10 + "kg");
+        weightView.setText("Weight: " + 3.2f + "kg");
     }
 
     @Override
@@ -161,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
         compass = (ImageView) findViewById(R.id.compass);
         listsButton = (Button)findViewById(R.id.mochila_btn);
         iniciarSesionButton = (Button) findViewById(R.id.buttonUser);
+        steps = (ImageView)findViewById(R.id.iconSteps);
 
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
@@ -185,6 +187,7 @@ public class MainActivity extends AppCompatActivity {
         int defaultFlashlight = 0;
         int defaultSos = 0;
         int defaultCamping = 0;
+        int defaultSteps = 0;
 
         if (active) {
             Calendar rightNow = Calendar.getInstance();
@@ -201,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 defaultFlashlight = R.drawable.flashlight;
                 defaultSos = R.drawable.sos;
                 defaultCamping = R.drawable.camp_mode;
+                defaultSteps = R.drawable.steps;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
@@ -213,12 +217,14 @@ public class MainActivity extends AppCompatActivity {
                 defaultFlashlight = R.drawable.flashlight_black;
                 defaultSos = R.drawable.sos_black;
                 defaultCamping = R.drawable.camp_mode_black;
+                defaultSteps = R.drawable.steps_black;
             }
             layout.setBackgroundColor(defaultColorBackground);
 
             new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
 
         } else {
+            defaultSteps = R.drawable.steps;
             defaultCompass = R.drawable.compass;
             defaultFlashlight = R.drawable.flashlight;
             defaultSos = R.drawable.sos;
@@ -235,6 +241,7 @@ public class MainActivity extends AppCompatActivity {
 
         //Image Views
         compass.setImageResource(defaultCompass);
+        steps.setImageResource(defaultSteps);
 
         //Text Views
         timeView.setTextColor(defaultColorText);
