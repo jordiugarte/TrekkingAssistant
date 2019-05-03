@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/space_xl"
             android:background="#23FFFFFF"
+            android:onClick="valida"
             android:text="Iniciar sesion" />
 
         <Button
@@ -72,7 +73,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#22FFFFFF"
-            android:onClick="registrarClick"
             android:text="Registrar" />
 
         <Button
@@ -80,7 +80,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#2CFFFFFF"
-            android:onClick="eliminarDatos"
             android:text="Eliminar Datos" />
     </LinearLayout>
 </RelativeLayout>

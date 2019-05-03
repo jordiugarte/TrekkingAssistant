@@ -22,7 +22,6 @@ import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
-import com.galacticCat.chatbleu.tools.Mochila;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
@@ -125,11 +124,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Mochila
+        //MochilaActivity
         listsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, Mochila.class);
+                Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
                 startActivity(intent);
             }
         });
@@ -275,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void openActivityLogin(){
-        Intent intent1 = new Intent(context, LoginActivity.class);
+        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent1);
     }
 

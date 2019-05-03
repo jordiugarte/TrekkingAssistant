@@ -1,4 +1,4 @@
-package com.galacticCat.chatbleu.tools;
+package com.galacticCat.chatbleu;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
-public class Mochila extends AppCompatActivity {
+public class MochilaActivity extends AppCompatActivity {
 
     private Button addBtton;
     private TextView nameView;
