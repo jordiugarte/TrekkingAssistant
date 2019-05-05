@@ -1,4 +1,4 @@
-package com.galacticCat.chatbleu.login_register;
+package com.galacticCat.chatbleu;
 
 import android.content.Context;
 import android.content.Intent;
