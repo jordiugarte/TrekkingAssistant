@@ -1,4 +1,4 @@
-package com.galacticCat.chatbleu.login_register;
+package com.galacticCat.chatbleu;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -22,8 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.galacticCat.chatbleu.Constants;
-import com.galacticCat.chatbleu.R;
 import com.galacticCat.chatbleu.model.User;
 import com.google.gson.Gson;
 

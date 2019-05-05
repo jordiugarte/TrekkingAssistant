@@ -17,7 +17,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.data.Stats;
-import com.galacticCat.chatbleu.login_register.LoginActivity;
 import com.galacticCat.chatbleu.services.Notification;
 import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
