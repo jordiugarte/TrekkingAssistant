@@ -17,6 +17,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.map.MapsActivity;
 import com.galacticCat.chatbleu.services.Notification;
 import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private ToggleButton sosButton;
     private Button listsButton;
     private Button iniciarSesionButton;
+    private Button mapsButton;
         //Images
     private ImageView compass;
     private ImageView steps;
@@ -130,9 +132,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, Mochila.class);
-                startActivity(intent);
-            }
+                startActivity(intent); }
         });
+        //Mapas
+        mapsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent); }
+        });
+
     }
 
     @Override
@@ -162,6 +171,7 @@ public class MainActivity extends AppCompatActivity {
         listsButton = (Button)findViewById(R.id.mochila_btn);
         iniciarSesionButton = (Button) findViewById(R.id.buttonUser);
         steps = (ImageView)findViewById(R.id.iconSteps);
+        mapsButton = (Button)findViewById(R.id.maps_btn) ;
 
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
