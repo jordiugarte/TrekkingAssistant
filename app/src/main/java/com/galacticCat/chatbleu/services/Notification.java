@@ -30,7 +30,7 @@ public class Notification {
         toast.setView(view);
         toast.setDuration(Toast.LENGTH_LONG);
 
-        toast.setGravity(Gravity.CENTER, 32, 32);
+        toast.setGravity(Gravity.CENTER , 0 ,640);
         toast.show();
     }
 }
