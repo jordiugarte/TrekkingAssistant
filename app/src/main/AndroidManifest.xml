@@ -24,13 +24,8 @@
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".SignupActivity"></activity>
         <activity android:name=".LoginActivity" />
-        <activity
-            android:name=".LoginActivity"
-            android:label="@string/title_activity_login" />
-        <activity
-            android:name=".LoginActivity2"
             android:label="@string/title_activity_login2" />
-        <activity android:name=".tools.Mochila" />
+        <activity android:name=".Mochila" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
