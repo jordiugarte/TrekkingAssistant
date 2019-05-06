@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private RealTimeStats rStats;
 
     public boolean campingMode;
-
+//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Basic Activity Set
