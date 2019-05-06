@@ -141,7 +141,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="TextView"
+                android:text="0"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent" />
@@ -180,10 +180,21 @@
         android:id="@+id/statsList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="48dp"
         android:background="@color/colorWidget"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tools">
+        app:layout_constraintTop_toBottomOf="@id/tools"
+        tools:layout_editor_absoluteX="-16dp">
+
+        <TextView
+            android:id="@+id/user_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif"
+            android:text="User"
+            android:textSize="30sp"
+            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/distanceView"
