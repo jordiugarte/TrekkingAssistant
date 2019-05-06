@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         stats = new Stats(context);
+        //
 
         setListeners();
 
