@@ -17,8 +17,7 @@ public class Flashlight {
         try {
             String cameraID = cameraManager.getCameraIdList()[0];
             cameraManager.setTorchMode(cameraID, active);
-        } catch (
-                CameraAccessException e){
+        } catch (CameraAccessException e){
             e.printStackTrace();
         }
     }

@@ -24,7 +24,6 @@ import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
-import com.galacticCat.chatbleu.Mochila;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private Compass compassTool;
     private Altitude altitude;
     private Pedometer pedometer;
+    private SOSFlashlight sos;
     //Listeners
         //Background
     private ConstraintLayout layout;
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
     private RealTimeStats rStats;
 
     public boolean campingMode;
-//
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Basic Activity Set
@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         stats = new Stats(context);
-        //
 
         setListeners();
 
@@ -88,6 +87,7 @@ public class MainActivity extends AppCompatActivity {
         compassTool = new Compass(context, compass);
         altitude = new Altitude(altitudeView, context);
         pedometer = new Pedometer(context, stepsView, distanceView, stats, campingMode);
+        sos = new SOSFlashlight(MainActivity.this, context);
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -107,11 +107,12 @@ public class MainActivity extends AppCompatActivity {
         sosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (sosButton.isChecked()){
-                    SOSFlashlight.getInstance().flashLight(MainActivity.this, context);
+                    sos.turnFlashLight();
                     new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
                 } else {
-                    SOSFlashlight.getInstance().stopFlashLight();
+                    sos.stopFlashLight();
                     new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
                 }
             }
@@ -191,8 +192,6 @@ public class MainActivity extends AppCompatActivity {
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
 
-        //TODO
-        //campingMode(false);
     }
 
     private void makeToast(String message) {
