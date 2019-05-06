@@ -27,6 +27,7 @@ import com.galacticCat.chatbleu.tools.Flashlight;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
+
 import org.w3c.dom.Text;
 
 import java.util.Calendar;
@@ -131,11 +132,10 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //Iniciar Sesion
-        iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
+       iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              openActivityLogin();
-            }
+              openActivityLogin(); }
         });
 
         //Mochila
@@ -300,8 +300,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     public void openActivityLogin(){
-        Intent intent1 = new Intent(context, LoginActivity.class);
+        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent1);
-    }
+   }
 
 }
