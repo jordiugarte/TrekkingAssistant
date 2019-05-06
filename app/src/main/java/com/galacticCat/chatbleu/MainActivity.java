@@ -2,14 +2,18 @@ package com.galacticCat.chatbleu;
 
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.os.BatteryManager;
 import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
     //Listeners
         //Background
     private ConstraintLayout layout;
+    private ConstraintLayout battery;
         //Text Viewers
     private TextView timeView;
     private TextView dateView;
@@ -57,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView altitudeView;
     private TextView stepsPerHourView;
     private TextView speedView;
+    private TextView batteryView;
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
@@ -93,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
         altitude = new Altitude(altitudeView, context);
         pedometer = new Pedometer(context, stepsView, distanceView, stats, campingMode);
         sos = new SOSFlashlight(MainActivity.this, context);
+
+        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -186,7 +194,8 @@ public class MainActivity extends AppCompatActivity {
         listsButton = (Button)findViewById(R.id.mochila_btn);
         iniciarSesionButton = (Button) findViewById(R.id.buttonUser);
         steps = (ImageView)findViewById(R.id.iconSteps);
-        mapsButton = (Button)findViewById(R.id.maps_btn) ;
+        mapsButton = (Button)findViewById(R.id.maps_btn);
+        battery = findViewById(R.id.battery);
 
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
@@ -195,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
         timeOfTravelView = (TextView) findViewById(R.id.timeOfTravelView);
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
+        batteryView = findViewById(R.id.battery_view);
 
     }
 
@@ -212,10 +222,11 @@ public class MainActivity extends AppCompatActivity {
         int defaultSos = 0;
         int defaultCamping = 0;
         int defaultSteps = 0;
+        int defaultBattery = 0;
 
         if (active) {
             //Settings
-            SetAirplaneMode();
+//            SetAirplaneMode();
             campingMode = true;
             Calendar rightNow = Calendar.getInstance();
             int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
@@ -232,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
                 defaultSos = R.drawable.sos;
                 defaultCamping = R.drawable.camp_mode;
                 defaultSteps = R.drawable.steps;
+                defaultBattery = R.drawable.battery;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
@@ -245,13 +257,15 @@ public class MainActivity extends AppCompatActivity {
                 defaultSos = R.drawable.sos_black;
                 defaultCamping = R.drawable.camp_mode_black;
                 defaultSteps = R.drawable.steps_black;
+                defaultBattery = R.drawable.battery_black;
+
             }
             layout.setBackgroundColor(defaultColorBackground);
 
             new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
 
         } else {
-            SetAirplaneMode();
+//            SetAirplaneMode();
             campingMode = false;
             defaultSteps = R.drawable.steps;
             defaultCompass = R.drawable.compass;
@@ -267,6 +281,7 @@ public class MainActivity extends AppCompatActivity {
         flashlightButton.setBackgroundDrawable(this.getResources().getDrawable(defaultFlashlight));
         sosButton.setBackgroundDrawable(this.getResources().getDrawable(defaultSos));
         campingButton.setBackgroundDrawable(this.getResources().getDrawable(defaultCamping));
+        battery.setBackgroundDrawable(this.getResources().getDrawable(defaultBattery));
 
         //Image Views
         compass.setImageResource(defaultCompass);
@@ -281,7 +296,7 @@ public class MainActivity extends AppCompatActivity {
         altitudeView.setTextColor(defaultColorText);
         speedView.setTextColor(defaultColorText);
         stepsPerHourView.setTextColor(defaultColorText);
-
+        batteryView.setTextColor(defaultColorText);
         timeOfTravelView.setTextColor(defaultColorText);
 
     }
@@ -311,40 +326,48 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent1);
    }
 
-    private void SetAirplaneMode(){
-        if (android.os.Build.VERSION.SDK_INT < 17) {
-            try {
-                // read the airplane mode setting
-                boolean isEnabled = Settings.System.getInt(
-                        getContentResolver(),
-                        Settings.System.AIRPLANE_MODE_ON, 0) == 1;
+//    private void SetAirplaneMode(){
+//        if (android.os.Build.VERSION.SDK_INT < 17) {
+//            try {
+//                // read the airplane mode setting
+//                boolean isEnabled = Settings.System.getInt(
+//                        getContentResolver(),
+//                        Settings.System.AIRPLANE_MODE_ON, 0) == 1;
+//
+//                // toggle airplane mode
+//                Settings.System.putInt(
+//                        getContentResolver(),
+//                        Settings.System.AIRPLANE_MODE_ON, isEnabled ? 0 : 1);
+//
+//                // Post an intent to reload
+//                Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+//                intent.putExtra("state", !isEnabled);
+//                sendBroadcast(intent);
+//            } catch (ActivityNotFoundException e) {
+//
+//            }
+//        } else {
+//            try {
+//                Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent);
+//            } catch (ActivityNotFoundException e) {
+//                try {
+//                    Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(intent);
+//                } catch (ActivityNotFoundException ex) {
+//
+//                }
+//            }
+//        }
+//    }
 
-                // toggle airplane mode
-                Settings.System.putInt(
-                        getContentResolver(),
-                        Settings.System.AIRPLANE_MODE_ON, isEnabled ? 0 : 1);
-
-                // Post an intent to reload
-                Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-                intent.putExtra("state", !isEnabled);
-                sendBroadcast(intent);
-            } catch (ActivityNotFoundException e) {
-
-            }
-        } else {
-            try {
-                Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } catch (ActivityNotFoundException e) {
-                try {
-                    Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                } catch (ActivityNotFoundException ex) {
-
-                }
-            }
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context ctxt, Intent intent) {
+            int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
+            batteryView.setText(String.valueOf(level) + "%");
         }
-    }
+    };
 }
