@@ -1,13 +1,16 @@
 package com.galacticCat.chatbleu;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -26,6 +29,7 @@ import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
+import android.provider.Settings;
 
 
 import org.w3c.dom.Text;
@@ -210,6 +214,8 @@ public class MainActivity extends AppCompatActivity {
         int defaultSteps = 0;
 
         if (active) {
+            //Settings
+            SetAirplaneMode();
             campingMode = true;
             Calendar rightNow = Calendar.getInstance();
             int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
@@ -245,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
             new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
 
         } else {
+            SetAirplaneMode();
             campingMode = false;
             defaultSteps = R.drawable.steps;
             defaultCompass = R.drawable.compass;
@@ -304,4 +311,40 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent1);
    }
 
+    private void SetAirplaneMode(){
+        if (android.os.Build.VERSION.SDK_INT < 17) {
+            try {
+                // read the airplane mode setting
+                boolean isEnabled = Settings.System.getInt(
+                        getContentResolver(),
+                        Settings.System.AIRPLANE_MODE_ON, 0) == 1;
+
+                // toggle airplane mode
+                Settings.System.putInt(
+                        getContentResolver(),
+                        Settings.System.AIRPLANE_MODE_ON, isEnabled ? 0 : 1);
+
+                // Post an intent to reload
+                Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+                intent.putExtra("state", !isEnabled);
+                sendBroadcast(intent);
+            } catch (ActivityNotFoundException e) {
+
+            }
+        } else {
+            try {
+                Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } catch (ActivityNotFoundException e) {
+                try {
+                    Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+
+                }
+            }
+        }
+    }
 }

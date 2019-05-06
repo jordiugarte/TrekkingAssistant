@@ -12,6 +12,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+
 
     <uses-feature android:name="android.hardware.camera" />
 
@@ -23,8 +26,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
         <activity android:name=".SignupActivity"></activity>
-        <activity android:name=".LoginActivity" />
-            android:label="@string/title_activity_login2" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/title_activity_login" />
         <activity android:name=".Mochila" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
