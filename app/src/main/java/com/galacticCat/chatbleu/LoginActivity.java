@@ -1,8 +1,11 @@
 package com.galacticCat.chatbleu;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -11,12 +14,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.galacticCat.chatbleu.db.DataBaseHelper;
+
 import butterknife.ButterKnife;
 import butterknife.BindView;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private static final int REQUEST_SIGNUP = 0;
+    private DataBaseHelper dbHelper;
+    private Context mContext = this;
 
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
@@ -46,8 +53,12 @@ public class LoginActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
+        dbHelper = new DataBaseHelper(mContext);
+        int cantidad = dbHelper.getCount();
+        Toast.makeText(mContext,
+                "Existen: " + cantidad + " de usuarios registrados",
+                Toast.LENGTH_SHORT).show();
     }
-
     public void login() {
         Log.d(TAG, "Login");
 
@@ -67,8 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
-
+       validate();
 
 
         new android.os.Handler().postDelayed(
@@ -131,6 +141,16 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             _passwordText.setError(null);
         }
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        String usuarioGuardado = prefs.getString(Constants.PREF_USUARIO, "");
+        String passwordGuardado = prefs.getString(Constants.PREF_PASSWORD, "");
 
-        return valid;    }
+        dbHelper = new DataBaseHelper(mContext);
+
+        return email.equals(usuarioGuardado) && password.equals(passwordGuardado) && dbHelper.login(email, password) && valid;
+
+
+
+    }
+
 }
