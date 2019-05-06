@@ -8,6 +8,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
@@ -26,26 +28,37 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
-        LatLng upb = new LatLng(-16.4905522, -67.8988208);
-        mMap.addMarker(new MarkerOptions().position(upb).title("UPB posgrado"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(upb, 12));
-        //7mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-        //mMap.setMyLocationEnabled(true);
+        LatLng inicioTakessi = new LatLng(-16.509014, -67.911909);
+        LatLng comunidadTakessi = new LatLng(-16.468670, -67.846208);
+
+        LatLng finalTakessi = new LatLng(-16.398600, -67.738048);
+
+
+
+        MarkerOptions m1 = new MarkerOptions().title("Inicio Takessi").position(inicioTakessi).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+        mMap.addMarker(m1);
+        MarkerOptions m2 = new MarkerOptions().title("Comunidad Takessi").position(comunidadTakessi).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+        mMap.addMarker(m2);
+        MarkerOptions m3 = new MarkerOptions().title("Fnal Takessi").position(finalTakessi).icon(BitmapDescriptorFactory.fromResource(R.drawable.marker));
+        mMap.addMarker(m3);
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(inicioTakessi , 10));
+
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(inicioTakessi));
+
+        //mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        MarkerOptions marcadorDestino= new MarkerOptions();
+        marcadorDestino.position(finalTakessi);
+        marcadorDestino.title("Este es tu destino");
+
+
 
     }
 }
+
