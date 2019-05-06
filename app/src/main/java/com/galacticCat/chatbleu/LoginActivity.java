@@ -3,12 +3,9 @@ package com.galacticCat.chatbleu;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.provider.MediaStore;
-import android.provider.SyncStateContract;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -18,9 +15,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.galacticCat.chatbleu.Constants;
-import com.galacticCat.chatbleu.MainActivity;
-import com.galacticCat.chatbleu.R;
 import com.galacticCat.chatbleu.model.User;
 import com.google.gson.Gson;
 

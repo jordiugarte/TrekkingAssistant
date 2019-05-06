@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.galacticCat.chatbleu.data.RealTimeStats;
 import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.map.MapsActivity;
 import com.galacticCat.chatbleu.services.Notification;
@@ -23,9 +24,11 @@ import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
-import com.galacticCat.chatbleu.tools.Mochila;
+import com.galacticCat.chatbleu.Mochila;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
+
+import org.w3c.dom.Text;
 
 import java.util.Calendar;
 
@@ -47,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
     private TextView weightView;
     private TextView timeOfTravelView;
     private TextView altitudeView;
+    private TextView stepsPerHourView;
+    private TextView speedView;
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
@@ -60,6 +65,9 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private Stats stats;
+    private RealTimeStats rStats;
+
+    public boolean campingMode;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,10 +82,11 @@ public class MainActivity extends AppCompatActivity {
 
         setListeners();
 
+        rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
         altitude = new Altitude(altitudeView, context);
-        pedometer = new Pedometer(context, stepsView, distanceView, stats);
+        pedometer = new Pedometer(context, stepsView, distanceView, stats, campingMode);
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +187,8 @@ public class MainActivity extends AppCompatActivity {
         weightView = (TextView) findViewById(R.id.weightView);
         altitudeView = (TextView) findViewById(R.id.altitudeView);
         timeOfTravelView = (TextView) findViewById(R.id.timeOfTravelView);
+        speedView = (TextView) findViewById(R.id.speedView);
+        stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
 
         //TODO
         //campingMode(false);
@@ -199,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         int defaultSteps = 0;
 
         if (active) {
+            campingMode = true;
             Calendar rightNow = Calendar.getInstance();
             int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
 
@@ -233,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
             new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
 
         } else {
+            campingMode = false;
             defaultSteps = R.drawable.steps;
             defaultCompass = R.drawable.compass;
             defaultFlashlight = R.drawable.flashlight;
@@ -259,6 +272,8 @@ public class MainActivity extends AppCompatActivity {
         distanceView.setTextColor(defaultColorText);
         weightView.setTextColor(defaultColorText);
         altitudeView.setTextColor(defaultColorText);
+        speedView.setTextColor(defaultColorText);
+        stepsPerHourView.setTextColor(defaultColorText);
 
         timeOfTravelView.setTextColor(defaultColorText);
 

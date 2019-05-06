@@ -61,7 +61,10 @@ public class Stats {
 
     public void setSteps(int s){
         steps = s;
-        distance = steps / 2;
+    }
+
+    public void setDistance(int d){
+        distance = d;
     }
 
     public int getDistance(){

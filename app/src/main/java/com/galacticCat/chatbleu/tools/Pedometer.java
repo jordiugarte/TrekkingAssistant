@@ -8,43 +8,64 @@ import android.hardware.SensorManager;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
+import com.galacticCat.chatbleu.MainActivity;
 import com.galacticCat.chatbleu.data.Stats;
 
 public class Pedometer extends AppCompatActivity implements SensorEventListener {
     private SensorManager sensorManager;
+    private Sensor countSensor;
     private TextView stepsView;
     private TextView distanceView;
-    private boolean running = false;
     private int steps;
-    private int initialSteps;
+    private int distance;
+    private Stats stats;
+    private boolean campingMode;
 
-    public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats) {
+    public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats, boolean campingMode) {
         sensorManager = (SensorManager)context.getSystemService(context.SENSOR_SERVICE);
+        countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+
         this.stepsView = stepsView;
         this.distanceView = distanceView;
+        this.stats = stats;
+        distance = stats.getDistance();
+        steps = stats.getSteps();
+
+        distanceView.setText("Distance: " + distance + "m");
+        stepsView.setText("" + steps);
+        stats.setSteps(steps);
+        stats.setDistance(distance);
     }
 
     public void resume(){
-        running = true;
-        Sensor countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        if (countSensor != null){
-            sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_UI);
-        } else {
-            //TODO TOAST
-        }
+        sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_FASTEST);
+
     }
 
     public void pasue(){
-        running = false;
+//        sensorManager.unregisterListener(this, countSensor);
+
     }
+
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(running){
-            steps = (int)(event.values[0]);
+        if (campingMode) {
+            Sensor sensor = event.sensor;
+            float[] values = event.values;
+            int value = -1;
 
-            distanceView.setText(steps / 2 + "m");
+            if (values.length > 0) {
+                value = (int) values[0];
+            }
+            if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+                steps++;
+                distance += steps / 2;
+            }
+            distanceView.setText(distance + "m");
             stepsView.setText("" + steps);
+            stats.setSteps(steps);
+            stats.setDistance(distance);
         }
     }
 
