@@ -1,6 +1,8 @@
 package com.galacticCat.chatbleu;
 
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -10,15 +12,24 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.galacticCat.chatbleu.db.DataBase;
+import com.galacticCat.chatbleu.db.DataBaseHelper;
+import com.galacticCat.chatbleu.model.User;
+import com.google.gson.Gson;
+
 import butterknife.ButterKnife;
 import butterknife.BindView;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
+    private Context mContext = this;
+
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
+    @BindView(R.id.input_edad) EditText _edadText;
+    @BindView(R.id.input_peso) EditText _pesoText;
     @BindView(R.id.btn_signup) Button _signupButton;
     @BindView(R.id.link_login) TextView _loginLink;
 
@@ -63,6 +74,8 @@ public class SignupActivity extends AppCompatActivity {
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        int edad = Integer.parseInt(_edadText.getText().toString());
+        int peso = Integer.parseInt(_pesoText.getText().toString());
 
         // TODO: Implement your own signup logic here.
 
@@ -97,6 +110,9 @@ public class SignupActivity extends AppCompatActivity {
         String name = _nameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
+        int edad = Integer.parseInt(_edadText.getText().toString());
+        int peso = Integer.parseInt(_pesoText.getText().toString());
+
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -118,6 +134,40 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             _passwordText.setError(null);
         }
+        if (edad < 0 || edad > 2) {
+            _edadText.setError("enter a valid age");
+            valid = false;
+        } else {
+            _edadText.setError(null);
+        }
+        if (peso < 1 || peso > 3) {
+            _passwordText.setError("enter a valid weight");
+            valid = false;
+        } else {
+            _passwordText.setError(null);
+        }
+        User usuario = new User();
+        usuario.setNombreUsuario(name);
+        usuario.setPassword(password);
+        usuario.setEdad(edad);
+        usuario.setEmail(email);
+        usuario.setPeso(peso);
+
+        //Antes de devolverlo, lo guardamos en la db
+        DataBaseHelper dbHelper = new DataBaseHelper(mContext);
+        dbHelper.insert(usuario);
+
+        String json = new Gson().toJson(usuario);
+        Log.e("UsuarioEnviado", json);
+
+       // llenarUsuario(name,
+         //       password);
+
+        Intent intent = new Intent();
+        intent.putExtra(Constants.KEY_REGISTRAR_USUARIO, json);
+        setResult(RESULT_OK, intent); //OK: funciono, intent --> retornando el valor
+        finish(); //Cierra el activity
+
 
         return valid;
     }

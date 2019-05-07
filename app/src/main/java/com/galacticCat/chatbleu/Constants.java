@@ -7,7 +7,6 @@ public class Constants {
 
     //Mayores a 100
     public static final int CODIGO_TRANSACCION = 410;
-    public static final int CODIGO_TRANSACCION_FOTO = 411;
 
     //SharedPreferences
     public static final String PREF_USUARIO = "usuario";

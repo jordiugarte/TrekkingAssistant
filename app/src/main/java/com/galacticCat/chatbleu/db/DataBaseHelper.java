@@ -59,14 +59,12 @@ import com.galacticCat.chatbleu.model.User;
         params[0] = usuario;
         params[1] = password;
 
-        Cursor cursor = this.mDatabase.rawQuery("SELECT codigoUpb FROM usuarios" +
+        Cursor cursor = this.mDatabase.rawQuery("SELECT name FROM usuarios" +
                 " WHERE usuario=? AND password = ?", params);
 
-        /*Cursor cursor = this.mDatabase.rawQuery("SELECT codigoUpb FROM usuarios" +
-                " WHERE usuario=" + usuario + " AND password = " + password, null);*/
 
         if (cursor.moveToFirst()) {
-            Log.d("CodigoUPB", "" + cursor.getInt(0));
+            Log.d("name", "" + cursor.getInt(0));
             return true;
         } else {
             return false;
@@ -81,7 +79,7 @@ import com.galacticCat.chatbleu.model.User;
                 " password," + //2
                 " edad," + //3
                 " email," + //4
-                " codigoUpb" + //5
+                " peso" + //5
                 " FROM usuarios", null);
 
         if (cursor.moveToFirst()) {
@@ -89,10 +87,10 @@ import com.galacticCat.chatbleu.model.User;
                 //Extraemos los datos
                 int id = cursor.getInt(0);
                 String usuario = cursor.getString(1);
-                String password = cursor.getString(2); //No hacer esto solo por aprendizaje
+                String password = cursor.getString(2);
                 int edad = cursor.getInt(3);
                 String email = cursor.getString(4);
-                int codigoUpb = cursor.getInt(5);
+                int peso = cursor.getInt(5);
 
                 //Llnear objeto de tipo user
                 User user = new User();
@@ -101,7 +99,7 @@ import com.galacticCat.chatbleu.model.User;
                 user.setPassword(password);
                 user.setEdad(edad);
                 user.setEmail(email);
-                user.setPeso(codigoUpb);
+                user.setPeso(peso);
 
                 //Adicionar a la lista
                 results.add(user);
