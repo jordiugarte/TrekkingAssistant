@@ -34,7 +34,7 @@ public class MochilaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
         setListeners();
-
+        //
         context = getApplicationContext();
         itemAdapter = new ItemAdapter(context, GetArrayItems());
         itemsListView.setAdapter(itemAdapter);
