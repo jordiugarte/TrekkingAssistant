@@ -78,8 +78,6 @@ public class MainActivity extends AppCompatActivity {
     private Stats stats;
     private RealTimeStats rStats;
 
-    public boolean campingMode;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Basic Activity Set
@@ -97,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
         altitude = new Altitude(altitudeView, context);
-        pedometer = new Pedometer(context, stepsView, distanceView, stats, campingMode);
+        pedometer = new Pedometer(context, stepsView, distanceView, stats);
         sos = new SOSFlashlight(MainActivity.this, context);
 
         this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -107,9 +105,11 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (flashlightButton.isChecked()){
+                    sos = null;
                     new Flashlight(MainActivity.this, context, true);
                     new Notification(context, "Flashlight: ON", R.drawable.flashlight);
                 } else {
+                    sos = new SOSFlashlight(MainActivity.this, context);
                     new Flashlight(MainActivity.this, context, false);
                     new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
                 }
@@ -120,7 +120,6 @@ public class MainActivity extends AppCompatActivity {
         sosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (sosButton.isChecked()){
                     sos.turnFlashLight();
                     new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
@@ -227,7 +226,6 @@ public class MainActivity extends AppCompatActivity {
         if (active) {
             //Settings
 //            SetAirplaneMode();
-            campingMode = true;
             Calendar rightNow = Calendar.getInstance();
             int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
 
@@ -266,12 +264,12 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
 //            SetAirplaneMode();
-            campingMode = false;
             defaultSteps = R.drawable.steps;
             defaultCompass = R.drawable.compass;
             defaultFlashlight = R.drawable.flashlight;
             defaultSos = R.drawable.sos;
             defaultCamping = R.drawable.camp_mode;
+            defaultBattery = R.drawable.battery;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
             layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
             new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);

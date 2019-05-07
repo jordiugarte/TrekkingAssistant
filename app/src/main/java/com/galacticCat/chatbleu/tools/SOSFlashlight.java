@@ -39,7 +39,7 @@ public class SOSFlashlight {
                                     }
                                 }
                             });
-                            Thread.sleep(100);
+                            Thread.sleep(200);
                             activity.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -56,7 +56,7 @@ public class SOSFlashlight {
                                     }
                                 }
                             });
-                            Thread.sleep(100);
+                            Thread.sleep(200);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -75,4 +75,5 @@ public class SOSFlashlight {
         active = true;
         //t.start();
     }
+
 }

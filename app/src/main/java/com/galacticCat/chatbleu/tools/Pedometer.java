@@ -19,9 +19,8 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
     private int steps;
     private int distance;
     private Stats stats;
-    private boolean campingMode;
 
-    public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats, boolean campingMode) {
+    public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats) {
         sensorManager = (SensorManager)context.getSystemService(context.SENSOR_SERVICE);
         countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
@@ -50,7 +49,6 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (campingMode) {
             Sensor sensor = event.sensor;
             float[] values = event.values;
             int value = -1;
@@ -66,7 +64,6 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
             stepsView.setText("" + steps);
             stats.setSteps(steps);
             stats.setDistance(distance);
-        }
     }
 
     @Override
