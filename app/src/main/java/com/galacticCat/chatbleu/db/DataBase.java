@@ -24,7 +24,7 @@ public class DataBase extends SQLiteOpenHelper {
                 " password VARCHAR NOT NULL," +
                 " edad INTEGER," +
                 " email VARCHAR NOT NULL," +
-                " codigoUpb INTEGER NOT NULL)");
+                " peso INTEGER NOT NULL)");
         Log.d("Database", "Created");
     }
 
