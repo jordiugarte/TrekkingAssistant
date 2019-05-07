@@ -3,7 +3,9 @@ package com.galacticCat.chatbleu;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -134,23 +136,23 @@ public class SignupActivity extends AppCompatActivity {
         } else {
             _passwordText.setError(null);
         }
-        if (edad < 0 || edad > 2) {
+        if (edad < 0 || edad > 100) {
             _edadText.setError("enter a valid age");
             valid = false;
         } else {
             _edadText.setError(null);
         }
-        if (peso < 1 || peso > 3) {
-            _passwordText.setError("enter a valid weight");
+        if (peso < 1 || peso > 120 ) {
+            _pesoText.setError("enter a valid weight");
             valid = false;
         } else {
-            _passwordText.setError(null);
+            _pesoText.setError(null);
         }
         User usuario = new User();
         usuario.setNombreUsuario(name);
+        usuario.setEmail(email);
         usuario.setPassword(password);
         usuario.setEdad(edad);
-        usuario.setEmail(email);
         usuario.setPeso(peso);
 
         //Antes de devolverlo, lo guardamos en la db
@@ -160,15 +162,22 @@ public class SignupActivity extends AppCompatActivity {
         String json = new Gson().toJson(usuario);
         Log.e("UsuarioEnviado", json);
 
-       // llenarUsuario(name,
-         //       password);
+        llenarUsuario(email,
+                password);
 
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY_REGISTRAR_USUARIO, json);
         setResult(RESULT_OK, intent); //OK: funciono, intent --> retornando el valor
-        finish(); //Cierra el activity
+       // finish(); //Cierra el activity
 
 
         return valid;
+    }
+    private void llenarUsuario(String email, String password) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString(Constants.PREF_USUARIO, email);
+        editor.putString(Constants.PREF_PASSWORD, password);
+        editor.apply();
     }
 }

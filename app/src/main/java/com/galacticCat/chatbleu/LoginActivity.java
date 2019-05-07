@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
     private DataBaseHelper dbHelper;
     private Context mContext = this;
 
-    @BindView(R.id.input_name) EditText _nameText;
+    @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.btn_login) Button _loginButton;
     @BindView(R.id.link_signup) TextView _signupLink;
@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
         progressDialog.setMessage("Authenticating...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
+        String name = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
        validate();
@@ -125,14 +125,14 @@ public class LoginActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
-        String name = _nameText.getText().toString();
+        String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        if (name.isEmpty()) {
-            _nameText.setError("enter a valid user name");
+        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            _emailText.setError("enter a valid email");
             valid = false;
         } else {
-            _nameText.setError(null);
+            _emailText.setError(null);
         }
 
         if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
@@ -147,7 +147,7 @@ public class LoginActivity extends AppCompatActivity {
 
         dbHelper = new DataBaseHelper(mContext);
 
-        return name.equals(usuarioGuardado) && password.equals(passwordGuardado) && dbHelper.login(name, password) && valid;
+        return email.equals(usuarioGuardado) && password.equals(passwordGuardado) && dbHelper.login(email, password) && valid;
 
 
 
