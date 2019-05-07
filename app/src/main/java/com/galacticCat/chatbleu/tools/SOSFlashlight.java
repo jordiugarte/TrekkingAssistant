@@ -17,47 +17,45 @@ public class SOSFlashlight {
     public SOSFlashlight(final Activity activity, Context context) {
         ActivityCompat.requestPermissions(activity, new String[]{Manifest.permission.CAMERA}, 60);
         final CameraManager cameraManager = (CameraManager) context.getSystemService(CAMERA_SERVICE);
-        Thread t = new Thread(){
+        t = new Thread() {
             @Override
-            public void run(){
+            public void run() {
                 try {
-                    while (!isInterrupted()) {
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String cameraID = null;
-                                    try {
-                                        cameraID = cameraManager.getCameraIdList()[0];
-                                    } catch (CameraAccessException e) {
-                                        e.printStackTrace();
-                                    }
-                                    try {
-                                        if (active)
-                                        cameraManager.setTorchMode(cameraID, true);
-                                    } catch (CameraAccessException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            Thread.sleep(200);
-                            activity.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String cameraID = null;
-                                    try {
-                                        cameraID = cameraManager.getCameraIdList()[0];
-                                    } catch (CameraAccessException e) {
-                                        e.printStackTrace();
-                                    }
-                                    try {
-                                        cameraManager.setTorchMode(cameraID, false);
-                                    } catch (CameraAccessException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                            Thread.sleep(200);
-                    }
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String cameraID = null;
+                            try {
+                                cameraID = cameraManager.getCameraIdList()[0];
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                if (active)
+                                    cameraManager.setTorchMode(cameraID, true);
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    Thread.sleep(200);
+                    activity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String cameraID = null;
+                            try {
+                                cameraID = cameraManager.getCameraIdList()[0];
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                cameraManager.setTorchMode(cameraID, false);
+                            } catch (CameraAccessException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    });
+                    Thread.sleep(200);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
@@ -66,12 +64,12 @@ public class SOSFlashlight {
         t.start();
     }
 
-    public void stopFlashLight(){
+    public void stopFlashLight() {
         active = false;
         //t.interrupt();
     }
 
-    public void turnFlashLight(){
+    public void turnFlashLight() {
         active = true;
         //t.start();
     }
