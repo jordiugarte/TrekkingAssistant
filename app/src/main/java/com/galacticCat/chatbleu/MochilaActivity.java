@@ -1,93 +1,71 @@
 package com.galacticCat.chatbleu;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.galacticCat.chatbleu.adapter.ItemAdapter;
+import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MochilaActivity extends AppCompatActivity {
 
-    private Button addBtton;
-    private TextView nameView;
-    private TextView weightView;
-    private ListView listView;
+    //List Components
+    private Context context;
+    private ListView itemsListView;
+    private ItemAdapter itemAdapter;
+    private List<Item> itemList = new ArrayList<>();
 
-    private String name;
-    private float weight;
-
-    private ArrayList<String> itemList;
-
-    final String mTitle[] = {"Barra energética", "Polera", "Pantalón", "Sleeping", "Bolsa de manís", "Botellón de agua"};
-    final float mWeight[] = {0.1f, 0.2f, 0.3f, 0.5f, 0.6f, 1.5f};
+    //Views
+    private TextView nameItemView;
+    private TextView weightItemView;
+    private Button addButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
+        setListeners();
 
-        addBtton = (Button)findViewById(R.id.addItemButton);
-        nameView = (TextView) findViewById(R.id.itemName);
-        weightView = (TextView) findViewById(R.id.itemWeight);
-        listView = (ListView)findViewById(R.id.listsView);
+        context = getApplicationContext();
+        itemAdapter = new ItemAdapter(context, GetArrayItems());
+        itemsListView.setAdapter(itemAdapter);
 
-        CustomAdapter customAdapter = new CustomAdapter();
-        listView.setAdapter(customAdapter);
-
-        itemList = new ArrayList<>();
-
-        for(int i = 0; i < itemList.size(); i++){
-            weight += mWeight[i];
-        }
-
-        addBtton.setOnClickListener(new View.OnClickListener() {
+        addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                name = nameView.getText().toString();
-                weight = Integer.parseInt(weightView.getText().toString());
+                String name = nameItemView.getText().toString();
+                int weight = 0;
+                try {
+                    weight = Integer.parseInt(weightItemView.getText().toString());
+                } catch (Exception e){
+                    Toast.makeText(context, "Ingresa un valor válido para el peso", Toast.LENGTH_SHORT).show();
+                }
 
-                itemList.add(name);
-                itemList.add(weight + "kg");
-
-                nameView.setText("");
-                weightView.setText("");
-
+                itemList.add(new Item(name, weight, false));
+                itemAdapter.notifyDataSetChanged();
             }
         });
     }
 
-    class CustomAdapter extends BaseAdapter {
 
-        @Override
-        public int getCount() {
-            return mTitle.length;
-        }
+    public void setListeners(){
+        nameItemView = (TextView)findViewById(R.id.itemName);
+        weightItemView = (TextView)findViewById(R.id.itemWeight);
+        addButton = (Button)findViewById(R.id.addItemButton);
+        itemsListView = (ListView)findViewById(R.id.listsView);
+    }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            convertView = getLayoutInflater().inflate(R.layout.food_item, null);
-            TextView textView_name = (TextView)convertView.findViewById(R.id.nameItem);
-            TextView textView_weight = (TextView)convertView.findViewById(R.id.weightItem);
-
-            textView_name.setText(mTitle[position]);
-            textView_weight.setText(mWeight[position]+"kg");
-
-            return convertView;
-        }
+    private ArrayList<Item> GetArrayItems(){
+        ArrayList<Item> listItems = new ArrayList<>();
+        return listItems;
     }
 }

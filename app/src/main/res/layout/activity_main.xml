@@ -183,18 +183,8 @@
         android:layout_marginTop="48dp"
         android:background="@color/colorWidget"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/tools"
+        app:layout_constraintTop_toBottomOf="@id/personal_Data"
         tools:layout_editor_absoluteX="-16dp">
-
-        <TextView
-            android:id="@+id/user_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:fontFamily="sans-serif"
-            android:text="User"
-            android:textSize="30sp"
-            android:textStyle="italic" />
 
         <TextView
             android:id="@+id/distanceView"
@@ -273,5 +263,47 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/personal_Data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@id/statsList"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tools">
+
+        <TextView
+            android:id="@+id/user_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif"
+            android:text="User"
+            android:textSize="30sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/age_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif"
+            android:text="Age: 15"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/personalWeight_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:fontFamily="sans-serif"
+            android:text="Weight: 666kg"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
