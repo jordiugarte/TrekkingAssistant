@@ -270,10 +270,10 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="50dp"
-        android:background="@color/colorWidget"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@id/statsList"
         app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tools">
 
         <TextView
