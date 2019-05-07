@@ -366,6 +366,24 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context ctxt, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             batteryView.setText(String.valueOf(level) + "%");
+            if(level<70){
+                new Notification(context, "Bateria menor al 75%", R.drawable.flashlight);
+            }
+            else if(level<50){
+                new Notification(context, "Bateria menor al 50%", R.drawable.flashlight);
+            }
+            else if(level<25){
+                new Notification(context, "Bateria menor al 25%", R.drawable.flashlight);
+            }
+            else if(level<15){
+                new Notification(context, "Bateria menor al 15%", R.drawable.flashlight);
+            }
+            else if(level<10){
+                new Notification(context, "Bateria menor al 10%", R.drawable.flashlight);
+            }
+            else if(level<5){
+                new Notification(context, "Bateria menor al 5%", R.drawable.flashlight);
+            }
         }
     };
 }
