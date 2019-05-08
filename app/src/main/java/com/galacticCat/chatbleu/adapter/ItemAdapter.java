@@ -46,11 +46,9 @@ public class ItemAdapter extends BaseAdapter {
         itemView = (itemView == null) ? inflater.inflate(R.layout.layout_item, null): itemView;
         TextView textViewName = (TextView)itemView.findViewById(R.id.nameItem);
         TextView textViewWeight = (TextView)itemView.findViewById(R.id.weightItem);
-        CheckBox checkboxView = (CheckBox) itemView.findViewById(R.id.checkBox);
         Item selectedItem = items.get(position);
         textViewName.setText(selectedItem.getName());
         textViewWeight.setText(selectedItem.getWeight() + "kg");
-        checkboxView.setChecked(false);
         return itemView;
     }
 
