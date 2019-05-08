@@ -45,6 +45,10 @@
         <activity
             android:name=".map.MapsActivity"
             android:label="@string/title_activity_maps" />
+        <activity
+            android:name=".tools.Timer.Pop_up_activity"
+            android:theme="@style/AppTheme.Pop_up" />
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

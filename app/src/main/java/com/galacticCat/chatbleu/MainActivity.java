@@ -29,12 +29,15 @@ import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
+import com.galacticCat.chatbleu.tools.Timer.Pop_up_activity;
+import com.galacticCat.chatbleu.tools.Timer.Timer;
+import com.galacticCat.chatbleu.tools.Timer.TimerI;
 
-import com.google.gson.Gson;
 
 import java.util.Calendar;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TimerI {
 
     //Tools
     private Clock clockTool;
@@ -72,7 +75,9 @@ public class MainActivity extends AppCompatActivity {
     private Stats stats;
     private RealTimeStats rStats;
 
-    private Gson gson = new Gson();
+        //Timer
+    private TextView textViewCountDown;
+    private long timeLeft = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,8 +147,7 @@ public class MainActivity extends AppCompatActivity {
        iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              openActivityRegister();
-            }
+              openActivityLogin(); }
         });
 
         //Mochila
@@ -151,8 +155,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
-                startActivity(intent);
-            }
+                startActivity(intent); }
         });
         //Mapas
         mapsButton.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +164,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(context, MapsActivity.class);
                 startActivity(intent); }
         });
-
+//Pop-up timer
+        textViewCountDown = findViewById(R.id.text_countdown1);
+        textViewCountDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Pop_up_activity.class));
+            }
+        });
     }
 
     @Override
@@ -170,16 +180,27 @@ public class MainActivity extends AppCompatActivity {
         compassTool.resume();
         pedometer.resume();
         weightView.setText("Weight: " + 3.2f + "kg");
+        super.onResume();
+        Timer.getInstance().setCallback(this);
     }
-
+    @Override
+    public void onTimeChanged(long millisUntilFinished) {
+        timeLeft = millisUntilFinished;
+        updateCountDownText();
+    }
     @Override
     protected void onPause() {
         super.onPause();
         compassTool.pause();
         pedometer.pasue();
     }
+    @Override
+    public void onFinish() {
+
+    }
 
     private void setListeners() {
+
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
@@ -196,11 +217,11 @@ public class MainActivity extends AppCompatActivity {
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
         weightView = (TextView) findViewById(R.id.weightView);
-        altitudeView = (TextView) findViewById(R.id.altitudeView);
         timeOfTravelView = (TextView) findViewById(R.id.timeOfTravelView);
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
         batteryView = findViewById(R.id.battery_view);
+
     }
 
     private void makeToast(String message) {
@@ -315,8 +336,8 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
     }
-    public void openActivityRegister(){
-        Intent intent1 = new Intent(MainActivity.this, SignupActivity.class);
+    public void openActivityLogin(){
+        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(intent1);
    }
 
@@ -382,4 +403,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    private void updateCountDownText() {
+        int hours = (int) (timeLeft / 1000) /3600;
+        int minutes = (int) ((timeLeft / 1000) %3600) / 60;
+        int seconds = (int) (timeLeft / 1000) % 60;
+
+        String timeLeftFormatted;
+        if(hours > 0){
+            timeLeftFormatted = String.format(Locale.getDefault(), "%d:%02d:%02d",hours, minutes, seconds);
+        }else {
+            timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        }
+        textViewCountDown.setText(timeLeftFormatted);
+    }
 }
