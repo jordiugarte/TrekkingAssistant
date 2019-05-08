@@ -87,10 +87,11 @@ public class MochilaActivity extends AppCompatActivity {
 
     public void removeItem(Item item) {
         String name = item.getName();
-        items.remove(item);
-        listView.setAdapter(adapter);
         weightInt -= Integer.parseInt(item.getWeight());
-        weightText.setText(weightInt);
+        currentWeightView.setText(weightInt + "kg");
+        items.remove(item);
+        adapter = new ItemAdapter(this, items);
+        listView.setAdapter(adapter);
         new Notification(this, name + " removed", R.drawable.mochila);
     }
 }
