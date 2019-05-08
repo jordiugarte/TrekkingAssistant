@@ -11,6 +11,10 @@ public class Item {
         this.check = check;
     }
 
+    public Item() {
+
+    }
+
     public String getName() {
         return name;
     }
