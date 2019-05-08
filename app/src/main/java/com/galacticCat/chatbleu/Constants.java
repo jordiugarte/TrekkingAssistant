@@ -11,6 +11,8 @@ public class Constants {
     //SharedPreferences
     public static final String PREF_USUARIO = "usuario";
     public static final String PREF_PASSWORD = "password";
+    public static final String PREF_AGE = "edad";
+    public static final String PREF_WEIGTH = "peso";
 
     //DataBase
     public static final String DATABASE_NAME = "Users.db";//db, sqlite

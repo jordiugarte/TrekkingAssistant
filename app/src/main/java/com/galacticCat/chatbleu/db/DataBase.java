@@ -21,9 +21,7 @@ public class DataBase extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
                 " usuario VARCHAR NOT NULL," +
-                " password VARCHAR NOT NULL," +
                 " edad INTEGER," +
-                " email VARCHAR NOT NULL," +
                 " peso INTEGER NOT NULL)");
         Log.d("Database", "Created");
     }
