@@ -34,6 +34,8 @@ import com.galacticCat.chatbleu.tools.Timer.Timer;
 import com.galacticCat.chatbleu.tools.Timer.TimerI;
 
 
+import org.w3c.dom.Text;
+
 import java.util.Calendar;
 import java.util.Locale;
 
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private TextView stepsPerHourView;
     private TextView speedView;
     private TextView batteryView;
+    private TextView timerView;
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private Button listsButton;
     private Button iniciarSesionButton;
     private Button mapsButton;
+    private Button timerButton;
         //Images
     private ImageView compass;
     private ImageView steps;
@@ -165,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 startActivity(intent); }
         });
 //Pop-up timer
-        textViewCountDown = findViewById(R.id.text_countdown1);
+        textViewCountDown = findViewById(R.id.timerText);
         textViewCountDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,7 +184,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         compassTool.resume();
         pedometer.resume();
         weightView.setText("Weight: " + 3.2f + "kg");
-        super.onResume();
         Timer.getInstance().setCallback(this);
     }
     @Override
@@ -200,7 +203,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void setListeners() {
-
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
@@ -221,7 +223,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
         batteryView = findViewById(R.id.battery_view);
-
+        timerButton = (Button)findViewById(R.id.timerButton);
+        timerView = (TextView)findViewById(R.id.timerText);
     }
 
     private void makeToast(String message) {
@@ -297,6 +300,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         sosButton.setBackgroundDrawable(this.getResources().getDrawable(defaultSos));
         campingButton.setBackgroundDrawable(this.getResources().getDrawable(defaultCamping));
         battery.setBackgroundDrawable(this.getResources().getDrawable(defaultBattery));
+        timerButton.setBackgroundColor(defaultColorBackground);
 
         //Image Views
         compass.setImageResource(defaultCompass);
@@ -313,6 +317,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         stepsPerHourView.setTextColor(defaultColorText);
         batteryView.setTextColor(defaultColorText);
         timeOfTravelView.setTextColor(defaultColorText);
+        timerView.setTextColor(defaultColorText);
 
     }
 
@@ -377,6 +382,10 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 //            }
 //        }
 //    }
+
+    public Stats getStats () {
+        return stats;
+    }
 
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
         @Override

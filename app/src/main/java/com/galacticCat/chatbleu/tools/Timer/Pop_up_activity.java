@@ -41,7 +41,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
         getWindow().setLayout((int) (width * 0.85), (int) (heigt * 0.50));
         //Timer
 
-        textViewCountDown = findViewById(R.id.text_countdown1);
+        textViewCountDown = findViewById(R.id.timerText);
         mEditText = findViewById(R.id.edit_text_input);
 
         mBtnSet = findViewById(R.id.set_btn);

@@ -10,7 +10,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ItemAdapter;
-import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
@@ -31,7 +30,8 @@ public class MochilaActivity extends AppCompatActivity {
 
     private Gson gson = new Gson();
 
-    private int weightInt;
+    private float weightFloat;
+    private CallbackInterface callbackInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,18 +80,22 @@ public class MochilaActivity extends AppCompatActivity {
     public void addItem(String name, String weight){
         items.add(new Item(name, weight, false));
         adapter = new ItemAdapter(this, items);
-        weightInt += Integer.parseInt(weight);
-        currentWeightView.setText(weightInt + "kg");
+        weightFloat += (float) Integer.parseInt(weight);
+        currentWeightView.setText(weightFloat + "kg");
         listView.setAdapter(adapter);
     }
 
     public void removeItem(Item item) {
         String name = item.getName();
-        weightInt -= Integer.parseInt(item.getWeight());
-        currentWeightView.setText(weightInt + "kg");
+        weightFloat -= (float) Integer.parseInt(item.getWeight());
+        currentWeightView.setText(weightFloat + "kg");
         items.remove(item);
         adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
         new Notification(this, name + " removed", R.drawable.mochila);
+    }
+
+    public void updateWeightFromStats(){
+        callbackInterface.onWeightChanged(weightFloat);
     }
 }

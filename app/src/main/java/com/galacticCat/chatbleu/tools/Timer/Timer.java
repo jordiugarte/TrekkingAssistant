@@ -28,7 +28,7 @@ public class Timer {
             public void onTick(long millisUntilFinished) {
                 if(callback!=null){
                     callback.onTimeChanged(millisUntilFinished);
-                    mTimeLeft =millisUntilFinished;
+                    mTimeLeft = millisUntilFinished;
 
                 }
             }
@@ -57,8 +57,6 @@ public class Timer {
     public void  setTime (long milliseconds){
         mStartTime = milliseconds;
         mTimeLeft = mStartTime;
-
-
     }
 }
 
