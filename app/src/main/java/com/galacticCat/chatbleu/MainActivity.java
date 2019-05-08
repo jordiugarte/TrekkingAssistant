@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
+import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -162,7 +163,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 Intent intent = new Intent(context, MapsActivity.class);
                 startActivity(intent); }
         });
-//Pop-up timer
+        //Pop-up timer
         textViewCountDown = findViewById(R.id.timerText);
         textViewCountDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -411,6 +412,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             }
         }
     };
+
+
+
     private void updateCountDownText() {
         int hours = (int) (timeLeft / 1000) /3600;
         int minutes = (int) ((timeLeft / 1000) %3600) / 60;

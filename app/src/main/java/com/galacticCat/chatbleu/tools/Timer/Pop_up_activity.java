@@ -1,6 +1,8 @@
 package com.galacticCat.chatbleu.tools.Timer;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -95,6 +97,10 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
             }
         });
         updateCountDownText();
+
+
+
+
     }
 
     @Override
@@ -163,6 +169,8 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
         mBtnStartPause.setText("Iniciar");
         mBtnStartPause.setVisibility(View.INVISIBLE);
         mBtnReset.setVisibility(View.VISIBLE);
+        Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator .vibrate(3000);
     }
 }
 

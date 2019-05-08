@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorWidget"
+    android:background="@color/colorPrimary"
     tools:context=".tools.Timer.Pop_up_activity">
 
     <LinearLayout
@@ -22,7 +22,8 @@
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 app:srcCompat="@android:drawable/ic_menu_recent_history" />
-    j
+            j
+
             <TextView
                 android:id="@+id/Titulo"
                 android:layout_width="wrap_content"
@@ -31,7 +32,7 @@
                 android:layout_margin="10dp"
                 android:padding="10dp"
                 android:text="Cronometro"
-                android:textColor="@color/defaultWhite"
+                android:textColor="@color/defaultBlack"
                 android:textSize="35dp"
                 android:textStyle="bold" />
         </LinearLayout>
@@ -60,7 +61,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:text="Cambiar"
-                android:textColor="@color/defaultWhite" />
+                android:textColor="@color/defaultBlack" />
         </LinearLayout>
 
         <TextView
@@ -86,7 +87,7 @@
                 android:layout_weight="1"
                 android:text="Iniciar"
 
-                android:textColor="@color/defaultWhite" />
+                android:textColor="@color/defaultBlack" />
 
             <Button
                 android:id="@+id/reset"
@@ -94,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Reiniciar"
-                android:textColor="@color/defaultWhite" />
+                android:textColor="@color/defaultBlack" />
 
         </LinearLayout>
 

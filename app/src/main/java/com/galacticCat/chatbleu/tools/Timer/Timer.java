@@ -1,6 +1,10 @@
 package com.galacticCat.chatbleu.tools.Timer;
 
+import android.content.Context;
 import android.os.CountDownTimer;
+import android.os.Vibrator;
+
+import com.galacticCat.chatbleu.MainActivity;
 
 
 public class Timer {
@@ -39,6 +43,7 @@ public class Timer {
                 if(callback!=null){
                     callback.onFinish();
                 }
+
 
             }
         }.start();
