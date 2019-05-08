@@ -30,6 +30,7 @@ import com.galacticCat.chatbleu.tools.Flashlight;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 
+import com.google.gson.Gson;
 
 import java.util.Calendar;
 
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
     private Context context;
     private Stats stats;
     private RealTimeStats rStats;
+
+    private Gson gson = new Gson();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,7 +150,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
-                startActivity(intent); }
+                intent.putExtra(Constants.STATS_SEND, gson.toJson(stats));
+                startActivity(intent);
+            }
         });
         //Mapas
         mapsButton.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +180,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setListeners() {
-
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
@@ -197,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
         batteryView = findViewById(R.id.battery_view);
-
     }
 
     private void makeToast(String message) {
