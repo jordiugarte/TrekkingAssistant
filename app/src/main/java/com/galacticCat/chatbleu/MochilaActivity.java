@@ -1,6 +1,5 @@
 package com.galacticCat.chatbleu;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +10,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ItemAdapter;
+import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
+
+import com.galacticCat.chatbleu.services.Notification;
+import com.google.gson.Gson;
 
 public class MochilaActivity extends AppCompatActivity {
 
@@ -22,8 +25,13 @@ public class MochilaActivity extends AppCompatActivity {
 
     private TextView nameText;
     private TextView weightText;
+    private TextView currentWeightView;
     private Button addButton;
     private ItemAdapter adapter;
+
+    private Gson gson = new Gson();
+
+    private int weightInt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +58,7 @@ public class MochilaActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Item item = items.get(position);
-
+                removeItem(item);
             }
         });
     }
@@ -66,11 +74,23 @@ public class MochilaActivity extends AppCompatActivity {
         nameText = findViewById(R.id.nameField);
         weightText = findViewById(R.id.weightField);
         addButton = findViewById(R.id.addItemButton);
+        currentWeightView = findViewById(R.id.weightCurrent);
     }
 
     public void addItem(String name, String weight){
         items.add(new Item(name, weight, false));
         adapter = new ItemAdapter(this, items);
+        weightInt += Integer.parseInt(weight);
+        currentWeightView.setText(weightInt + "kg");
         listView.setAdapter(adapter);
+    }
+
+    public void removeItem(Item item) {
+        String name = item.getName();
+        items.remove(item);
+        listView.setAdapter(adapter);
+        weightInt -= Integer.parseInt(item.getWeight());
+        weightText.setText(weightInt);
+        new Notification(this, name + " removed", R.drawable.mochila);
     }
 }

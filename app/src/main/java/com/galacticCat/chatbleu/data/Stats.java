@@ -98,4 +98,8 @@ public class Stats {
     public int getTimeSeconds() {
         return timeSeconds;
     }
+
+    public int getWeight() {
+        return weight;
+    }
 }

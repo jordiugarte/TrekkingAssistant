@@ -142,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
        iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              openActivityLogin(); }
+              openActivityRegister();
+            }
         });
 
         //Mochila
@@ -150,7 +151,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
-                intent.putExtra(Constants.STATS_SEND, gson.toJson(stats));
                 startActivity(intent);
             }
         });
@@ -315,8 +315,8 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
     }
-    public void openActivityLogin(){
-        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+    public void openActivityRegister(){
+        Intent intent1 = new Intent(MainActivity.this, SignupActivity.class);
         startActivity(intent1);
    }
 
