@@ -291,7 +291,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:fontFamily="sans-serif"
-            android:text="User"
             android:textSize="30sp"
             android:textStyle="italic" />
 
@@ -301,7 +300,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:fontFamily="sans-serif"
-            android:text="Age: 15"
             android:textSize="18sp"
             android:textStyle="italic" />
 
@@ -311,7 +309,6 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:fontFamily="sans-serif"
-            android:text="Weight: 666kg"
             android:textSize="18sp"
             android:textStyle="italic" />
     </LinearLayout>

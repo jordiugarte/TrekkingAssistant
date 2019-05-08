@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
-import android.os.Vibrator;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +23,7 @@ import com.galacticCat.chatbleu.data.RealTimeStats;
 import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.map.MapsActivity;
 import com.galacticCat.chatbleu.services.Notification;
+//import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     //Tools
     private Clock clockTool;
     private Compass compassTool;
+ //   private Altitude altitude;
     private Pedometer pedometer;
     private SOSFlashlight sos;
     //Listeners
@@ -55,18 +56,21 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private TextView distanceView;
     private TextView weightView;
     private TextView timeOfTravelView;
+    private TextView altitudeView;
     private TextView stepsPerHourView;
     private TextView speedView;
     private TextView batteryView;
-    private TextView timerView;
+    public TextView userView;
+    public TextView ageView;
+    public TextView uWeightView;
+
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
     private ToggleButton sosButton;
     private Button listsButton;
-    private Button iniciarSesionButton;
+    private Button personalDataButton;
     private Button mapsButton;
-    private ConstraintLayout timerButton;
         //Images
     private ImageView compass;
     private ImageView steps;
@@ -95,9 +99,10 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
+      //  altitude = new Altitude(altitudeView, context);
         pedometer = new Pedometer(context, stepsView, distanceView, stats);
         sos = new SOSFlashlight(MainActivity.this, context);
-        weightView.setText("Bag Weight: " + stats.getWeight());
+
         this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         //Flashlight
@@ -142,11 +147,11 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             }
         });
 
-        //Iniciar Sesion
-       iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
+        //Datos personales
+       personalDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              openActivityLogin(); }
+              openSignUpActivity(); }
         });
 
         //Mochila
@@ -163,7 +168,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 Intent intent = new Intent(context, MapsActivity.class);
                 startActivity(intent); }
         });
-        //Pop-up timer
+//Pop-up timer
         textViewCountDown = findViewById(R.id.timerText);
         textViewCountDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -178,7 +183,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         super.onResume();
         compassTool.resume();
         pedometer.resume();
-        weightView.setText("Bag Weight: " + stats.getWeight());
+        weightView.setText("Weight: " + 3.2f + "kg");
+        super.onResume();
         Timer.getInstance().setCallback(this);
     }
     @Override
@@ -198,6 +204,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void setListeners() {
+
         timeView = (TextView)findViewById(R.id.clock);
         dateView = (TextView)findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
@@ -206,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         layout = (ConstraintLayout) findViewById(R.id.mainLayout);
         compass = (ImageView) findViewById(R.id.compass);
         listsButton = (Button)findViewById(R.id.mochila_btn);
-        iniciarSesionButton = (Button) findViewById(R.id.buttonUser);
+        personalDataButton = (Button) findViewById(R.id.buttonUser);
         steps = (ImageView)findViewById(R.id.iconSteps);
         mapsButton = (Button)findViewById(R.id.maps_btn);
         battery = findViewById(R.id.battery);
@@ -218,8 +225,10 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
         batteryView = findViewById(R.id.battery_view);
-        timerButton = (ConstraintLayout)findViewById(R.id.timerButton);
-        timerView = (TextView)findViewById(R.id.timerText);
+        userView = findViewById(R.id.user_view);
+        ageView = findViewById(R.id.age_view);
+        uWeightView = findViewById(R.id.personalWeight_view);
+
     }
 
     private void makeToast(String message) {
@@ -228,7 +237,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void campingMode(boolean active) {
-
         int defaultColorText = 0;
         int defaultColorBackground = 0;
 
@@ -238,7 +246,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         int defaultCamping = 0;
         int defaultSteps = 0;
         int defaultBattery = 0;
-        int defaultTimer = 0;
 
         if (active) {
             //Settings
@@ -259,7 +266,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultCamping = R.drawable.camp_mode;
                 defaultSteps = R.drawable.steps;
                 defaultBattery = R.drawable.battery;
-                defaultTimer = R.drawable.buttonframe;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
@@ -274,7 +280,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultCamping = R.drawable.camp_mode_black;
                 defaultSteps = R.drawable.steps_black;
                 defaultBattery = R.drawable.battery_black;
-                defaultTimer = R.drawable.buttonframe;
 
             }
             layout.setBackgroundColor(defaultColorBackground);
@@ -283,7 +288,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 
         } else {
 //            SetAirplaneMode();
-
             defaultSteps = R.drawable.steps;
             defaultCompass = R.drawable.compass;
             defaultFlashlight = R.drawable.flashlight;
@@ -291,8 +295,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             defaultCamping = R.drawable.camp_mode;
             defaultBattery = R.drawable.battery;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
-            defaultTimer = R.drawable.buttonframe;
-
             layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
             new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
         }
@@ -302,7 +304,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         sosButton.setBackgroundDrawable(this.getResources().getDrawable(defaultSos));
         campingButton.setBackgroundDrawable(this.getResources().getDrawable(defaultCamping));
         battery.setBackgroundDrawable(this.getResources().getDrawable(defaultBattery));
-        timerButton.setBackground(this.getResources().getDrawable(defaultTimer));
 
         //Image Views
         compass.setImageResource(defaultCompass);
@@ -314,11 +315,11 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         stepsView.setTextColor(defaultColorText);
         distanceView.setTextColor(defaultColorText);
         weightView.setTextColor(defaultColorText);
+        altitudeView.setTextColor(defaultColorText);
         speedView.setTextColor(defaultColorText);
         stepsPerHourView.setTextColor(defaultColorText);
         batteryView.setTextColor(defaultColorText);
         timeOfTravelView.setTextColor(defaultColorText);
-        timerView.setTextColor(defaultColorText);
 
     }
 
@@ -342,8 +343,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         alert.show();
 
     }
-    public void openActivityLogin(){
-        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+    public void openSignUpActivity(){
+        Intent intent1 = new Intent(MainActivity.this, SignupActivity.class);
         startActivity(intent1);
    }
 
@@ -384,10 +385,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 //        }
 //    }
 
-    public Stats getStats () {
-        return stats;
-    }
-
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context ctxt, Intent intent) {
@@ -413,9 +410,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             }
         }
     };
-
-
-
     private void updateCountDownText() {
         int hours = (int) (timeLeft / 1000) /3600;
         int minutes = (int) ((timeLeft / 1000) %3600) / 60;
@@ -429,4 +423,5 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         }
         textViewCountDown.setText(timeLeftFormatted);
     }
+
 }

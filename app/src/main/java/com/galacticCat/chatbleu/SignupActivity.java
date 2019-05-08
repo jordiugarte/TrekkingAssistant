@@ -25,6 +25,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     private Context mContext = this;
+    private MainActivity main;
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_edad) EditText _edadText;
@@ -127,12 +128,20 @@ public class SignupActivity extends AppCompatActivity {
         usuario.setEdad(edad);
         usuario.setPeso(peso);
 
+        main = new MainActivity();
+
+        main.userView.setText(name);
+        main.ageView.setText(edad);
+        main.uWeightView.setText(peso);
+
         //Antes de devolverlo, lo guardamos en la db
         DataBaseHelper dbHelper = new DataBaseHelper(mContext);
         dbHelper.insert(usuario);
 
         String json = new Gson().toJson(usuario);
         Log.e("UsuarioEnviado", json);
+
+
 
 
         Intent intent = new Intent();
