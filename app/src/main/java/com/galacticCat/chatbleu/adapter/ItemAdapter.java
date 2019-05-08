@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -45,9 +46,11 @@ public class ItemAdapter extends BaseAdapter {
         itemView = (itemView == null) ? inflater.inflate(R.layout.layout_item, null): itemView;
         TextView textViewName = (TextView)itemView.findViewById(R.id.nameItem);
         TextView textViewWeight = (TextView)itemView.findViewById(R.id.weightItem);
+        CheckBox checkboxView = (CheckBox) itemView.findViewById(R.id.checkBox);
         Item selectedItem = items.get(position);
         textViewName.setText(selectedItem.getName());
-        textViewWeight.setText(selectedItem.getWeight());
+        textViewWeight.setText(selectedItem.getWeight() + "kg");
+        checkboxView.setChecked(false);
         return itemView;
     }
 

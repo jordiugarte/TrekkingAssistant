@@ -59,7 +59,7 @@ public class MochilaActivity extends AppCompatActivity {
     }
 
     public void addItem(String name, String weight){
-        items.add(new Item(name, weight));
+        items.add(new Item(name, weight, false));
         adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
     }
