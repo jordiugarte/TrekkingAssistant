@@ -6,13 +6,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.galacticCat.chatbleu.model.User;
+
 import java.util.ArrayList;
 import java.util.List;
 
-
-import com.galacticCat.chatbleu.model.User;
-
- public class DataBaseHelper {
+public class DataBaseHelper {
     private SQLiteDatabase mDatabase;
 
     /**

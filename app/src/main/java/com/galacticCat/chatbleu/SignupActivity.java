@@ -14,7 +14,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.galacticCat.chatbleu.db.DataBase;
 import com.galacticCat.chatbleu.db.DataBaseHelper;
 import com.galacticCat.chatbleu.model.User;
 import com.google.gson.Gson;

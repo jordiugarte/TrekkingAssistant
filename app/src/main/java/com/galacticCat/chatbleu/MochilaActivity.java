@@ -1,12 +1,10 @@
 package com.galacticCat.chatbleu;
 
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,58 +12,55 @@ import com.galacticCat.chatbleu.adapter.ItemAdapter;
 import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MochilaActivity extends AppCompatActivity {
 
-    //List Components
-    private Context context;
-    private ListView itemsListView;
-    private ItemAdapter itemAdapter;
-    private List<Item> itemList = new ArrayList<>();
+    private ListView listView;
+    private ArrayList<Item> items = new ArrayList<>();
 
-    //Views
-    private TextView nameItemView;
-    private TextView weightItemView;
+    private TextView nameText;
+    private TextView weightText;
     private Button addButton;
+    private ItemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
-        setListeners();
-        //
-        context = getApplicationContext();
-        itemAdapter = new ItemAdapter(context, GetArrayItems());
-        itemsListView.setAdapter(itemAdapter);
+        populateListView();
+        setLiteners();
 
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = nameItemView.getText().toString();
-                int weight = 0;
                 try {
-                    weight = Integer.parseInt(weightItemView.getText().toString());
+                    String name = nameText.getText().toString();
+                    int pueba =  Integer.parseInt(weightText.getText().toString());
+                    String weight = weightText.getText().toString();
+                    addItem(name, weight);
                 } catch (Exception e){
-                    Toast.makeText(context, "Ingresa un valor válido para el peso", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Ingresa datos validos", Toast.LENGTH_SHORT).show();
                 }
-
-                itemList.add(new Item(name, weight, false));
-                itemAdapter.notifyDataSetChanged();
             }
         });
     }
 
-
-    public void setListeners(){
-        nameItemView = (TextView)findViewById(R.id.itemName);
-        weightItemView = (TextView)findViewById(R.id.itemWeight);
-        addButton = (Button)findViewById(R.id.addItemButton);
-        itemsListView = (ListView)findViewById(R.id.listsView);
+    public void populateListView() {
+//        items.add(new Item("asdasd", "asdasd"));
+//        adapter = new ItemAdapter(this, items);
+//        listView.setAdapter(adapter);
     }
 
-    private ArrayList<Item> GetArrayItems(){
-        ArrayList<Item> listItems = new ArrayList<>();
-        return listItems;
+    public void setLiteners(){
+        listView = (ListView)findViewById(R.id.listsView);
+        nameText = findViewById(R.id.nameField);
+        weightText = findViewById(R.id.weightField);
+        addButton = findViewById(R.id.addItemButton);
+    }
+
+    public void addItem(String name, String weight){
+        items.add(new Item(name, weight));
+        adapter = new ItemAdapter(this, items);
+        listView.setAdapter(adapter);
     }
 }

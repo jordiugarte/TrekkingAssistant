@@ -1,58 +1,54 @@
 package com.galacticCat.chatbleu.adapter;
 
+import com.galacticCat.chatbleu.R;
+import com.galacticCat.chatbleu.model.Item;
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.Checkable;
 import android.widget.TextView;
-
-import com.galacticCat.chatbleu.MochilaActivity;
-import com.galacticCat.chatbleu.R;
-import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
 
 public class ItemAdapter extends BaseAdapter {
 
-    private Context context;
-    private ArrayList<Item> listItem;
+    private Activity context;
+    private ArrayList<Item> items;
+    private static LayoutInflater inflater = null;
 
-    public ItemAdapter(Context context, ArrayList<Item> listItems) {
+    public ItemAdapter(Activity context, ArrayList<Item> items) {
         this.context = context;
-        this.listItem = listItems;
+        this.items = items;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return listItem.size();
+        return items.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listItem.get(position);
+        return items.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Item item = (Item) getItem(position);
-        convertView = LayoutInflater.from(context).inflate(R.layout.food_item, null);
-        TextView name = (TextView)convertView.findViewById(R.id.nameItem);
-        TextView weight = (TextView)convertView.findViewById(R.id.weightItem);
-        CheckBox checkBox = (CheckBox)convertView.findViewById(R.id.checkBox);
-
-        name.setText(item.getName());
-        weight.setText(item.getWeight());
-        checkBox.setChecked(item.isCheck());
-
-        return convertView;
+        View itemView = convertView;
+        itemView = (itemView == null) ? inflater.inflate(R.layout.layout_item, null): itemView;
+        TextView textViewName = (TextView)itemView.findViewById(R.id.nameItem);
+        TextView textViewWeight = (TextView)itemView.findViewById(R.id.weightItem);
+        Item selectedItem = items.get(position);
+        textViewName.setText(selectedItem.getName());
+        textViewWeight.setText(selectedItem.getWeight());
+        return itemView;
     }
+
 }
