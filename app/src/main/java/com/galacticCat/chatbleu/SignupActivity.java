@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.galacticCat.chatbleu.data.UserData;
 import com.galacticCat.chatbleu.db.DataBaseHelper;
 import com.galacticCat.chatbleu.model.User;
 import com.google.gson.Gson;
@@ -65,18 +66,16 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        int edad = Integer.parseInt(_edadText.getText().toString());
-        int peso = Integer.parseInt(_pesoText.getText().toString());
-
-        // TODO: Implement your own signup logic here.
+        final String name = _nameText.getText().toString();
+        final int edad = Integer.parseInt(_edadText.getText().toString());
+        final int peso = Integer.parseInt(_pesoText.getText().toString());
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
-                        onSignupSuccess();
+                        onSignupSuccess(name, edad, peso);
                         // onSignupFailed();
                         progressDialog.dismiss();
                     }
@@ -84,9 +83,10 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    public void onSignupSuccess() {
+    public void onSignupSuccess(String name, int edad, int peso) {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        llenarPersonalData(name, edad, peso);
         finish();
     }
 
@@ -102,7 +102,6 @@ public class SignupActivity extends AppCompatActivity {
         String name = _nameText.getText().toString();
         int edad = Integer.parseInt(_edadText.getText().toString());
         int peso = Integer.parseInt(_pesoText.getText().toString());
-
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -130,10 +129,6 @@ public class SignupActivity extends AppCompatActivity {
 
         main = new MainActivity();
 
-        main.userView.setText(name);
-        main.ageView.setText(edad);
-        main.uWeightView.setText(peso);
-
         //Antes de devolverlo, lo guardamos en la db
         DataBaseHelper dbHelper = new DataBaseHelper(mContext);
         dbHelper.insert(usuario);
@@ -153,11 +148,16 @@ public class SignupActivity extends AppCompatActivity {
         return valid;
     }
     private void llenarPersonalData(String name, int edad, int peso) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.PREF_USUARIO, name);
-        editor.putInt(Constants.PREF_AGE, edad);
-        editor.putInt(Constants.PREF_WEIGTH, peso);
-        editor.apply();
+        UserData userData = new UserData(getApplicationContext());
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(Constants.PREF_USUARIO, name);
+//        editor.putInt(Constants.PREF_AGE, edad);
+//        editor.putInt(Constants.PREF_WEIGTH, peso);
+//        editor.apply();
+        userData.setUserName(name);
+        userData.setAge(edad);
+        userData.setWeight(peso);
+        userData.saveData();
     }
 }

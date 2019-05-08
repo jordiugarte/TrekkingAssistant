@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
 import android.support.constraint.ConstraintLayout;
@@ -21,6 +22,7 @@ import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.data.RealTimeStats;
 import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.data.UserData;
 import com.galacticCat.chatbleu.map.MapsActivity;
 import com.galacticCat.chatbleu.services.Notification;
 //import com.galacticCat.chatbleu.tools.Altitude;
@@ -36,6 +38,8 @@ import com.galacticCat.chatbleu.tools.Timer.TimerI;
 
 import java.util.Calendar;
 import java.util.Locale;
+
+import static com.galacticCat.chatbleu.data.Stats.SHARED_PREFS;
 
 public class MainActivity extends AppCompatActivity implements TimerI {
 
@@ -77,11 +81,14 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 
     private Context context;
     private Stats stats;
+    private UserData userData;
     private RealTimeStats rStats;
 
         //Timer
     private TextView textViewCountDown;
     private long timeLeft = 0;
+
+    private SharedPreferences registerPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +100,26 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         context = getApplicationContext();
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         stats = new Stats(context);
+        userData = new UserData(context);
 
         setListeners();
 
         rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
-      //  altitude = new Altitude(altitudeView, context);
         pedometer = new Pedometer(context, stepsView, distanceView, stats);
         sos = new SOSFlashlight(MainActivity.this, context);
 
         this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+
+        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        String name = result.getString("USER", "");
+        int weight = result.getInt("WEIGHT_USER", 0);
+        int age = result.getInt("AGE_USER", 0);
+
+        userView.setText(name);
+        uWeightView.setText("Weight: " + weight);
+        ageView.setText("Age: " + age);
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -186,6 +202,15 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         weightView.setText("Weight: " + 3.2f + "kg");
         super.onResume();
         Timer.getInstance().setCallback(this);
+
+        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        String name = result.getString("USER", "");
+        int weight = result.getInt("WEIGHT_USER", 0);
+        int age = result.getInt("AGE_USER", 0);
+
+        userView.setText(name);
+        uWeightView.setText("Weight: " + weight);
+        ageView.setText("Age: " + age);
     }
     @Override
     public void onTimeChanged(long millisUntilFinished) {
@@ -320,7 +345,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         stepsPerHourView.setTextColor(defaultColorText);
         batteryView.setTextColor(defaultColorText);
         timeOfTravelView.setTextColor(defaultColorText);
-
+        userView.setTextColor(defaultColorText);
+        ageView.setTextColor(defaultColorText);
+        uWeightView.setTextColor(defaultColorText);
     }
 
     @Override
