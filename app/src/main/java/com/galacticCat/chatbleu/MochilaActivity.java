@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ItemAdapter;
+import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
@@ -39,16 +40,15 @@ public class MochilaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mochila);
         populateListView();
         setLiteners();
-
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
                     String name = nameText.getText().toString();
-                    int pueba =  Integer.parseInt(weightText.getText().toString());
+                    int pueba = Integer.parseInt(weightText.getText().toString());
                     String weight = weightText.getText().toString();
                     addItem(name, weight);
-                } catch (Exception e){
+                } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), "Ingresa datos validos", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -69,20 +69,21 @@ public class MochilaActivity extends AppCompatActivity {
 //        listView.setAdapter(adapter);
     }
 
-    public void setLiteners(){
-        listView = (ListView)findViewById(R.id.listsView);
+    public void setLiteners() {
+        listView = (ListView) findViewById(R.id.listsView);
         nameText = findViewById(R.id.nameField);
         weightText = findViewById(R.id.weightField);
         addButton = findViewById(R.id.addItemButton);
         currentWeightView = findViewById(R.id.weightCurrent);
     }
 
-    public void addItem(String name, String weight){
+    public void addItem(String name, String weight) {
         items.add(new Item(name, weight, false));
         adapter = new ItemAdapter(this, items);
         weightFloat += (float) Integer.parseInt(weight);
         currentWeightView.setText(weightFloat + "kg");
         listView.setAdapter(adapter);
+        updateWeightInStats();
     }
 
     public void removeItem(Item item) {
@@ -93,9 +94,13 @@ public class MochilaActivity extends AppCompatActivity {
         adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
         new Notification(this, name + " removed", R.drawable.mochila);
+        updateWeightInStats();
     }
 
-    public void updateWeightFromStats(){
-        callbackInterface.onWeightChanged(weightFloat);
+    public void updateWeightInStats() {
+        Stats stats = new Stats(this);
+        stats.setWeight(weightFloat);
+        stats.saveData();
+        currentWeightView.setText(stats.getWeight() + "kg");
     }
 }

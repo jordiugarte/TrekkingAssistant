@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         compassTool = new Compass(context, compass);
         pedometer = new Pedometer(context, stepsView, distanceView, stats);
         sos = new SOSFlashlight(MainActivity.this, context);
-
+        weightView.setText("Bag Weight: " + stats.getWeight());
         this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         //Flashlight
@@ -178,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         super.onResume();
         compassTool.resume();
         pedometer.resume();
-        weightView.setText("Weight: " + 3.2f + "kg");
+        weightView.setText("Bag Weight: " + stats.getWeight());
         Timer.getInstance().setCallback(this);
     }
     @Override
@@ -228,6 +228,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void campingMode(boolean active) {
+
         int defaultColorText = 0;
         int defaultColorBackground = 0;
 

@@ -78,6 +78,7 @@ public class Clock {
                             }
                         });
                         Thread.sleep(1000);
+                        stats.saveData();
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();

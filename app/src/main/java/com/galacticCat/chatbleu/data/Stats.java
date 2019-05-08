@@ -18,7 +18,7 @@ public class Stats {
 
     private int steps;
     private int distance;
-    private int weight;
+    private float weight;
     private int timeHours;
     private int timeMinutes;
     private int timeSeconds;
@@ -35,7 +35,7 @@ public class Stats {
 
         steps = sharedPreferences.getInt("STEPS", 0);
         distance = sharedPreferences.getInt("DISTANCE", 0);
-        weight = sharedPreferences.getInt("WEIGHT", 0);
+        weight = sharedPreferences.getFloat("WEIGHTF", 0);
         timeHours = sharedPreferences.getInt("HOURS", 0);
         timeMinutes = sharedPreferences.getInt("MINUTES", 0);
         timeSeconds = sharedPreferences.getInt("SECONDS", 0);
@@ -47,7 +47,7 @@ public class Stats {
 
         editor.putInt("STEPS", steps);
         editor.putInt("DISTANCE", distance);
-        editor.putInt("WEIGHT", weight);
+        editor.putFloat("WEIGHTF", weight);
         editor.putInt("HOURS", timeHours);
         editor.putInt("MINUTES", timeMinutes);
         editor.putInt("SECONDS", timeSeconds);
@@ -71,7 +71,7 @@ public class Stats {
         return distance;
     }
 
-    public void setWeight(int weight){
+    public void setWeight(float weight){
         this.weight = weight;
     }
 
@@ -99,7 +99,5 @@ public class Stats {
         return timeSeconds;
     }
 
-    public int getWeight() {
-        return weight;
-    }
+    public float getWeight() { return weight; }
 }

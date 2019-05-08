@@ -21,7 +21,7 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
     private Stats stats;
 
     public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats) {
-        sensorManager = (SensorManager)context.getSystemService(context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) context.getSystemService(context.SENSOR_SERVICE);
         countSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
         this.stepsView = stepsView;
@@ -36,12 +36,12 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
         stats.setDistance(distance);
     }
 
-    public void resume(){
+    public void resume() {
         sensorManager.registerListener(this, countSensor, SensorManager.SENSOR_DELAY_FASTEST);
 
     }
 
-    public void pasue(){
+    public void pasue() {
 //        sensorManager.unregisterListener(this, countSensor);
 
     }
@@ -49,21 +49,22 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-            Sensor sensor = event.sensor;
-            float[] values = event.values;
-            int value = -1;
+        Sensor sensor = event.sensor;
+        float[] values = event.values;
+        int value = -1;
 
-            if (values.length > 0) {
-                value = (int) values[0];
-            }
-            if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
-                steps++;
-                distance += steps / 2;
-            }
-            distanceView.setText(distance + "m");
-            stepsView.setText("" + steps);
-            stats.setSteps(steps);
-            stats.setDistance(distance);
+        if (values.length > 0) {
+            value = (int) values[0];
+        }
+        if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
+            steps++;
+            distance += steps / 2;
+        }
+        distanceView.setText(distance + "m");
+        stepsView.setText("" + steps);
+        stats.setSteps(steps);
+        stats.setDistance(distance);
+        stats.saveData();
     }
 
     @Override
