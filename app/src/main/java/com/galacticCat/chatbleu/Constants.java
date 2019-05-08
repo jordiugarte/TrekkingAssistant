@@ -16,5 +16,10 @@ public class Constants {
     public static final String DATABASE_NAME = "Users.db";//db, sqlite
     public static final int DATABASE_VERSION = 1;
 
+    //DataBase
+    public static final String DATABASE2_NAME = "Items.db";//db, sqlite
+    public static final int DATABASE2_VERSION = 1;
+
+
     public static final String STATS_SEND = "stats";
 }
