@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private TextView distanceView;
     private TextView weightView;
     private TextView timeOfTravelView;
-    private TextView altitudeView;
     private TextView stepsPerHourView;
     private TextView speedView;
     private TextView batteryView;
@@ -340,7 +339,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         stepsView.setTextColor(defaultColorText);
         distanceView.setTextColor(defaultColorText);
         weightView.setTextColor(defaultColorText);
-        altitudeView.setTextColor(defaultColorText);
         speedView.setTextColor(defaultColorText);
         stepsPerHourView.setTextColor(defaultColorText);
         batteryView.setTextColor(defaultColorText);
