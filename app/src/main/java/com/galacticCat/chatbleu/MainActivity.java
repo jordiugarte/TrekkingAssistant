@@ -46,9 +46,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     //Tools
     private Clock clockTool;
     private Compass compassTool;
- //   private Altitude altitude;
     private Pedometer pedometer;
     private SOSFlashlight sos;
+    private Flashlight flash;
     //Listeners
         //Background
     private ConstraintLayout layout;
@@ -124,14 +124,17 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         flashlightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (flashlightButton.isChecked()){
-                    sos = null;
-                    new Flashlight(MainActivity.this, context, true);
-                    new Notification(context, "Flashlight: ON", R.drawable.flashlight);
+                if (sos == null) {
+                    if (flashlightButton.isChecked()) {
+                        flash = new Flashlight(MainActivity.this, context, true);
+                        new Notification(context, "Flashlight: ON", R.drawable.flashlight);
+                    } else {
+                        flash = new Flashlight(MainActivity.this, context, false);
+                        new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
+                        flash = null;
+                    }
                 } else {
-                    sos = new SOSFlashlight(MainActivity.this, context);
-                    new Flashlight(MainActivity.this, context, false);
-                    new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
+                    makeToast("First turn off your SOS Flashlight!");
                 }
             }
         });
@@ -140,12 +143,21 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         sosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sosButton.isChecked()){
-                    sos.turnFlashLight();
-                    new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
+                if (flash == null) {
+                    if (sos == null) {
+                        sos = new SOSFlashlight(MainActivity.this, context);
+                    }
+                    if (sosButton.isChecked()) {
+                        sos.turnFlashLight();
+                        new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
+                    } else {
+                        sos.stopFlashLight();
+                        sos = null;
+                        new Flashlight(MainActivity.this, context, false);
+                        new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
+                    }
                 } else {
-                    sos.stopFlashLight();
-                    new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
+                    makeToast("First turn off your Flashlight!");
                 }
             }
         });
@@ -174,14 +186,14 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
-                startActivity(intent); }
+                     startActivity(intent); }
         });
         //Mapas
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MapsActivity.class);
-                startActivity(intent); }
+                startActivityForResult(intent, 1); }
         });
 //Pop-up timer
         textViewCountDown = findViewById(R.id.timerText);
@@ -206,10 +218,12 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         String name = result.getString("USER", "");
         int weight = result.getInt("WEIGHT_USER", 0);
         int age = result.getInt("AGE_USER", 0);
+        float weihtBag = result.getFloat("WEIGHTF", 0.0f);
 
         userView.setText(name);
         uWeightView.setText("Weight: " + weight);
         ageView.setText("Age: " + age);
+        weightView.setText("Bag weight: " + weihtBag);
     }
     @Override
     public void onTimeChanged(long millisUntilFinished) {
@@ -270,6 +284,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         int defaultCamping = 0;
         int defaultSteps = 0;
         int defaultBattery = 0;
+        int defaultUser = 0;
 
         if (active) {
             //Settings
@@ -290,6 +305,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultCamping = R.drawable.camp_mode;
                 defaultSteps = R.drawable.steps;
                 defaultBattery = R.drawable.battery;
+                defaultUser = R.drawable.user;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
@@ -304,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultCamping = R.drawable.camp_mode_black;
                 defaultSteps = R.drawable.steps_black;
                 defaultBattery = R.drawable.battery_black;
+                defaultUser = R.drawable.user_black;
 
             }
             layout.setBackgroundColor(defaultColorBackground);
@@ -319,6 +336,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             defaultCamping = R.drawable.camp_mode;
             defaultBattery = R.drawable.battery;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
+            defaultUser = R.drawable.user;
             layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
             new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
         }
@@ -328,6 +346,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         sosButton.setBackgroundDrawable(this.getResources().getDrawable(defaultSos));
         campingButton.setBackgroundDrawable(this.getResources().getDrawable(defaultCamping));
         battery.setBackgroundDrawable(this.getResources().getDrawable(defaultBattery));
+        personalDataButton.setBackground(this.getResources().getDrawable(defaultUser));
 
         //Image Views
         compass.setImageResource(defaultCompass);

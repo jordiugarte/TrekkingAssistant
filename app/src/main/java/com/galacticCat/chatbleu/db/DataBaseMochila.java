@@ -19,10 +19,9 @@ public class DataBaseMochila extends SQLiteOpenHelper {
     //Primer vez
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                " name VARCHAR NOT NULL," +
-                " checkbox INTEGER NOT NULL," +
-                " peso INTEGER NOT NULL)");
+        db.execSQL("CREATE TABLE items (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "name VARCHAR NOT NULL," +
+                "peso FLOAT NOT NULL)");
         Log.d("Database2", "Created");
     }
 

@@ -21,6 +21,7 @@ public class DataBase2Helper {
      */
     public DataBase2Helper(Context context) {
         DataBaseMochila instancia = new DataBaseMochila(context);
+
         this.mDatabase = instancia.getWritableDatabase();
     }
 
@@ -31,15 +32,15 @@ public class DataBase2Helper {
      */
     public void insert(Item item) {
         //Key: coliumn, Value: valor
+        String iName =  item.getName();
+        String iWeight =  item.getWeight();
         ContentValues contentValues = new ContentValues();
-        contentValues.put("nombre", item.getName());
-        contentValues.put("peso", item.getWeight());
+        contentValues.put("name", iName);
+        contentValues.put("peso", iWeight);
 
-        //Insertar el usuario
-        this.mDatabase.insert("items", //Tabla
-                null,
-                contentValues); // Valores
-        this.mDatabase.close(); //Cerrar
+        //Insertar el itemthis.mDatabase.insert ("items",null, contentValues);
+       this.mDatabase.execSQL("INSERT INTO items(name, weight) VALUES("+iName+","+iWeight+")");
+
     }
 
     public List<Item> getAll() {
@@ -85,11 +86,12 @@ public class DataBase2Helper {
 
     }
 
-    public void delete(int id) {
-        String[] params = new String[1];
-        params[0] = String.valueOf(id);
+    public void delete(Item item) {
 
-        mDatabase.delete("usuarios", "id=?", params);
+        String name = item.getName();
+
+
+        mDatabase.delete("items", "name="+name, null);
     }
 }
 

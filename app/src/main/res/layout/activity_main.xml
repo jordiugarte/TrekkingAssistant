@@ -41,18 +41,16 @@
 
         <Button
             android:id="@+id/buttonUser"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/colorWidget"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/user"
             android:contextClickable="true"
             android:elegantTextHeight="true"
-            android:text="Insertar o modificar"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toLeftOf="@id/clock"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.424" />
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/battery"

@@ -1,5 +1,10 @@
 package com.galacticCat.chatbleu;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,12 +16,16 @@ import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ItemAdapter;
 import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.db.DataBase2Helper;
+import com.galacticCat.chatbleu.db.DataBaseMochila;
 import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
 
 import com.galacticCat.chatbleu.services.Notification;
 import com.google.gson.Gson;
+
+import static com.galacticCat.chatbleu.data.Stats.SHARED_PREFS;
 
 public class MochilaActivity extends AppCompatActivity {
 
@@ -28,7 +37,8 @@ public class MochilaActivity extends AppCompatActivity {
     private TextView currentWeightView;
     private Button addButton;
     private ItemAdapter adapter;
-
+    private DataBase2Helper dbmochila;
+    private Context mContext = this;
     private Gson gson = new Gson();
 
     private float weightFloat;
@@ -38,6 +48,7 @@ public class MochilaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
+//        dbmochila = new DataBase2Helper(this.mContext);
         populateListView();
         setLiteners();
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -64,9 +75,7 @@ public class MochilaActivity extends AppCompatActivity {
     }
 
     public void populateListView() {
-//        items.add(new Item("asdasd", "asdasd"));
-//        adapter = new ItemAdapter(this, items);
-//        listView.setAdapter(adapter);
+
     }
 
     public void setLiteners() {
@@ -83,7 +92,11 @@ public class MochilaActivity extends AppCompatActivity {
         weightFloat += (float) Integer.parseInt(weight);
         currentWeightView.setText(weightFloat + "kg");
         listView.setAdapter(adapter);
-        updateWeightInStats();
+        Item item = new Item(name, weight, false);
+        addWeightPreferences();
+//        dbmochila.insert(item);
+
+        //TODO hacer que cree una fila
     }
 
     public void removeItem(Item item) {
@@ -94,13 +107,13 @@ public class MochilaActivity extends AppCompatActivity {
         adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
         new Notification(this, name + " removed", R.drawable.mochila);
-        updateWeightInStats();
+//        dbmochila.delete(item);
+        addWeightPreferences();
     }
 
-    public void updateWeightInStats() {
-        Stats stats = new Stats(this);
+    public void addWeightPreferences() {
+        Stats stats = new Stats(getApplicationContext());
         stats.setWeight(weightFloat);
         stats.saveData();
-        currentWeightView.setText(stats.getWeight() + "kg");
     }
 }
