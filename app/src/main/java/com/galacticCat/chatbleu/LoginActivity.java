@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
         }
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
         String usuarioGuardado = prefs.getString(Constants.PREF_USUARIO, "");
-        String passwordGuardado = prefs.getString(Constants.PREF_PASSWORD, "");
+       String passwordGuardado = prefs.getString(Constants.PREF_PASSWORD, "");
 
         dbHelper = new DataBaseHelper(mContext);
 

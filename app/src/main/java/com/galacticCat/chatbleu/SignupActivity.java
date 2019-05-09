@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.galacticCat.chatbleu.data.UserData;
 import com.galacticCat.chatbleu.db.DataBaseHelper;
 import com.galacticCat.chatbleu.model.User;
 import com.google.gson.Gson;
@@ -25,14 +26,13 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
     private Context mContext = this;
+    private MainActivity main;
 
     @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_email) EditText _emailText;
-    @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.input_edad) EditText _edadText;
     @BindView(R.id.input_peso) EditText _pesoText;
     @BindView(R.id.btn_signup) Button _signupButton;
-    @BindView(R.id.link_login) TextView _loginLink;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,13 +47,7 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-        _loginLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Finish the registration screen and return to the Login activity
-                finish();
-            }
-        });
+
     }
 
     public void signup() {
@@ -72,20 +66,16 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.setMessage("Creating Account...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
-        int edad = Integer.parseInt(_edadText.getText().toString());
-        int peso = Integer.parseInt(_pesoText.getText().toString());
-
-        // TODO: Implement your own signup logic here.
+        final String name = _nameText.getText().toString();
+        final int edad = Integer.parseInt(_edadText.getText().toString());
+        final int peso = Integer.parseInt(_pesoText.getText().toString());
 
         new android.os.Handler().postDelayed(
                 new Runnable() {
                     public void run() {
                         // On complete call either onSignupSuccess or onSignupFailed
                         // depending on success
-                        onSignupSuccess();
+                        onSignupSuccess(name, edad, peso);
                         // onSignupFailed();
                         progressDialog.dismiss();
                     }
@@ -93,14 +83,15 @@ public class SignupActivity extends AppCompatActivity {
     }
 
 
-    public void onSignupSuccess() {
+    public void onSignupSuccess(String name, int edad, int peso) {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        llenarPersonalData(name, edad, peso);
         finish();
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }
@@ -109,11 +100,8 @@ public class SignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
-        String email = _emailText.getText().toString();
-        String password = _passwordText.getText().toString();
         int edad = Integer.parseInt(_edadText.getText().toString());
         int peso = Integer.parseInt(_pesoText.getText().toString());
-
 
         if (name.isEmpty() || name.length() < 3) {
             _nameText.setError("at least 3 characters");
@@ -122,19 +110,6 @@ public class SignupActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            _emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            _emailText.setError(null);
-        }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            _passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            _passwordText.setError(null);
-        }
         if (edad < 0 || edad > 100) {
             _edadText.setError("enter a valid age");
             valid = false;
@@ -149,10 +124,10 @@ public class SignupActivity extends AppCompatActivity {
         }
         User usuario = new User();
         usuario.setNombreUsuario(name);
-        usuario.setEmail(email);
-        usuario.setPassword(password);
         usuario.setEdad(edad);
         usuario.setPeso(peso);
+
+        main = new MainActivity();
 
         //Antes de devolverlo, lo guardamos en la db
         DataBaseHelper dbHelper = new DataBaseHelper(mContext);
@@ -161,8 +136,8 @@ public class SignupActivity extends AppCompatActivity {
         String json = new Gson().toJson(usuario);
         Log.e("UsuarioEnviado", json);
 
-        llenarUsuario(email,
-                password);
+
+
 
         Intent intent = new Intent();
         intent.putExtra(Constants.KEY_REGISTRAR_USUARIO, json);
@@ -172,11 +147,17 @@ public class SignupActivity extends AppCompatActivity {
 
         return valid;
     }
-    private void llenarUsuario(String email, String password) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString(Constants.PREF_USUARIO, email);
-        editor.putString(Constants.PREF_PASSWORD, password);
-        editor.apply();
+    private void llenarPersonalData(String name, int edad, int peso) {
+        UserData userData = new UserData(getApplicationContext());
+//        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+//        SharedPreferences.Editor editor = prefs.edit();
+//        editor.putString(Constants.PREF_USUARIO, name);
+//        editor.putInt(Constants.PREF_AGE, edad);
+//        editor.putInt(Constants.PREF_WEIGTH, peso);
+//        editor.apply();
+        userData.setUserName(name);
+        userData.setAge(edad);
+        userData.setWeight(peso);
+        userData.saveData();
     }
 }

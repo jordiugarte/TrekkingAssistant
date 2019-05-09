@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.BatteryManager;
 import android.support.constraint.ConstraintLayout;
@@ -21,26 +22,33 @@ import android.widget.ToggleButton;
 
 import com.galacticCat.chatbleu.data.RealTimeStats;
 import com.galacticCat.chatbleu.data.Stats;
+import com.galacticCat.chatbleu.data.UserData;
 import com.galacticCat.chatbleu.map.MapsActivity;
 import com.galacticCat.chatbleu.services.Notification;
-import com.galacticCat.chatbleu.tools.Altitude;
+//import com.galacticCat.chatbleu.tools.Altitude;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
+import com.galacticCat.chatbleu.tools.Timer.Pop_up_activity;
+import com.galacticCat.chatbleu.tools.Timer.Timer;
+import com.galacticCat.chatbleu.tools.Timer.TimerI;
 
 
 import java.util.Calendar;
+import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+import static com.galacticCat.chatbleu.data.Stats.SHARED_PREFS;
+
+public class MainActivity extends AppCompatActivity implements TimerI {
 
     //Tools
     private Clock clockTool;
     private Compass compassTool;
-    private Altitude altitude;
     private Pedometer pedometer;
     private SOSFlashlight sos;
+    private Flashlight flash;
     //Listeners
         //Background
     private ConstraintLayout layout;
@@ -52,16 +60,19 @@ public class MainActivity extends AppCompatActivity {
     private TextView distanceView;
     private TextView weightView;
     private TextView timeOfTravelView;
-    private TextView altitudeView;
     private TextView stepsPerHourView;
     private TextView speedView;
     private TextView batteryView;
+    public TextView userView;
+    public TextView ageView;
+    public TextView uWeightView;
+
         //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
     private ToggleButton sosButton;
     private Button listsButton;
-    private Button iniciarSesionButton;
+    private Button personalDataButton;
     private Button mapsButton;
         //Images
     private ImageView compass;
@@ -69,7 +80,14 @@ public class MainActivity extends AppCompatActivity {
 
     private Context context;
     private Stats stats;
+    private UserData userData;
     private RealTimeStats rStats;
+
+        //Timer
+    private TextView textViewCountDown;
+    private long timeLeft = 0;
+
+    private SharedPreferences registerPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,30 +99,42 @@ public class MainActivity extends AppCompatActivity {
         context = getApplicationContext();
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         stats = new Stats(context);
+        userData = new UserData(context);
 
         setListeners();
 
         rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
-        altitude = new Altitude(altitudeView, context);
         pedometer = new Pedometer(context, stepsView, distanceView, stats);
         sos = new SOSFlashlight(MainActivity.this, context);
 
         this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
+        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        String name = result.getString("USER", "");
+        int weight = result.getInt("WEIGHT_USER", 0);
+        int age = result.getInt("AGE_USER", 0);
+
+        userView.setText(name);
+        uWeightView.setText("Weight: " + weight);
+        ageView.setText("Age: " + age);
+
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (flashlightButton.isChecked()){
-                    sos = null;
-                    new Flashlight(MainActivity.this, context, true);
-                    new Notification(context, "Flashlight: ON", R.drawable.flashlight);
+                if (sos == null) {
+                    if (flashlightButton.isChecked()) {
+                        flash = new Flashlight(MainActivity.this, context, true);
+                        new Notification(context, "Flashlight: ON", R.drawable.flashlight);
+                    } else {
+                        flash = new Flashlight(MainActivity.this, context, false);
+                        new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
+                        flash = null;
+                    }
                 } else {
-                    sos = new SOSFlashlight(MainActivity.this, context);
-                    new Flashlight(MainActivity.this, context, false);
-                    new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
+                    makeToast("First turn off your SOS Flashlight!");
                 }
             }
         });
@@ -113,12 +143,21 @@ public class MainActivity extends AppCompatActivity {
         sosButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sosButton.isChecked()){
-                    sos.turnFlashLight();
-                    new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
+                if (flash == null) {
+                    if (sos == null) {
+                        sos = new SOSFlashlight(MainActivity.this, context);
+                    }
+                    if (sosButton.isChecked()) {
+                        sos.turnFlashLight();
+                        new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
+                    } else {
+                        sos.stopFlashLight();
+                        sos = null;
+                        new Flashlight(MainActivity.this, context, false);
+                        new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
+                    }
                 } else {
-                    sos.stopFlashLight();
-                    new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
+                    makeToast("First turn off your Flashlight!");
                 }
             }
         });
@@ -135,11 +174,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Iniciar Sesion
-       iniciarSesionButton.setOnClickListener(new View.OnClickListener() {
+        //Datos personales
+       personalDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              openActivityLogin(); }
+              openSignUpActivity(); }
         });
 
         //Mochila
@@ -147,16 +186,23 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
-                startActivity(intent); }
+                     startActivity(intent); }
         });
         //Mapas
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MapsActivity.class);
-                startActivity(intent); }
+                startActivityForResult(intent, 1); }
         });
-
+//Pop-up timer
+        textViewCountDown = findViewById(R.id.timerText);
+        textViewCountDown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, Pop_up_activity.class));
+            }
+        });
     }
 
     @Override
@@ -165,13 +211,34 @@ public class MainActivity extends AppCompatActivity {
         compassTool.resume();
         pedometer.resume();
         weightView.setText("Weight: " + 3.2f + "kg");
-    }
+        super.onResume();
+        Timer.getInstance().setCallback(this);
 
+        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        String name = result.getString("USER", "");
+        int weight = result.getInt("WEIGHT_USER", 0);
+        int age = result.getInt("AGE_USER", 0);
+        float weihtBag = result.getFloat("WEIGHTF", 0.0f);
+
+        userView.setText(name);
+        uWeightView.setText("Weight: " + weight);
+        ageView.setText("Age: " + age);
+        weightView.setText("Bag weight: " + weihtBag);
+    }
+    @Override
+    public void onTimeChanged(long millisUntilFinished) {
+        timeLeft = millisUntilFinished;
+        updateCountDownText();
+    }
     @Override
     protected void onPause() {
         super.onPause();
         compassTool.pause();
         pedometer.pasue();
+    }
+    @Override
+    public void onFinish() {
+
     }
 
     private void setListeners() {
@@ -184,7 +251,7 @@ public class MainActivity extends AppCompatActivity {
         layout = (ConstraintLayout) findViewById(R.id.mainLayout);
         compass = (ImageView) findViewById(R.id.compass);
         listsButton = (Button)findViewById(R.id.mochila_btn);
-        iniciarSesionButton = (Button) findViewById(R.id.buttonUser);
+        personalDataButton = (Button) findViewById(R.id.buttonUser);
         steps = (ImageView)findViewById(R.id.iconSteps);
         mapsButton = (Button)findViewById(R.id.maps_btn);
         battery = findViewById(R.id.battery);
@@ -192,11 +259,13 @@ public class MainActivity extends AppCompatActivity {
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
         weightView = (TextView) findViewById(R.id.weightView);
-        altitudeView = (TextView) findViewById(R.id.altitudeView);
         timeOfTravelView = (TextView) findViewById(R.id.timeOfTravelView);
         speedView = (TextView) findViewById(R.id.speedView);
         stepsPerHourView = (TextView) findViewById(R.id.stepsPerHourView);
         batteryView = findViewById(R.id.battery_view);
+        userView = findViewById(R.id.user_view);
+        ageView = findViewById(R.id.age_view);
+        uWeightView = findViewById(R.id.personalWeight_view);
 
     }
 
@@ -215,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
         int defaultCamping = 0;
         int defaultSteps = 0;
         int defaultBattery = 0;
+        int defaultUser = 0;
 
         if (active) {
             //Settings
@@ -235,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
                 defaultCamping = R.drawable.camp_mode;
                 defaultSteps = R.drawable.steps;
                 defaultBattery = R.drawable.battery;
+                defaultUser = R.drawable.user;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
@@ -249,6 +320,7 @@ public class MainActivity extends AppCompatActivity {
                 defaultCamping = R.drawable.camp_mode_black;
                 defaultSteps = R.drawable.steps_black;
                 defaultBattery = R.drawable.battery_black;
+                defaultUser = R.drawable.user_black;
 
             }
             layout.setBackgroundColor(defaultColorBackground);
@@ -264,6 +336,7 @@ public class MainActivity extends AppCompatActivity {
             defaultCamping = R.drawable.camp_mode;
             defaultBattery = R.drawable.battery;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
+            defaultUser = R.drawable.user;
             layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
             new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
         }
@@ -273,6 +346,7 @@ public class MainActivity extends AppCompatActivity {
         sosButton.setBackgroundDrawable(this.getResources().getDrawable(defaultSos));
         campingButton.setBackgroundDrawable(this.getResources().getDrawable(defaultCamping));
         battery.setBackgroundDrawable(this.getResources().getDrawable(defaultBattery));
+        personalDataButton.setBackground(this.getResources().getDrawable(defaultUser));
 
         //Image Views
         compass.setImageResource(defaultCompass);
@@ -284,12 +358,13 @@ public class MainActivity extends AppCompatActivity {
         stepsView.setTextColor(defaultColorText);
         distanceView.setTextColor(defaultColorText);
         weightView.setTextColor(defaultColorText);
-        altitudeView.setTextColor(defaultColorText);
         speedView.setTextColor(defaultColorText);
         stepsPerHourView.setTextColor(defaultColorText);
         batteryView.setTextColor(defaultColorText);
         timeOfTravelView.setTextColor(defaultColorText);
-
+        userView.setTextColor(defaultColorText);
+        ageView.setTextColor(defaultColorText);
+        uWeightView.setTextColor(defaultColorText);
     }
 
     @Override
@@ -312,8 +387,8 @@ public class MainActivity extends AppCompatActivity {
         alert.show();
 
     }
-    public void openActivityLogin(){
-        Intent intent1 = new Intent(MainActivity.this, LoginActivity.class);
+    public void openSignUpActivity(){
+        Intent intent1 = new Intent(MainActivity.this, SignupActivity.class);
         startActivity(intent1);
    }
 
@@ -379,4 +454,18 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+    private void updateCountDownText() {
+        int hours = (int) (timeLeft / 1000) /3600;
+        int minutes = (int) ((timeLeft / 1000) %3600) / 60;
+        int seconds = (int) (timeLeft / 1000) % 60;
+
+        String timeLeftFormatted;
+        if(hours > 0){
+            timeLeftFormatted = String.format(Locale.getDefault(), "%d:%02d:%02d",hours, minutes, seconds);
+        }else {
+            timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+        }
+        textViewCountDown.setText(timeLeftFormatted);
+    }
+
 }

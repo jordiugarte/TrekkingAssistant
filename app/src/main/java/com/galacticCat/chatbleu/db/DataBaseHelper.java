@@ -33,9 +33,7 @@ public class DataBaseHelper {
         //Key: coliumn, Value: valor
         ContentValues contentValues = new ContentValues();
         contentValues.put("usuario", user.getNombreUsuario());
-        contentValues.put("password", user.getPassword());
         contentValues.put("edad", user.getEdad());
-        contentValues.put("email", user.getEmail());
         contentValues.put("peso", user.getPeso());
 
         //Insertar el usuario
@@ -75,9 +73,7 @@ public class DataBaseHelper {
         Cursor cursor = this.mDatabase.rawQuery("SELECT " +
                 " id," + //0
                 " usuario," + //1
-                " password," + //2
                 " edad," + //3
-                " email," + //4
                 " peso" + //5
                 " FROM usuarios", null);
 
@@ -86,18 +82,16 @@ public class DataBaseHelper {
                 //Extraemos los datos
                 int id = cursor.getInt(0);
                 String usuario = cursor.getString(1);
-                String password = cursor.getString(2);
                 int edad = cursor.getInt(3);
-                String email = cursor.getString(4);
                 int peso = cursor.getInt(5);
 
                 //Llnear objeto de tipo user
                 User user = new User();
 
                 user.setNombreUsuario(usuario);
-                user.setPassword(password);
+
                 user.setEdad(edad);
-                user.setEmail(email);
+
                 user.setPeso(peso);
 
                 //Adicionar a la lista

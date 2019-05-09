@@ -7,23 +7,22 @@ import android.util.Log;
 
 import com.galacticCat.chatbleu.Constants;
 
-public class DataBase extends SQLiteOpenHelper {
+public class DataBaseMochila extends SQLiteOpenHelper {
 
-    public DataBase(Context context) {
+    public DataBaseMochila(Context context) {
         super(context,
-                Constants.DATABASE_NAME,
+                Constants.DATABASE2_NAME,
                 null,
-                Constants.DATABASE_VERSION);
+                Constants.DATABASE2_VERSION);
     }
 
     //Primer vez
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE usuarios (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
-                " usuario VARCHAR NOT NULL," +
-                " edad INTEGER," +
-                " peso INTEGER NOT NULL)");
-        Log.d("Database", "Created");
+        db.execSQL("CREATE TABLE items (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL," +
+                "name VARCHAR NOT NULL," +
+                "peso FLOAT NOT NULL)");
+        Log.d("Database2", "Created");
     }
 
 
