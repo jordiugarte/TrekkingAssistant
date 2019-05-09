@@ -49,8 +49,12 @@ public class MochilaActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
         dbmochila = new DataBase2Helper(this.mContext);
-        populateListView();
         setLiteners();
+
+        items = populateListView();
+        adapter = new ItemAdapter(this, items);
+        listView.setAdapter(adapter);
+
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,8 +78,9 @@ public class MochilaActivity extends AppCompatActivity {
         });
     }
 
-    public void populateListView() {
-
+    public ArrayList<Item> populateListView() {
+        ArrayList<Item> l = (ArrayList<Item>) dbmochila.getAll();
+        return l;
     }
 
     public void setLiteners() {

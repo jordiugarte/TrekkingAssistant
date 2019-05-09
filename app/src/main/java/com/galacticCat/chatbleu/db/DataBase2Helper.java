@@ -21,7 +21,6 @@ public class DataBase2Helper {
      */
     public DataBase2Helper(Context context) {
         DataBaseMochila instancia = new DataBaseMochila(context);
-
         this.mDatabase = instancia.getWritableDatabase();
     }
 

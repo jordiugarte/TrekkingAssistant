@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.BatteryManager;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+import android.widget.VideoView;
 
 import com.galacticCat.chatbleu.data.RealTimeStats;
 import com.galacticCat.chatbleu.data.Stats;
@@ -29,6 +31,7 @@ import com.galacticCat.chatbleu.services.Notification;
 import com.galacticCat.chatbleu.tools.Clock;
 import com.galacticCat.chatbleu.tools.Compass;
 import com.galacticCat.chatbleu.tools.Flashlight;
+import com.galacticCat.chatbleu.tools.Gps;
 import com.galacticCat.chatbleu.tools.Pedometer;
 import com.galacticCat.chatbleu.tools.SOSFlashlight;
 import com.galacticCat.chatbleu.tools.Timer.Pop_up_activity;
@@ -49,23 +52,24 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private Pedometer pedometer;
     private SOSFlashlight sos;
     private Flashlight flash;
+    //    private Gps gps;
     //Listeners
     //Background
     private ConstraintLayout layout;
     private ConstraintLayout battery;
     //Text Viewers
-    private TextView timeView;
-    private TextView dateView;
-    private TextView stepsView;
-    private TextView distanceView;
-    private TextView weightView;
-    private TextView timeOfTravelView;
-    private TextView stepsPerHourView;
-    private TextView speedView;
-    private TextView batteryView;
-    public TextView userView;
-    public TextView ageView;
-    public TextView uWeightView;
+    TextView timeView, dateView,
+            stepsView,
+            distanceView,
+            weightView,
+            timeOfTravelView,
+            stepsPerHourView,
+            speedView,
+            batteryView,
+            userView,
+            ageView,
+            uWeightView,
+            locationView;
 
     //Buttons
     private ToggleButton flashlightButton;
@@ -103,23 +107,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         userData = new UserData(context);
 
         setListeners();
-
-        rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
-        clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
-        compassTool = new Compass(context, compass);
-        pedometer = new Pedometer(context, stepsView, distanceView, stats);
-        sos = new SOSFlashlight(MainActivity.this, context);
-
-        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-
-        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        String name = result.getString("USER", "");
-        int weight = result.getInt("WEIGHT_USER", 0);
-        int age = result.getInt("AGE_USER", 0);
-
-        userView.setText(name);
-        uWeightView.setText("Weight: " + weight);
-        ageView.setText("Age: " + age);
+        setTools();
+        setPersonalData();
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -218,6 +207,18 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 
     }
 
+    private void setPersonalData() {
+        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+        String name = result.getString("USER", "");
+        int weight = result.getInt("WEIGHT_USER", 0);
+        int age = result.getInt("AGE_USER", 0);
+
+        userView.setText(name);
+        uWeightView.setText("Weight: " + weight);
+        ageView.setText("Age: " + age);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -258,7 +259,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void setListeners() {
-
         timeView = (TextView) findViewById(R.id.clock);
         dateView = (TextView) findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
@@ -273,7 +273,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         contactsbutton = findViewById(R.id.contactsbutton);
         battery = findViewById(R.id.battery);
         textViewCountDown = findViewById(R.id.timerText);
-
+        locationView = findViewById(R.id.locationText);
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
         weightView = (TextView) findViewById(R.id.weightView);
@@ -284,7 +284,15 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         userView = findViewById(R.id.user_view);
         ageView = findViewById(R.id.age_view);
         uWeightView = findViewById(R.id.personalWeight_view);
+    }
 
+    private void setTools() {
+        //        gps = new Gps(locationView);
+        rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
+        clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
+        compassTool = new Compass(context, compass);
+        pedometer = new Pedometer(context, stepsView, distanceView, stats);
+        sos = new SOSFlashlight(MainActivity.this, context);
     }
 
     private void makeToast(String message) {
