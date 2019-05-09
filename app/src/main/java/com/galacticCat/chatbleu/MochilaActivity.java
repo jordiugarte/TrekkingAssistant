@@ -48,7 +48,7 @@ public class MochilaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
-//        dbmochila = new DataBase2Helper(this.mContext);
+      dbmochila = new DataBase2Helper(this.mContext);
         populateListView();
         setLiteners();
         addButton.setOnClickListener(new View.OnClickListener() {
@@ -94,7 +94,7 @@ public class MochilaActivity extends AppCompatActivity {
         listView.setAdapter(adapter);
         Item item = new Item(name, weight, false);
         addWeightPreferences();
-//        dbmochila.insert(item);
+        dbmochila.insert(item);
 
         //TODO hacer que cree una fila
     }
@@ -107,7 +107,7 @@ public class MochilaActivity extends AppCompatActivity {
         adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
         new Notification(this, name + " removed", R.drawable.mochila);
-//        dbmochila.delete(item);
+       dbmochila.delete(item);
         addWeightPreferences();
     }
 
