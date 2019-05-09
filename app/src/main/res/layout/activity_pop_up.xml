@@ -31,7 +31,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
                 android:padding="10dp"
-                android:text="Cronometro"
+                android:text="Temporizador"
                 android:textColor="@color/defaultBlack"
                 android:textSize="35dp"
                 android:textStyle="bold" />
