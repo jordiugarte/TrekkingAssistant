@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
 import android.os.Bundle;
@@ -27,7 +28,12 @@ public class ContactEditor extends AppCompatDialogFragment {
         nombre = view.findViewById(R.id.edit_nombre);
         numero = view.findViewById(R.id.edit_numero);
 
-        nombre.setText("");
+        Context context = getContext();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        nombre.setText(sharedPreferences.getString("ANAME", ""));
+        numero.setText(sharedPreferences.getString("ANUMBER", ""));
 
         nombre.getText().toString();
         builder.setView(view)
@@ -45,7 +51,8 @@ public class ContactEditor extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", numero.toString(), null)));
                     }
-                });;
+                });
+        ;
 
         editName = view.findViewById(R.id.edit_nombre);
         editNumber = view.findViewById(R.id.edit_numero);

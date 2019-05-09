@@ -33,6 +33,15 @@ public class ContactActivity extends AppCompatActivity implements ContactEditor.
         lvItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                editor.putString("ANAME", listItems.get(position).getNombre());
+                editor.putString("ANUMBER", listItems.get(position).getNumero());
+                editor.commit();
+
+                sharedPreferences.getString("ANUMBER", "");
+
                 ContactEditor contactEditor = new ContactEditor();
                 contactEditor.show(getSupportFragmentManager(), "example dialog");
                 currentPosition = position;
