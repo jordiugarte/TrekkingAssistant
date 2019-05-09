@@ -337,7 +337,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             defaultBattery = R.drawable.battery;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
             defaultUser = R.drawable.user;
-            layout.setBackground(getResources().getDrawable(R.drawable.forest_background));
+            layout.setBackground(getResources().getDrawable(R.drawable.backgroundforest));
             new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
         }
 
