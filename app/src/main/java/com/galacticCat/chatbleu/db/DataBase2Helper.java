@@ -38,9 +38,10 @@ public class DataBase2Helper {
         contentValues.put("name", iName);
         contentValues.put("peso", iWeight);
 
+        long inserted = this.mDatabase.insert("items",null,contentValues);
+        //this.mDatabase.close();
         //Insertar el itemthis.mDatabase.insert ("items",null, contentValues);
-       this.mDatabase.execSQL("INSERT INTO items(name, weight) VALUES("+iName+","+iWeight+")");
-
+       //this.mDatabase.execSQL("INSERT INTO items(name, weight) VALUES("+iName+","+iWeight+")");
     }
 
     public List<Item> getAll() {
@@ -48,7 +49,7 @@ public class DataBase2Helper {
         Cursor cursor = this.mDatabase.rawQuery("SELECT " +
                 " id," + //0
                 " name," + //1
-                " peso" + //5
+                " peso" + //2
                 " FROM Items", null);
 
         if (cursor.moveToFirst()) {
@@ -56,7 +57,7 @@ public class DataBase2Helper {
                 //Extraemos los datos
                 int id = cursor.getInt(0);
                 String name = cursor.getString(1);
-                String peso = cursor.getString(5);
+                String peso = cursor.getString(2);
 
                 //Llnear objeto de tipo user
                 Item item = new Item();
@@ -87,11 +88,13 @@ public class DataBase2Helper {
     }
 
     public void delete(Item item) {
-
         String name = item.getName();
+        /*String[] params = new String[1];
+        params[0] = name;
 
-
-        mDatabase.delete("items", "name="+name, null);
+        int deleted = mDatabase.delete("items", "name=?", params);*/
+        int deleted = mDatabase.delete("items", "name='"+name+"'", null);
+        Log.d("Deleted items", ""+deleted);
     }
 }
 
