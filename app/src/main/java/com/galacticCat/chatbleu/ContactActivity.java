@@ -2,8 +2,10 @@ package com.galacticCat.chatbleu;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.galacticCat.chatbleu.adapter.ContactAdapter;
@@ -11,19 +13,31 @@ import com.galacticCat.chatbleu.model.Contact;
 
 import java.util.ArrayList;
 
-public class ContactActivity extends AppCompatActivity {
+public class ContactActivity extends AppCompatActivity implements ContactEditor.ExampleDialogListener{
+
     private ListView lvItem;
     private ContactAdapter adaptador;
     private ArrayList<Contact> listItems;
 
+    private int currentPosition;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_contacts);
-        GetArrayItems();
+        setContentView(R.layout.activity_contact);
         lvItem = findViewById(R.id.lvItem);
+        GetArrayItems();
         adaptador = new ContactAdapter(this, listItems);
         lvItem.setAdapter(adaptador);
+
+        lvItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ContactEditor contactEditor = new ContactEditor();
+                contactEditor.show(getSupportFragmentManager(), "example dialog");
+                currentPosition = position;
+            }
+        });
     }
 
     private void GetArrayItems() {
@@ -50,27 +64,13 @@ public class ContactActivity extends AppCompatActivity {
         for (int i = 0; i < 5; i++) {
             listItems.add(new Contact(R.drawable.ic_launcher_background, nombre[i], numero[i]));
         }
+
     }
 
-//    public void saveData () {
-//        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//
-//        editor.putInt("STEPS", steps);
-//        editor.putInt("DISTANCE", distance);
-//        editor.putInt("WEIGHT", weight);
-//        editor.putInt("HOURS", timeHours);
-//        editor.putInt("MINUTES", timeMinutes);
-//        editor.putInt("SECONDS", timeSeconds);
-//
-//        editor.commit();
-//    }
-
-
-//    @Override
-//    public void applyTexts(String nombre, String numero, int position) {
-//        listItems.add(position, new Entidad(nombre, numero));
-//        lvItem.setAdapter(adaptador);
-//    }
+    @Override
+    public void applyTexts(String nombre, String numero) {
+        listItems.set(currentPosition, new Contact(nombre, numero));
+        adaptador = new ContactAdapter(this, listItems);
+        lvItem.setAdapter(adaptador);
+    }
 }
-

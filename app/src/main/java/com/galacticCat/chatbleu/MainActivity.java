@@ -50,10 +50,10 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private SOSFlashlight sos;
     private Flashlight flash;
     //Listeners
-        //Background
+    //Background
     private ConstraintLayout layout;
     private ConstraintLayout battery;
-        //Text Viewers
+    //Text Viewers
     private TextView timeView;
     private TextView dateView;
     private TextView stepsView;
@@ -67,14 +67,15 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     public TextView ageView;
     public TextView uWeightView;
 
-        //Buttons
+    //Buttons
     private ToggleButton flashlightButton;
     private ToggleButton campingButton;
     private ToggleButton sosButton;
     private Button listsButton;
     private Button personalDataButton;
     private Button mapsButton;
-        //Images
+    private Button contactsbutton;
+    //Images
     private ImageView compass;
     private ImageView steps;
 
@@ -83,7 +84,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private UserData userData;
     private RealTimeStats rStats;
 
-        //Timer
+    //Timer
     private TextView textViewCountDown;
     private long timeLeft = 0;
 
@@ -94,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         //Basic Activity Set
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         context = getApplicationContext();
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
@@ -175,10 +176,11 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         });
 
         //Datos personales
-       personalDataButton.setOnClickListener(new View.OnClickListener() {
+        personalDataButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              openSignUpActivity(); }
+                openSignUpActivity();
+            }
         });
 
         //Mochila
@@ -186,27 +188,38 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
-                     startActivity(intent); }
+                startActivity(intent);
+            }
         });
         //Mapas
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, MapsActivity.class);
-                startActivityForResult(intent, 1); }
+                startActivityForResult(intent, 1);
+            }
         });
 //Pop-up timer
-        textViewCountDown = findViewById(R.id.timerText);
+
         textViewCountDown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, Pop_up_activity.class));
             }
         });
+        //Contacts
+        contactsbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ContactActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         compassTool.resume();
         pedometer.resume();
@@ -225,17 +238,20 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         ageView.setText("Age: " + age);
         weightView.setText("Bag weight: " + weihtBag);
     }
+
     @Override
     public void onTimeChanged(long millisUntilFinished) {
         timeLeft = millisUntilFinished;
         updateCountDownText();
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         compassTool.pause();
         pedometer.pasue();
     }
+
     @Override
     public void onFinish() {
 
@@ -243,18 +259,20 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 
     private void setListeners() {
 
-        timeView = (TextView)findViewById(R.id.clock);
-        dateView = (TextView)findViewById(R.id.date);
+        timeView = (TextView) findViewById(R.id.clock);
+        dateView = (TextView) findViewById(R.id.date);
         flashlightButton = (ToggleButton) findViewById(R.id.flashlight_btn);
         sosButton = (ToggleButton) findViewById(R.id.sos_btn);
         campingButton = (ToggleButton) findViewById(R.id.camping_toggle);
         layout = (ConstraintLayout) findViewById(R.id.mainLayout);
         compass = (ImageView) findViewById(R.id.compass);
-        listsButton = (Button)findViewById(R.id.mochila_btn);
+        listsButton = (Button) findViewById(R.id.mochila_btn);
         personalDataButton = (Button) findViewById(R.id.buttonUser);
-        steps = (ImageView)findViewById(R.id.iconSteps);
-        mapsButton = (Button)findViewById(R.id.maps_btn);
+        steps = (ImageView) findViewById(R.id.iconSteps);
+        mapsButton = (Button) findViewById(R.id.maps_btn);
+        contactsbutton = findViewById(R.id.contactsbutton);
         battery = findViewById(R.id.battery);
+        textViewCountDown = findViewById(R.id.timerText);
 
         stepsView = (TextView) findViewById(R.id.stepscountView);
         distanceView = (TextView) findViewById(R.id.distanceView);
@@ -293,7 +311,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             int currentHourIn24Format = rightNow.get(Calendar.HOUR_OF_DAY);
 
             //Night
-            if (currentHourIn24Format > 17 || currentHourIn24Format < 7){
+            if (currentHourIn24Format > 17 || currentHourIn24Format < 7) {
                 defaultColorText = getResources().getColor(R.color.defaultWhite);
                 defaultColorBackground = getResources().getColor(R.color.defaultBlack);
 
@@ -308,7 +326,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultUser = R.drawable.user;
 
                 //Day
-            } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6){
+            } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6) {
                 defaultColorText = getResources().getColor(R.color.defaultBlack);
                 defaultColorBackground = getResources().getColor(R.color.defaultWhite);
 
@@ -387,10 +405,11 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         alert.show();
 
     }
-    public void openSignUpActivity(){
+
+    public void openSignUpActivity() {
         Intent intent1 = new Intent(MainActivity.this, SignupActivity.class);
         startActivity(intent1);
-   }
+    }
 
 //    private void SetAirplaneMode(){
 //        if (android.os.Build.VERSION.SDK_INT < 17) {
@@ -429,40 +448,36 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 //        }
 //    }
 
-    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver(){
+    private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context ctxt, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             batteryView.setText(String.valueOf(level) + "%");
-            if(level<70){
+            if (level < 70) {
                 new Notification(context, "Bateria menor al 75%", R.drawable.flashlight);
-            }
-            else if(level<50){
+            } else if (level < 50) {
                 new Notification(context, "Bateria menor al 50%", R.drawable.flashlight);
-            }
-            else if(level<25){
+            } else if (level < 25) {
                 new Notification(context, "Bateria menor al 25%", R.drawable.flashlight);
-            }
-            else if(level<15){
+            } else if (level < 15) {
                 new Notification(context, "Bateria menor al 15%", R.drawable.flashlight);
-            }
-            else if(level<10){
+            } else if (level < 10) {
                 new Notification(context, "Bateria menor al 10%", R.drawable.flashlight);
-            }
-            else if(level<5){
+            } else if (level < 5) {
                 new Notification(context, "Bateria menor al 5%", R.drawable.flashlight);
             }
         }
     };
+
     private void updateCountDownText() {
-        int hours = (int) (timeLeft / 1000) /3600;
-        int minutes = (int) ((timeLeft / 1000) %3600) / 60;
+        int hours = (int) (timeLeft / 1000) / 3600;
+        int minutes = (int) ((timeLeft / 1000) % 3600) / 60;
         int seconds = (int) (timeLeft / 1000) % 60;
 
         String timeLeftFormatted;
-        if(hours > 0){
-            timeLeftFormatted = String.format(Locale.getDefault(), "%d:%02d:%02d",hours, minutes, seconds);
-        }else {
+        if (hours > 0) {
+            timeLeftFormatted = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds);
+        } else {
             timeLeftFormatted = String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
         }
         textViewCountDown.setText(timeLeftFormatted);
