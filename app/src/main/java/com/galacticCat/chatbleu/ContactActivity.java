@@ -71,7 +71,7 @@ public class ContactActivity extends AppCompatActivity implements ContactEditor.
         numero[4] = sharedPreferences.getString("N5", "numero5");
 
         for (int i = 0; i < 5; i++) {
-            listItems.add(new Contact(R.drawable.ic_launcher_background, nombre[i], numero[i]));
+            listItems.add(new Contact(nombre[i], numero[i]));
         }
 
     }

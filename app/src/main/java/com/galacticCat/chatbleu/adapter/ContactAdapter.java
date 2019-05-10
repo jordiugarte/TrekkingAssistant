@@ -45,7 +45,6 @@ public class ContactAdapter extends BaseAdapter {
         ImageView imgFoto = convertView.findViewById(R.id.imgFoto);
         TextView nombre=convertView.findViewById(R.id.nombre);
         //  TextView numero = convertView.findViewById(R.id.numero);
-        imgFoto.setImageResource(Item.getImgFoto());
         nombre.setText(Item.getNombre());
         //  numero.setText(Item.getNumero());
         return convertView;
