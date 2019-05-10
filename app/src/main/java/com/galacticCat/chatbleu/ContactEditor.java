@@ -37,7 +37,7 @@ public class ContactEditor extends AppCompatDialogFragment {
 
         nombre.getText().toString();
         builder.setView(view)
-                .setTitle("edit cotacto")
+                .setTitle("Editar Contacto")
                 .setNegativeButton("salir y guardar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
