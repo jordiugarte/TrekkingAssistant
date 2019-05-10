@@ -38,7 +38,7 @@ public class ContactActivity extends AppCompatActivity implements ContactEditor.
 
                 editor.putString("ANAME", listItems.get(position).getNombre());
                 editor.putString("ANUMBER", listItems.get(position).getNumero());
-                editor.commit();
+                editor.apply();
 
                 sharedPreferences.getString("ANUMBER", "");
 

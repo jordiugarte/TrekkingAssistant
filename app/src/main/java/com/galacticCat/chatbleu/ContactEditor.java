@@ -49,7 +49,7 @@ public class ContactEditor extends AppCompatDialogFragment {
                 .setPositiveButton("llamar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", numero.toString(), null)));
+                        startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", numero.getText().toString(), null)));
                     }
                 });
         ;
