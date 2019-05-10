@@ -52,13 +52,14 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private Pedometer pedometer;
     private SOSFlashlight sos;
     private Flashlight flash;
+
     //    private Gps gps;
-    //Listeners
+
     //Background
-    private ConstraintLayout layout;
-    private ConstraintLayout battery;
+    private ConstraintLayout layout,
+            battery;
     //Text Viewers
-    TextView timeView, dateView,
+    private TextView timeView, dateView,
             stepsView,
             distanceView,
             weightView,
@@ -69,30 +70,31 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             userView,
             ageView,
             uWeightView,
+            textViewCountDown,
             locationView;
 
+    //Toggle Buttons
+    private ToggleButton flashlightButton,
+            campingButton,
+            sosButton;
+
     //Buttons
-    private ToggleButton flashlightButton;
-    private ToggleButton campingButton;
-    private ToggleButton sosButton;
-    private Button listsButton;
-    private Button personalDataButton;
-    private Button mapsButton;
-    private Button contactsbutton;
+    private Button listsButton, personalDataButton,
+            mapsButton,
+            contactsbutton;
+
     //Images
-    private ImageView compass;
-    private ImageView steps;
+    private ImageView compass,
+            steps;
 
     private Context context;
     private Stats stats;
-    private UserData userData;
-    private RealTimeStats rStats;
 
     //Timer
-    private TextView textViewCountDown;
     private long timeLeft = 0;
-
-    private SharedPreferences registerPreferences;
+    private UserData userData;
+    private RealTimeStats rStats;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,10 +107,14 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_FLASH);
         stats = new Stats(context);
         userData = new UserData(context);
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
+
 
         setListeners();
         setTools();
         setPersonalData();
+
+        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
 
         //Flashlight
         flashlightButton.setOnClickListener(new View.OnClickListener() {
@@ -208,11 +214,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void setPersonalData() {
-        this.registerReceiver(this.mBatInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
-        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        String name = result.getString("USER", "");
-        int weight = result.getInt("WEIGHT_USER", 0);
-        int age = result.getInt("AGE_USER", 0);
+        String name = sharedPreferences.getString("USER", "");
+        int weight = sharedPreferences.getInt("WEIGHT_USER", 0);
+        int age = sharedPreferences.getInt("AGE_USER", 0);
 
         userView.setText(name);
         uWeightView.setText("Weight: " + weight);
@@ -224,20 +228,18 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         super.onResume();
         compassTool.resume();
         pedometer.resume();
-        weightView.setText("Weight: " + 3.2f + "kg");
         super.onResume();
         Timer.getInstance().setCallback(this);
 
-        SharedPreferences result = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
-        String name = result.getString("USER", "");
-        int weight = result.getInt("WEIGHT_USER", 0);
-        int age = result.getInt("AGE_USER", 0);
-        float weihtBag = result.getFloat("WEIGHTF", 0.0f);
+        String name = sharedPreferences.getString("USER", "");
+        int weight = sharedPreferences.getInt("WEIGHT_USER", 0);
+        int age = sharedPreferences.getInt("AGE_USER", 0);
+        float weightBag = sharedPreferences.getFloat("W", 0.0f);
 
         userView.setText(name);
         uWeightView.setText("Weight: " + weight);
         ageView.setText("Age: " + age);
-        weightView.setText("Bag weight: " + weihtBag);
+        weightView.setText("Bag weight: " + weightBag + "kg");
     }
 
     @Override
@@ -292,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
         pedometer = new Pedometer(context, stepsView, distanceView, stats);
-        sos = new SOSFlashlight(MainActivity.this, context);
+
     }
 
     private void makeToast(String message) {
@@ -419,42 +421,6 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         startActivity(intent1);
     }
 
-//    private void SetAirplaneMode(){
-//        if (android.os.Build.VERSION.SDK_INT < 17) {
-//            try {
-//                // read the airplane mode setting
-//                boolean isEnabled = Settings.System.getInt(
-//                        getContentResolver(),
-//                        Settings.System.AIRPLANE_MODE_ON, 0) == 1;
-//
-//                // toggle airplane mode
-//                Settings.System.putInt(
-//                        getContentResolver(),
-//                        Settings.System.AIRPLANE_MODE_ON, isEnabled ? 0 : 1);
-//
-//                // Post an intent to reload
-//                Intent intent = new Intent(Intent.ACTION_AIRPLANE_MODE_CHANGED);
-//                intent.putExtra("state", !isEnabled);
-//                sendBroadcast(intent);
-//            } catch (ActivityNotFoundException e) {
-//
-//            }
-//        } else {
-//            try {
-//                Intent intent = new Intent(android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent);
-//            } catch (ActivityNotFoundException e) {
-//                try {
-//                    Intent intent = new Intent("android.settings.WIRELESS_SETTINGS");
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(intent);
-//                } catch (ActivityNotFoundException ex) {
-//
-//                }
-//            }
-//        }
-//    }
 
     private BroadcastReceiver mBatInfoReceiver = new BroadcastReceiver() {
         @Override

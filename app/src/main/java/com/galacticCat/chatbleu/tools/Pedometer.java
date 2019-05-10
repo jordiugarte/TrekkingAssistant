@@ -17,7 +17,7 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
     private TextView stepsView;
     private TextView distanceView;
     private int steps;
-    private int distance;
+    private float distance;
     private Stats stats;
 
     public Pedometer(Context context, TextView stepsView, TextView distanceView, Stats stats) {
@@ -50,15 +50,9 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
     @Override
     public void onSensorChanged(SensorEvent event) {
         Sensor sensor = event.sensor;
-        float[] values = event.values;
-        int value = -1;
-
-        if (values.length > 0) {
-            value = (int) values[0];
-        }
         if (sensor.getType() == Sensor.TYPE_STEP_DETECTOR) {
             steps++;
-            distance += steps / 2;
+            distance += 0.5;
         }
         distanceView.setText(distance + "m");
         stepsView.setText("" + steps);

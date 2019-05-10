@@ -17,7 +17,7 @@ import java.io.InputStreamReader;
 public class Stats {
 
     private int steps;
-    private int distance;
+    private float distance;
     private float weight;
     private int timeHours;
     private int timeMinutes;
@@ -34,7 +34,7 @@ public class Stats {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         steps = sharedPreferences.getInt("STEPS", 0);
-        distance = sharedPreferences.getInt("DISTANCE", 0);
+        distance = sharedPreferences.getFloat("DISTANCE", 0);
         weight = sharedPreferences.getFloat("WEIGHTF", 0);
         timeHours = sharedPreferences.getInt("HOURS", 0);
         timeMinutes = sharedPreferences.getInt("MINUTES", 0);
@@ -46,7 +46,7 @@ public class Stats {
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putInt("STEPS", steps);
-        editor.putInt("DISTANCE", distance);
+        editor.putFloat("DISTANCE", distance);
         editor.putFloat("WEIGHTF", weight);
         editor.putInt("HOURS", timeHours);
         editor.putInt("MINUTES", timeMinutes);
@@ -63,11 +63,11 @@ public class Stats {
         steps = s;
     }
 
-    public void setDistance(int d){
+    public void setDistance(float d){
         distance = d;
     }
 
-    public int getDistance(){
+    public float getDistance(){
         return distance;
     }
 

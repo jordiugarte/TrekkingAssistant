@@ -11,11 +11,11 @@ public class RealTimeStats {
     private TextView speedView;
 
     private float speed;
-    private int inicialDistance;
-    private int lastDistance;
+    private float inicialDistance;
+    private float lastDistance;
     private int inicialSteps;
     private int lastSteps;
-    private int distance;
+    private float distance;
     private int steps;
 
     public RealTimeStats(Context context, final TextView stepsPerHour, final TextView speedView, final Activity activity, final Stats stats) {

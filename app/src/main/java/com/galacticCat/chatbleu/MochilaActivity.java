@@ -39,22 +39,23 @@ public class MochilaActivity extends AppCompatActivity {
     private ItemAdapter adapter;
     private DataBase2Helper dbmochila;
     private Context mContext = this;
-    private Gson gson = new Gson();
 
     private float weightFloat;
-    private CallbackInterface callbackInterface;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mochila);
         dbmochila = new DataBase2Helper(this.mContext);
-        setLiteners();
 
+        setLiteners();
+        sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         items = populateListView();
         adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
 
+        weightFloat = sharedPreferences.getFloat("W", 0);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -76,6 +77,8 @@ public class MochilaActivity extends AppCompatActivity {
                 removeItem(item);
             }
         });
+//        currentWeightView.setText(weightFloat + "kg");
+
     }
 
     public ArrayList<Item> populateListView() {
@@ -93,23 +96,20 @@ public class MochilaActivity extends AppCompatActivity {
 
     public void addItem(String name, String weight) {
         items.add(new Item(name, weight, false));
+        float weightItem = Float.parseFloat(weight);
         adapter = new ItemAdapter(this, items);
-        weightFloat += (float) Integer.parseInt(weight);
-        currentWeightView.setText(weightFloat + "kg");
+        weightFloat += weightItem;
         listView.setAdapter(adapter);
         Item item = new Item(name, weight, false);
-        addWeightPreferences();
         dbmochila.insert(item);
-
-        //TODO hacer que cree una fila
+        addWeightPreferences();
     }
 
     public void removeItem(Item item) {
         String name = item.getName();
-        weightFloat -= (float) Integer.parseInt(item.getWeight());
-        currentWeightView.setText(weightFloat + "kg");
+        float weightItem = Float.parseFloat(item.getWeight());
+        weightFloat -= weightItem;
         items.remove(item);
-        adapter = new ItemAdapter(this, items);
         listView.setAdapter(adapter);
         new Notification(this, name + " removed", R.drawable.mochila);
         dbmochila.delete(item);
@@ -117,8 +117,11 @@ public class MochilaActivity extends AppCompatActivity {
     }
 
     public void addWeightPreferences() {
-        Stats stats = new Stats(getApplicationContext());
-        stats.setWeight(weightFloat);
-        stats.saveData();
+//        Stats stats = new Stats(getApplicationContext());
+//        stats.setWeight(weightFloat);
+//        stats.saveData();
+        currentWeightView.setText(weightFloat + "kg");
+        sharedPreferences.edit().putFloat("W", weightFloat);
+        sharedPreferences.edit().commit();
     }
 }
