@@ -77,7 +77,7 @@ public class MochilaActivity extends AppCompatActivity {
                 removeItem(item);
             }
         });
-//        currentWeightView.setText(weightFloat + "kg");
+        currentWeightView.setText(weightFloat + "kg");
 
     }
 
@@ -121,7 +121,8 @@ public class MochilaActivity extends AppCompatActivity {
 //        stats.setWeight(weightFloat);
 //        stats.saveData();
         currentWeightView.setText(weightFloat + "kg");
-        sharedPreferences.edit().putFloat("W", weightFloat);
-        sharedPreferences.edit().commit();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("W", weightFloat);
+        editor.commit();
     }
 }
