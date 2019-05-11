@@ -33,7 +33,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pop_up);
+        setContentView(R.layout.activity_timer);
 
         DisplayMetrics window = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(window);
