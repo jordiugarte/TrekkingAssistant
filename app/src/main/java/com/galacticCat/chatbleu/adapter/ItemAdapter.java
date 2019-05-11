@@ -4,6 +4,7 @@ import com.galacticCat.chatbleu.R;
 import com.galacticCat.chatbleu.model.Item;
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,45 +12,46 @@ import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
-public class ItemAdapter extends BaseAdapter {
+public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder> {
 
-    private Activity context;
     private ArrayList<Item> items;
     private static LayoutInflater inflater = null;
 
-    public ItemAdapter(Activity context, ArrayList<Item> items) {
-        this.context = context;
+    public ItemAdapter(ArrayList<Item> items) {
         this.items = items;
-        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public static class ItemViewHolder extends RecyclerView.ViewHolder {
+        public TextView name;
+        public TextView weight;
+
+        public ItemViewHolder (View v) {
+            super(v);
+            name = (TextView)v.findViewById(R.id.nameItem);
+            weight = (TextView)v.findViewById(R.id.weightItem);
+        }
     }
 
     @Override
-    public int getCount() {
+    public int getItemCount() {
         return items.size();
     }
 
     @Override
-    public Object getItem(int position) {
-        return items.get(position);
+    public ItemViewHolder onCreateViewHolder(ViewGroup viewGroup, int i){
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.layout_item, viewGroup, false);
+        return new ItemViewHolder(v);
     }
 
     @Override
-    public long getItemId(int position) {
-        return position;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View itemView = convertView;
-        itemView = (itemView == null) ? inflater.inflate(R.layout.layout_item, null): itemView;
-        TextView textViewName = (TextView)itemView.findViewById(R.id.nameItem);
-        TextView textViewWeight = (TextView)itemView.findViewById(R.id.weightItem);
-        Item selectedItem = items.get(position);
-        textViewName.setText(selectedItem.getName());
-        textViewWeight.setText(selectedItem.getWeight() + "kg");
-        return itemView;
+    public void onBindViewHolder(ItemViewHolder viewHolder, int i) {
+        viewHolder.name.setText(items.get(i).getName());
+        viewHolder.weight.setText(items.get(i).getWeight() + "kg");
     }
 
 }

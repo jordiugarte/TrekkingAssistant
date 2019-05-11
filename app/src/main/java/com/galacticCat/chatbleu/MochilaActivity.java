@@ -5,8 +5,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -15,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ItemAdapter;
+import com.galacticCat.chatbleu.adapter.RecyclerItemClickListener;
 import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.db.DataBase2Helper;
 import com.galacticCat.chatbleu.db.DataBaseMochila;
@@ -25,18 +30,23 @@ import java.util.ArrayList;
 import com.galacticCat.chatbleu.services.Notification;
 import com.google.gson.Gson;
 
+
 import static com.galacticCat.chatbleu.data.Stats.SHARED_PREFS;
 
-public class MochilaActivity extends AppCompatActivity {
+public class MochilaActivity extends AppCompatActivity implements RecyclerView.OnItemTouchListener {
 
-    private ListView listView;
-    private ArrayList<Item> items = new ArrayList<>();
+    private RecyclerView listView;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+    private ArrayList<Item> items;
 
     private TextView nameText;
     private TextView weightText;
+
     private TextView currentWeightView;
     private Button addButton;
-    private ItemAdapter adapter;
+
     private DataBase2Helper dbmochila;
     private Context mContext = this;
 
@@ -52,7 +62,10 @@ public class MochilaActivity extends AppCompatActivity {
         setLiteners();
         sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         items = populateListView();
-        adapter = new ItemAdapter(this, items);
+
+        layoutManager = new LinearLayoutManager(this);
+        listView.setLayoutManager(layoutManager);
+        adapter = new ItemAdapter(items);
         listView.setAdapter(adapter);
 
         weightFloat = sharedPreferences.getFloat("W", 0);
@@ -70,15 +83,18 @@ public class MochilaActivity extends AppCompatActivity {
             }
         });
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Item item = items.get(position);
-                removeItem(item);
-            }
-        });
-        currentWeightView.setText(weightFloat + "kg");
+        listView.addOnItemTouchListener(
+                new RecyclerItemClickListener(this, listView ,new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override public void onItemClick(View view, int position) {
+                        removeItem(items.get(position));
+                    }
 
+                    @Override public void onLongItemClick(View view, int position) {
+                        // do whatever
+                    }
+                })
+        );
+        currentWeightView.setText(weightFloat + "kg");
     }
 
     public ArrayList<Item> populateListView() {
@@ -87,20 +103,21 @@ public class MochilaActivity extends AppCompatActivity {
     }
 
     public void setLiteners() {
-        listView = (ListView) findViewById(R.id.listsView);
+        listView = (RecyclerView) findViewById(R.id.listView);
         nameText = findViewById(R.id.nameField);
         weightText = findViewById(R.id.weightField);
         addButton = findViewById(R.id.addItemButton);
         currentWeightView = findViewById(R.id.weightCurrent);
+//        listView.setHasFixedSize(true);
     }
 
     public void addItem(String name, String weight) {
-        items.add(new Item(name, weight, false));
+        Item item = new Item(name, weight);
+        items.add(item);
         float weightItem = Float.parseFloat(weight);
-        adapter = new ItemAdapter(this, items);
+        adapter = new ItemAdapter(items);
         weightFloat += weightItem;
         listView.setAdapter(adapter);
-        Item item = new Item(name, weight, false);
         dbmochila.insert(item);
         addWeightPreferences();
     }
@@ -124,5 +141,20 @@ public class MochilaActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putFloat("W", weightFloat);
         editor.commit();
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+        return false;
+    }
+
+    @Override
+    public void onTouchEvent(@NonNull RecyclerView recyclerView, @NonNull MotionEvent motionEvent) {
+
+    }
+
+    @Override
+    public void onRequestDisallowInterceptTouchEvent(boolean b) {
+
     }
 }

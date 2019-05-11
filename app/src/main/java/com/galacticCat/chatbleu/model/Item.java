@@ -5,10 +5,9 @@ public class Item {
     private String weight;
     private boolean check;
 
-    public Item(String name, String weight, boolean check) {
+    public Item(String name, String weight) {
         this.name = name;
         this.weight = weight;
-        this.check = check;
     }
 
     public Item() {
@@ -31,7 +30,4 @@ public class Item {
         this.weight = weight;
     }
 
-    public void setCheck(boolean check) {
-        this.check = check;
-    }
 }
