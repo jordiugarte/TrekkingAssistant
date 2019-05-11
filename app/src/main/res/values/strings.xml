@@ -18,10 +18,39 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">Login failed</string>
     <string name="title_activity_login" translatable="false">Sign in</string>
-    <string name="flashlight_On">Flashlight: ON</string>
-    <string name="flashlight_Off">Flashlight: OFF</string>
+    <string name="flashlight_on">Flashlight: ON</string>
+    <string name="flashlight_off">Flashlight: OFF</string>
     <string name="flashlight_alert">First turn off your SOS Flashlight!</string>
+    <string name="sos_flashlight_off">SOS Flashlight: OFF</string>
     <string name="sos_flashlight_on">SOS Flashlight: ON</string>
-
-
+    <string name="weight">"Weight: "</string>
+    <string name="age">"Age: "</string>
+    <string name="bag_weight">"Bag Weight: "</string>
+    <string name="batery_75">Batery less than 75%</string>
+    <string name="batery_50">Batery less than 50%</string>
+    <string name="batery_25">Batery less than 25%</string>
+    <string name="batery_15">Batery less than 15%</string>
+    <string name="batery_10">Batery less than 10%</string>
+    <string name="batery_5">Batery less than 5%</string>
+    <string name="camping_on">Camping mode: ON</string>
+    <string name="exit_message">Are you sure you want to exit?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="camping_off">Camping mode: OFF</string>
+    <string name="data_alert">Enter valid data</string>
+    <string name="removed_item"> Removed</string>
+    <string name="signup">Sign Up</string>
+    <string name="creating_mesage">Creating Account...</string>
+    <string name="signUp_error">Sign Up failed</string>
+    <string name="weight_error">Enter a valid weight</string>
+    <string name="name_error">Enter at least 3 characters</string>
+    <string name="edit_contact">Edit Contact</string>
+    <string name="exit_save">Exit and Save</string>
+    <string name="call">Call</string>
+    <string name="age_error">Enter a valid age</string>
+    <string name="field_error">This field should not be empty</string>
+    <string name="positive_error">Please enter a positive number</string>
+    <string name="number_error">Please enter a number first</string>
+    <string name="pause">Pause</string>
+    <string name="start">Start</string>
 </resources>

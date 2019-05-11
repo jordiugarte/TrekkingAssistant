@@ -123,10 +123,10 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 if (sos == null) {
                     if (flashlightButton.isChecked()) {
                         flash = new Flashlight(MainActivity.this, context, true);
-                        new Notification(context, "Flashlight: ON", R.drawable.flashlight);
+                        new Notification(context,getResources().getString(R.string.flashlight_on), R.drawable.flashlight);
                     } else {
                         flash = new Flashlight(MainActivity.this, context, false);
-                        new Notification(context, "Flashlight: OFF", R.drawable.flashlight);
+                        new Notification(context, getResources().getString(R.string.flashlight_on), R.drawable.flashlight);
                         flash = null;
                     }
                 } else {
@@ -145,15 +145,15 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                     }
                     if (sosButton.isChecked()) {
                         sos.turnFlashLight();
-                        new Notification(context, "SOS Flashlight: ON", R.drawable.sos);
+                        new Notification(context, getResources().getString(R.string.sos_flashlight_on), R.drawable.sos);
                     } else {
                         sos.stopFlashLight();
                         sos = null;
                         new Flashlight(MainActivity.this, context, false);
-                        new Notification(context, "SOS Flashlight: OFF", R.drawable.sos);
+                        new Notification(context, getResources().getString(R.string.sos_flashlight_off), R.drawable.sos);
                     }
                 } else {
-                    makeToast("First turn off your Flashlight!");
+                    makeToast(getResources().getString(R.string.flashlight_alert));
                 }
             }
         });
@@ -219,8 +219,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         int age = sharedPreferences.getInt("AGE_USER", 0);
 
         userView.setText(name);
-        uWeightView.setText("Weight: " + weight);
-        ageView.setText("Age: " + age);
+        uWeightView.setText(getResources().getString(R.string.weight) + weight);
+        ageView.setText(getResources().getString(R.string.age) + age);
     }
 
     @Override
@@ -237,9 +237,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         float weightBag = sharedPreferences.getFloat("W", 0.0f);
 
         userView.setText(name);
-        uWeightView.setText("Weight: " + weight);
-        ageView.setText("Age: " + age);
-        weightView.setText("Bag weight: " + weightBag + "kg");
+        uWeightView.setText(getResources().getString(R.string.weight) + weight);
+        ageView.setText(getResources().getString(R.string.age) + age);
+        weightView.setText(getResources().getString(R.string.bag_weight) + weightBag + "kg");
     }
 
     @Override
@@ -353,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             }
             layout.setBackgroundColor(defaultColorBackground);
 
-            new Notification(context, "Camping Mode: ON", R.drawable.camp_mode);
+            new Notification(context,getResources().getString(R.string.camping_on) , R.drawable.camp_mode);
 
         } else {
 //            SetAirplaneMode();
@@ -366,7 +366,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             defaultColorText = getResources().getColor(R.color.defaultWhite);
             defaultUser = R.drawable.user;
             layout.setBackground(getResources().getDrawable(R.drawable.backgroundforest));
-            new Notification(context, "Camping Mode: OFF", R.drawable.camp_mode);
+            new Notification(context, getResources().getString(R.string.camping_off), R.drawable.camp_mode);
         }
 
         //Button Views
@@ -398,15 +398,15 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     @Override
     public void onBackPressed() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setMessage("Are you sure you want to exit?")
+        builder.setMessage(getResources().getString(R.string.exit_message))
                 .setCancelable(false)
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         stats.saveData();
                         MainActivity.this.finish();
                     }
                 })
-                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getResources().getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         dialog.cancel();
                     }
@@ -428,17 +428,17 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             batteryView.setText(String.valueOf(level) + "%");
             if (level < 70) {
-                new Notification(context, "Bateria menor al 75%", R.drawable.flashlight);
+                new Notification(context, getResources().getString(R.string.batery_75), R.drawable.flashlight);
             } else if (level < 50) {
-                new Notification(context, "Bateria menor al 50%", R.drawable.flashlight);
+                new Notification(context, getResources().getString(R.string.batery_50), R.drawable.flashlight);
             } else if (level < 25) {
-                new Notification(context, "Bateria menor al 25%", R.drawable.flashlight);
+                new Notification(context, getResources().getString(R.string.batery_25), R.drawable.flashlight);
             } else if (level < 15) {
-                new Notification(context, "Bateria menor al 15%", R.drawable.flashlight);
+                new Notification(context, getResources().getString(R.string.batery_15), R.drawable.flashlight);
             } else if (level < 10) {
-                new Notification(context, "Bateria menor al 10%", R.drawable.flashlight);
+                new Notification(context, getResources().getString(R.string.batery_10), R.drawable.flashlight);
             } else if (level < 5) {
-                new Notification(context, "Bateria menor al 5%", R.drawable.flashlight);
+                new Notification(context, getResources().getString(R.string.batery_5), R.drawable.flashlight);
             }
         }
     };

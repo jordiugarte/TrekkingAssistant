@@ -65,7 +65,7 @@ public class MochilaActivity extends AppCompatActivity {
                     String weight = weightText.getText().toString();
                     addItem(name, weight);
                 } catch (Exception e) {
-                    Toast.makeText(getApplicationContext(), "Ingresa datos validos", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getResources().getString(R.string.data_alert), Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -111,7 +111,7 @@ public class MochilaActivity extends AppCompatActivity {
         weightFloat -= weightItem;
         items.remove(item);
         listView.setAdapter(adapter);
-        new Notification(this, name + " removed", R.drawable.mochila);
+        new Notification(this, name + getResources().getString(R.string.removed_item), R.drawable.mochila);
         dbmochila.delete(item);
         addWeightPreferences();
     }

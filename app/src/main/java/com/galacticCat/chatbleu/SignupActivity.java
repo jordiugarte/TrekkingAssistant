@@ -63,7 +63,7 @@ public class SignupActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
                 R.style.AppTheme);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
+        progressDialog.setMessage(getResources().getString(R.string.creating_mesage));
         progressDialog.show();
 
         final String name = _nameText.getText().toString();
@@ -91,7 +91,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "SignUp failed", Toast.LENGTH_LONG).show();
+        Toast.makeText(getBaseContext(), getResources().getString(R.string.signUp_error), Toast.LENGTH_LONG).show();
 
         _signupButton.setEnabled(true);
     }
@@ -104,20 +104,20 @@ public class SignupActivity extends AppCompatActivity {
         int peso = Integer.parseInt(_pesoText.getText().toString());
 
         if (name.isEmpty() || name.length() < 3) {
-            _nameText.setError("at least 3 characters");
+            _nameText.setError(getResources().getString(R.string.name_error));
             valid = false;
         } else {
             _nameText.setError(null);
         }
 
         if (edad < 0 || edad > 100) {
-            _edadText.setError("enter a valid age");
+            _edadText.setError(getResources().getString(R.string.age_error));
             valid = false;
         } else {
             _edadText.setError(null);
         }
         if (peso < 1 || peso > 120 ) {
-            _pesoText.setError("enter a valid weight");
+            _pesoText.setError(getResources().getString(R.string.weight_error));
             valid = false;
         } else {
             _pesoText.setError(null);

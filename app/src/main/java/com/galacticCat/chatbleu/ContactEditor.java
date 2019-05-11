@@ -37,8 +37,8 @@ public class ContactEditor extends AppCompatDialogFragment {
 
         nombre.getText().toString();
         builder.setView(view)
-                .setTitle("Editar Contacto")
-                .setNegativeButton("salir y guardar", new DialogInterface.OnClickListener() {
+                .setTitle(getResources().getString(R.string.edit_contact))
+                .setNegativeButton(getResources().getString(R.string.exit_save), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         String username = editName.getText().toString();
@@ -46,7 +46,7 @@ public class ContactEditor extends AppCompatDialogFragment {
                         listener.applyTexts(username, password);
                     }
                 })
-                .setPositiveButton("llamar", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getResources().getString(R.string.call), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         startActivity(new Intent(Intent.ACTION_DIAL, Uri.fromParts("tel", numero.getText().toString(), null)));

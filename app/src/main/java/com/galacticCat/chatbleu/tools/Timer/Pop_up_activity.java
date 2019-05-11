@@ -56,13 +56,13 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
             public void onClick(View v) {
                 String input = mEditText.getText().toString();
                 if(input.length()==0){
-                    Toast.makeText(Pop_up_activity.this , "El campo no debe estar vacio", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Pop_up_activity.this , getResources().getString(R.string.field_error), Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 long millisInput = Long.parseLong(input)*60000;
                 if(millisInput<0){
-                    Toast.makeText(Pop_up_activity.this, "Porfavor introduzca un numero positivo", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Pop_up_activity.this, getResources().getString(R.string.positive_error), Toast.LENGTH_LONG).show();
                     return;
                 }
                 setTime(millisInput);
@@ -78,7 +78,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
                     pauseTimer();
                 else {
                     if(startTime==0) {
-                        Toast.makeText(Pop_up_activity.this, "Porfavor introduzca un numero primero", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Pop_up_activity.this, getResources().getString(R.string.number_error), Toast.LENGTH_LONG).show();
                         return;
                     }
                     else
@@ -113,7 +113,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
         Timer.getInstance().startTimer();
 
         timerRunnig = true;
-        mBtnStartPause.setText("Pausa");
+        mBtnStartPause.setText(getResources().getString(R.string.pause));
         updateCountDownText();
         mBtnReset.setVisibility(View.INVISIBLE);
         mBtnSet.setVisibility(View.INVISIBLE);
@@ -123,7 +123,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
     private void pauseTimer() {
         Timer.getInstance().pauseTimer();
         timerRunnig = false;
-        mBtnStartPause.setText("Iniciar");
+        mBtnStartPause.setText(getResources().getString(R.string.start));
         mBtnReset.setVisibility(View.VISIBLE);
         mBtnSet.setVisibility(View.VISIBLE);
         mEditText.setVisibility(View.VISIBLE);
@@ -166,7 +166,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
     @Override
     public void onFinish() {
         timerRunnig = false;
-        mBtnStartPause.setText("Iniciar");
+        mBtnStartPause.setText(getResources().getString(R.string.start));
         mBtnStartPause.setVisibility(View.INVISIBLE);
         mBtnReset.setVisibility(View.VISIBLE);
         Vibrator vibrator = (Vibrator) getApplicationContext().getSystemService(Context.VIBRATOR_SERVICE);
