@@ -1,9 +1,6 @@
 package com.galacticCat.chatbleu;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,23 +9,18 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ItemAdapter;
 import com.galacticCat.chatbleu.adapter.RecyclerItemClickListener;
-import com.galacticCat.chatbleu.data.Stats;
 import com.galacticCat.chatbleu.db.DataBase2Helper;
-import com.galacticCat.chatbleu.db.DataBaseMochila;
 import com.galacticCat.chatbleu.model.Item;
 
 import java.util.ArrayList;
 
 import com.galacticCat.chatbleu.services.Notification;
-import com.google.gson.Gson;
 
 
 import static com.galacticCat.chatbleu.data.Stats.SHARED_PREFS;

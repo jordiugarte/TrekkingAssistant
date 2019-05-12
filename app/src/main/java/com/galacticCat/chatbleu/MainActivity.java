@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private SOSFlashlight sos;
     private Flashlight flash;
 
-    //    private Gps gps;
+        private Gps gps;
 
     //Background
     private ConstraintLayout layout,
@@ -81,7 +81,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     //Buttons
     private Button listsButton, personalDataButton,
             mapsButton,
-            contactsbutton;
+            contactsbutton,
+            objectivesbutton;
 
     //Images
     private ImageView compass,
@@ -286,15 +287,15 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         userView = findViewById(R.id.user_view);
         ageView = findViewById(R.id.age_view);
         uWeightView = findViewById(R.id.personalWeight_view);
+        objectivesbutton = findViewById(R.id.ojectivesButton);
     }
 
     private void setTools() {
-        //        gps = new Gps(locationView);
         rStats = new RealTimeStats(context, stepsPerHourView, speedView, MainActivity.this, stats);
         clockTool = new Clock(dateView, timeView, timeOfTravelView, MainActivity.this, stats);
         compassTool = new Compass(context, compass);
         pedometer = new Pedometer(context, stepsView, distanceView, stats);
-
+        //gps = new Gps(locationView);
     }
 
     private void makeToast(String message) {
@@ -313,6 +314,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         int defaultSteps = 0;
         int defaultBattery = 0;
         int defaultUser = 0;
+        int defaultContacts = 0;
+        int defaultObjectives = 0;
 
         if (active) {
             //Settings
@@ -334,6 +337,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultSteps = R.drawable.steps;
                 defaultBattery = R.drawable.battery;
                 defaultUser = R.drawable.user;
+                defaultContacts = R.drawable.contacts;
+                defaultObjectives = R.drawable.objectives;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6) {
@@ -349,6 +354,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultSteps = R.drawable.steps_black;
                 defaultBattery = R.drawable.battery_black;
                 defaultUser = R.drawable.user_black;
+                defaultContacts = R.drawable.contactsblack;
+                defaultObjectives = R.drawable.objectives_black;
 
             }
             layout.setBackgroundColor(defaultColorBackground);
@@ -365,6 +372,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             defaultBattery = R.drawable.battery;
             defaultColorText = getResources().getColor(R.color.defaultWhite);
             defaultUser = R.drawable.user;
+            defaultContacts = R.drawable.contacts;
+            defaultObjectives = R.drawable.objectives;
+
             layout.setBackground(getResources().getDrawable(R.drawable.backgroundforest));
             new Notification(context, getResources().getString(R.string.camping_off), R.drawable.camp_mode);
         }
@@ -375,6 +385,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         campingButton.setBackgroundDrawable(this.getResources().getDrawable(defaultCamping));
         battery.setBackgroundDrawable(this.getResources().getDrawable(defaultBattery));
         personalDataButton.setBackground(this.getResources().getDrawable(defaultUser));
+        contactsbutton.setBackground(this.getResources().getDrawable(defaultContacts));
+        objectivesbutton.setBackground(this.getResources().getDrawable(defaultObjectives));
 
         //Image Views
         compass.setImageResource(defaultCompass);

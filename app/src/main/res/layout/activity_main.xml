@@ -321,14 +321,24 @@
 
     <Button
         android:id="@+id/contactsbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="72dp"
-        android:layout_marginEnd="8dp"
-        android:text="Contacts"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/contacts"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.552"
+        app:layout_constraintLeft_toRightOf="@id/personal_Data"
+        app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toEndOf="@+id/personal_Data"
-        app:layout_constraintTop_toBottomOf="@+id/tools" />
+        app:layout_constraintTop_toTopOf="@id/personal_Data" />
+
+    <Button
+        android:id="@+id/ojectivesButton"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:background="@drawable/objectives"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/personal_Data"
+        app:layout_constraintTop_toBottomOf="@id/tools"
+        app:layout_constraintTop_toTopOf="@id/personal_Data" />
 
 </android.support.constraint.ConstraintLayout>
