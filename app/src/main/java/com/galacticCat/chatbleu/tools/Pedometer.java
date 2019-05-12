@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 
 import com.galacticCat.chatbleu.MainActivity;
+import com.galacticCat.chatbleu.R;
 import com.galacticCat.chatbleu.data.Stats;
 
 public class Pedometer extends AppCompatActivity implements SensorEventListener {
@@ -30,7 +31,7 @@ public class Pedometer extends AppCompatActivity implements SensorEventListener 
         distance = stats.getDistance();
         steps = stats.getSteps();
 
-        distanceView.setText("Distance: " + distance + "m");
+        distanceView.setText(context.getResources().getString(R.string.distance_1) + distance + "m");
         stepsView.setText("" + steps);
         stats.setSteps(steps);
         stats.setDistance(distance);

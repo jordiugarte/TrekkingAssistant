@@ -3,6 +3,7 @@ package com.galacticCat.chatbleu.data;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.galacticCat.chatbleu.R;
 import com.google.android.gms.common.internal.safeparcel.SafeParcelable;
 
 import java.io.BufferedReader;
@@ -45,12 +46,12 @@ public class Stats {
         SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putInt("STEPS", steps);
-        editor.putFloat("DISTANCE", distance);
-        editor.putFloat("WEIGHTF", weight);
-        editor.putInt("HOURS", timeHours);
-        editor.putInt("MINUTES", timeMinutes);
-        editor.putInt("SECONDS", timeSeconds);
+        editor.putInt(context.getResources().getString(R.string.steps), steps);
+        editor.putFloat(context.getResources().getString(R.string.distance), distance);
+        editor.putFloat(context.getResources().getString(R.string.weight_s), weight);
+        editor.putInt(context.getResources().getString(R.string.hours), timeHours);
+        editor.putInt(context.getResources().getString(R.string.minutes), timeMinutes);
+        editor.putInt(context.getResources().getString(R.string.seconds), timeSeconds);
 
         editor.commit();
     }

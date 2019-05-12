@@ -16,7 +16,6 @@
     <string name="welcome">"Welcome !"</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
-    <string name="login_failed">Login failed</string>
     <string name="title_activity_login" translatable="false">Sign in</string>
     <string name="flashlight_on">Flashlight: ON</string>
     <string name="flashlight_off">Flashlight: OFF</string>
@@ -53,4 +52,19 @@
     <string name="number_error">Please enter a number first</string>
     <string name="pause">Pause</string>
     <string name="start">Start</string>
+    <string name="steps">STEPS</string>
+    <string name="distance">DISTANCE</string>
+    <string name="distance_1">Distance: </string>
+    <string name="weight_s">WEIGHT</string>
+    <string name="hours">HOURS</string>
+    <string name="minutes">MINUTES</string>
+    <string name="seconds">SECONDS</string>
+    <string name="distance_ph">Distance per hour: </string>
+    <string name="steps_ph">Steps per hour: </string>
+    <string name="time_passed">Time Passed: </string>
+    <string name="authenticating">Authenticating...</string>
+    <string name="login_failed">Login Failed</string>
+    <string name="email_error">Enter a valid email</string>
+
+
 </resources>

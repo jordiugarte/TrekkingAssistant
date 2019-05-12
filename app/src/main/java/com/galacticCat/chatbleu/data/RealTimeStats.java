@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.widget.TextView;
 
+import com.galacticCat.chatbleu.R;
+
 
 public class RealTimeStats {
 
@@ -18,11 +20,11 @@ public class RealTimeStats {
     private float distance;
     private int steps;
 
-    public RealTimeStats(Context context, final TextView stepsPerHour, final TextView speedView, final Activity activity, final Stats stats) {
+    public RealTimeStats(final Context context, final TextView stepsPerHour, final TextView speedView, final Activity activity, final Stats stats) {
         this.stepsPerHourView = stepsPerHour;
         this.speedView = speedView;
 
-        speedView.setText("Distance per hour: 0");
+        speedView.setText(context.getResources().getString(R.string.distance_ph)+"0");
         Thread t1 = new Thread(){
             @Override
             public void run(){
@@ -37,7 +39,7 @@ public class RealTimeStats {
                             @Override
                             public void run() {
                                 speed = distance / 10;
-                                speedView.setText("Distance per hour: " + speed * 360);
+                                speedView.setText(context.getResources().getString(R.string.distance_ph) + speed * 360);
                             }
                         });
                     }
@@ -47,7 +49,7 @@ public class RealTimeStats {
             }
         };
 
-        stepsPerHour.setText("Steps per hour: 0");
+        stepsPerHour.setText(context.getResources().getString(R.string.steps_ph)+ "0");
         Thread t2 = new Thread(){
             @Override
             public void run(){
@@ -61,7 +63,7 @@ public class RealTimeStats {
                         activity.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                stepsPerHour.setText("Steps per hour: " + speed * 360);
+                                stepsPerHour.setText(context.getResources().getString(R.string.steps_ph) + speed * 360);
                             }
                         });
                     }

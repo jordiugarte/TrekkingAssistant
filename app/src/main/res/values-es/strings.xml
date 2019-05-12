@@ -51,4 +51,16 @@
     <string name="pause">Pausa</string>
     <string name="positive_error">Por favor introduzca un número positivo</string>
     <string name="start">Iniciar</string>
+    <string name="distance">DISTANCIA</string>
+    <string name="hours">HORAS</string>
+    <string name="minutes">MINUTOS</string>
+    <string name="seconds">SEGUNDOS</string>
+    <string name="steps">PASOS</string>
+    <string name="weight_s">PESO</string>
+    <string name="steps_ph">"Pasos por hora: "</string>
+    <string name="distance_ph">"Distancia por hora: "</string>
+    <string name="time_passed">"Tiempo transcurrido: "</string>
+    <string name="distance_1">"Distancia: "</string>
+    <string name="authenticating">Autenticando...</string>
+    <string name="email_error">Ingrese un correo electronico valido</string>
 </resources>

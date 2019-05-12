@@ -1,8 +1,10 @@
 package com.galacticCat.chatbleu.tools;
 
 import android.app.Activity;
+import android.content.Context;
 import android.widget.TextView;
 
+import com.galacticCat.chatbleu.R;
 import com.galacticCat.chatbleu.data.Stats;
 
 import java.text.SimpleDateFormat;
@@ -17,6 +19,7 @@ public class Clock {
     private int secondsPassed;
     private int minutesPassed;
     private int hoursPassed;
+    private Context context;
 
     public Clock (final TextView dateView, final TextView timeView, final TextView timeOfTravelView, final Activity activity, final Stats stats) {
         this.stats = stats;
@@ -74,7 +77,7 @@ public class Clock {
                                 stats.setTimeMinutes(minutesPassed);
                                 stats.setTimeSeconds(secondsPassed);
 
-                                timeOfTravelView.setText("Time passed: " + extraCero1 + hoursPassed + ":" + extraCero2 + minutesPassed + ":" + extraCero3 + secondsPassed);
+                                timeOfTravelView.setText(context.getResources().getString(R.string.time_passed) + extraCero1 + hoursPassed + ":" + extraCero2 + minutesPassed + ":" + extraCero3 + secondsPassed);
                             }
                         });
                         Thread.sleep(1000);
