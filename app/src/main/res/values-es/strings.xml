@@ -63,4 +63,16 @@
     <string name="distance_1">"Distancia: "</string>
     <string name="authenticating">Autenticando...</string>
     <string name="email_error">Ingrese un correo electronico valido</string>
+    <string name="weight_1">Peso</string>
+    <string name="name">Nombre</string>
+    <string name="add">Agregar</string>
+    <string name="age_1">Edad</string>
+    <string name="create_account">Crear Cuenta</string>
+    <string name="emergency_contacts">Contactos de Emergencia</string>
+    <string name="timer">Temporizador</string>
+    <string name="minutes_1">Minutos</string>
+    <string name="change">Cambiar</string>
+    <string name="restart">Reiniciar</string>
+    <string name="number">Número</string>
+    <string name="contact_name">Nombre: Contacto</string>
 </resources>

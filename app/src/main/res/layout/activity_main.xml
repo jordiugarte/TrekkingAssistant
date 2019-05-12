@@ -332,7 +332,7 @@
         app:layout_constraintTop_toTopOf="@id/personal_Data" />
 
     <Button
-        android:id="@+id/ojectivesButton"
+        android:id="@+id/objectivesButton"
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:background="@drawable/objectives"

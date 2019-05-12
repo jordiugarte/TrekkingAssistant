@@ -31,7 +31,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_margin="10dp"
                 android:padding="10dp"
-                android:text="Temporizador"
+                android:text="@string/timer"
                 android:textColor="@color/defaultBlack"
                 android:textSize="35dp"
                 android:textStyle="bold" />
@@ -47,7 +47,7 @@
                 android:layout_width="130dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:hint="Minutos"
+                android:hint="@string/minutes_1"
 
                 android:inputType="number"
 
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:text="Cambiar"
+                android:text="@string/change"
                 android:textColor="@color/defaultBlack" />
         </LinearLayout>
 
@@ -86,7 +86,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Iniciar"
+                android:text="@string/start"
 
                 android:textColor="@color/defaultBlack" />
 
@@ -95,7 +95,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Reiniciar"
+                android:text="@string/restart"
                 android:textColor="@color/defaultBlack" />
 
         </LinearLayout>
