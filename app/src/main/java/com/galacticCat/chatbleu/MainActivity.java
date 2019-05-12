@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                         new Notification(context,getResources().getString(R.string.flashlight_on), R.drawable.flashlight);
                     } else {
                         flash = new Flashlight(MainActivity.this, context, false);
-                        new Notification(context, getResources().getString(R.string.flashlight_on), R.drawable.flashlight);
+                        new Notification(context, getResources().getString(R.string.flashlight_off), R.drawable.flashlight);
                         flash = null;
                     }
                 } else {
@@ -287,7 +287,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         userView = findViewById(R.id.user_view);
         ageView = findViewById(R.id.age_view);
         uWeightView = findViewById(R.id.personalWeight_view);
-        objectivesbutton = findViewById(R.id.ojectivesButton);
+        objectivesbutton = findViewById(R.id.objectivesButton);
     }
 
     private void setTools() {

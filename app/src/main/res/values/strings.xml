@@ -77,6 +77,7 @@
     <string name="restart">Restart</string>
     <string name="number">Number</string>\
     <string name="contact_name">Name: Contact</string>
+    <string name="backpack">Backpack</string>
 
 
 </resources>
