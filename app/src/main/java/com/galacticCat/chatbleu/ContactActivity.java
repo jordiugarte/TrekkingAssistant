@@ -50,7 +50,6 @@ public class ContactActivity extends AppCompatActivity implements ContactEditor.
                 ContactEditor contactEditor = new ContactEditor();
                 contactEditor.show(getSupportFragmentManager(), "example dialog");
                 currentPosition = position;
-                Toast.makeText(getApplicationContext(), currentPosition+"", Toast.LENGTH_LONG).show();
             }
         });
     }

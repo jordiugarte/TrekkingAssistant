@@ -7,6 +7,10 @@ public class ObjectivesItem {
         this.objetivos = objetivo;
     }
 
+    public ObjectivesItem (){
+
+    }
+
     public String getObjetivos() {
         return objetivos;
     }

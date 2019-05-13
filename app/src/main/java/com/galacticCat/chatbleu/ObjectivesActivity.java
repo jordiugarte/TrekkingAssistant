@@ -11,12 +11,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ObjectivesAdapter;
 import com.galacticCat.chatbleu.adapter.RecyclerItemClickListener;
 
 import java.util.ArrayList;
 
+import com.galacticCat.chatbleu.db.DataBase2Helper;
+import com.galacticCat.chatbleu.db.DataBase3Helper;
+import com.galacticCat.chatbleu.model.Item;
 import com.galacticCat.chatbleu.model.ObjectivesItem;
 import com.galacticCat.chatbleu.services.Notification;
 
@@ -32,17 +36,15 @@ public class ObjectivesActivity extends AppCompatActivity implements RecyclerVie
     private ArrayList<ObjectivesItem> items;
     private TextView objectivesText;
     private Button addButton;
-
-    private SharedPreferences sharedPreferences;
+    private DataBase3Helper dbobjetivos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_objectives);
-
+        dbobjetivos = new DataBase3Helper(getApplicationContext());
         items = populateList();
         setLiteners();
-        sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
 
         layoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(layoutManager);
@@ -58,12 +60,14 @@ public class ObjectivesActivity extends AppCompatActivity implements RecyclerVie
         });
 
         listView.addOnItemTouchListener(
-                new RecyclerItemClickListener(this, listView ,new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override public void onItemClick(View view, int position) {
-                        removeItem(items.get(position));
+                new RecyclerItemClickListener(this, listView, new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        removeItem(items.get(position), position);
                     }
 
-                    @Override public void onLongItemClick(View view, int position) {
+                    @Override
+                    public void onLongItemClick(View view, int position) {
                         // do whatever
                     }
                 })
@@ -80,18 +84,19 @@ public class ObjectivesActivity extends AppCompatActivity implements RecyclerVie
         ObjectivesItem item = new ObjectivesItem(name);
         items.add(item);
         listView.setAdapter(adapter);
-        new Notification(this, name + " " + getResources().getString(R.string.add), R.drawable.mochila);
+        dbobjetivos.insert(item);
     }
 
-    public void removeItem(ObjectivesItem item) {
+    public void removeItem(ObjectivesItem item, int position) {
         String name = item.getObjetivos();
         items.remove(item);
         listView.setAdapter(adapter);
+        dbobjetivos.delete(item);
         new Notification(this, name + " " + getResources().getString(R.string.removed_item), R.drawable.mochila);
     }
 
-    private ArrayList<ObjectivesItem> populateList(){
-        ArrayList<ObjectivesItem> l = new ArrayList<ObjectivesItem>();
+    private ArrayList<ObjectivesItem> populateList() {
+        ArrayList<ObjectivesItem> l = (ArrayList<ObjectivesItem>) dbobjetivos.getAll();
         return l;
     }
 

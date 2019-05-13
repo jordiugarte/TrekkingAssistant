@@ -22,6 +22,9 @@ public class Constants {
     public static final String DATABASE2_NAME = "Items.db";//db, sqlite
     public static final int DATABASE2_VERSION = 1;
 
+    //DataBase
+    public static final String DATABASE3_NAME = "Objetivos.db";//db, sqlite
+    public static final int DATABASE3_VERSION = 1;
 
     public static final String STATS_SEND = "stats";
 }
