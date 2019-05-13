@@ -6,4 +6,5 @@
     <color name="colorWidget">#33000000</color>
     <color name="defaultBlack">#303030</color>
     <color name="defaultWhite">#EFEDED</color>
+    <color name="grey">#696969	</color>
 </resources>

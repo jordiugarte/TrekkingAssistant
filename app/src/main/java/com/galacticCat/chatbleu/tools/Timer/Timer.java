@@ -13,7 +13,7 @@ public class Timer {
     private CountDownTimer mCountDownTimer;
     private long mStartTime;
     private boolean mTimerRunnig;
-    private long mTimeLeft = 0;
+    public long mTimeLeft = 0;
 
     private TimerI callback;
 
@@ -63,6 +63,7 @@ public class Timer {
         mStartTime = milliseconds;
         mTimeLeft = mStartTime;
     }
+
 }
 
 

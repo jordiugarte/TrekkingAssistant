@@ -30,6 +30,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
 
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,12 +44,22 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
         getWindow().setLayout((int) (width * 0.85), (int) (heigt * 0.50));
         //Timer
 
-        textViewCountDown = findViewById(R.id.timerText);
-        mEditText = findViewById(R.id.edit_text_input);
 
-        mBtnSet = findViewById(R.id.set_btn);
-        mBtnStartPause = findViewById(R.id.start_pause_btn);
-        mBtnReset = findViewById(R.id.reset);
+            textViewCountDown = findViewById(R.id.timerText);
+            mEditText = findViewById(R.id.edit_text_input);
+
+            mBtnSet = findViewById(R.id.set_btn);
+            mBtnStartPause = findViewById(R.id.start_pause_btn);
+            mBtnReset = findViewById(R.id.reset);
+
+            timeLeft= Timer.getInstance().mTimeLeft;
+        if(timeLeft!=0){
+            timerRunnig= true;
+            mBtnStartPause.setText(getResources().getString(R.string.pause));
+            mBtnReset.setVisibility(View.INVISIBLE);
+            mBtnSet.setVisibility(View.INVISIBLE);
+            mEditText.setVisibility(View.INVISIBLE);
+        }
 
 
         mBtnSet.setOnClickListener(new View.OnClickListener() {
@@ -67,25 +78,18 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
                 }
                 setTime(millisInput);
                 mEditText.setText("");
-                updateCountDownText();
+                onTimeChanged(millisInput);
             }
         });
 
         mBtnStartPause.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (timerRunnig)
+                if (timerRunnig) {
                     pauseTimer();
-                else {
-                    if(startTime==0) {
-                        Toast.makeText(Pop_up_activity.this, getResources().getString(R.string.number_error), Toast.LENGTH_LONG).show();
-                        return;
-                    }
-                    else
+
+                }else
                         startTimer();
-
-                }
-
 
             }
         });
@@ -94,6 +98,7 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
             public void onClick(View v) {
                 resetTimer();
                 updateCountDownText();
+
             }
         });
         updateCountDownText();
@@ -131,10 +136,12 @@ public class Pop_up_activity extends AppCompatActivity implements TimerI{
 
 
     private void resetTimer() {
+
         Timer.getInstance().resetTimer();
         updateCountDownText();
         mBtnReset.setVisibility(View.INVISIBLE);
         mBtnStartPause.setVisibility(View.VISIBLE);
+        onTimeChanged(startTime);
     }
     public void  setTime (long milliseconds){
         Timer.getInstance().setTime(milliseconds);
