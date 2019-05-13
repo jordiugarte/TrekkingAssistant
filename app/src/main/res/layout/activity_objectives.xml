@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MochilaActivity">
+
+    <TextView
+        android:id="@+id/title_list_objectives"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Objetivos"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/objectiveView"
+        android:layout_width="382dp"
+        android:layout_height="557dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_list_objectives" />
+
+    <Button
+        android:id="@+id/addObjectiveButton"
+        android:layout_width="133dp"
+        android:layout_height="99dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/add"
+        app:layout_constraintBottom_toBottomOf="@id/fields"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fields" />
+
+    <LinearLayout
+        android:id="@+id/fields"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent">
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Description" />
+
+        <EditText
+            android:id="@+id/descriptionField"
+            android:layout_width="253dp"
+            android:layout_height="46dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            android:ems="10"
+            android:inputType="textPersonName" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

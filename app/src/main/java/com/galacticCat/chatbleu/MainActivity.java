@@ -195,7 +195,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 startActivityForResult(intent, 1);
             }
         });
-//Pop-up timer
+        //Pop-up timer
 
         textViewCountDown.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,7 +211,14 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 startActivity(intent);
             }
         });
-
+        //Objectives
+        objectivesbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ObjectivesActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setPersonalData() {

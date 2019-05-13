@@ -27,6 +27,7 @@
         android:roundIcon="@mipmap/icon"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.NoActionBar">
+        <activity android:name=".ObjectivesActivity"></activity>
         <activity android:name=".ContactEditor" />
         <activity android:name=".ContactActivity" />
         <activity android:name=".MochilaActivity" />
