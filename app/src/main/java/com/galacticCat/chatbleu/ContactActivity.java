@@ -2,11 +2,13 @@ package com.galacticCat.chatbleu;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.galacticCat.chatbleu.adapter.ContactAdapter;
@@ -23,12 +25,16 @@ public class ContactActivity extends AppCompatActivity implements ContactEditor.
     private SharedPreferences sharedPreferences;
     private SharedPreferences.Editor editor;
 
+    private TextView title;
+    private ConstraintLayout background;
+
     private int currentPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_contact);
+        setListeners();
         sharedPreferences = getApplicationContext().getSharedPreferences("sharedPrefs", Context.MODE_PRIVATE);
         editor = sharedPreferences.edit();
         lvItem = findViewById(R.id.lvItem);
@@ -90,5 +96,23 @@ public class ContactActivity extends AppCompatActivity implements ContactEditor.
         editor.putString(keyContact, nombre);
         editor.putString(keyNumber, numero);
         editor.commit();
+    }
+
+    public void setListeners(){
+        title = findViewById(R.id.textView);
+        background = findViewById(R.id.backgroundContacts);
+
+        Bundle extras = getIntent().getExtras();
+        boolean campMode = extras.getBoolean("campMode");
+        boolean day = extras.getBoolean("day");
+        if (campMode) {
+            if (day) {
+                title.setTextColor((int) R.color.defaultBlack);
+                background.setBackground(getResources().getDrawable(R.color.defaultWhite));
+            } else {
+                title.setTextColor((int) R.color.defaultWhite);
+                background.setBackground(getResources().getDrawable(R.color.defaultBlack));
+            }
+        }
     }
 }

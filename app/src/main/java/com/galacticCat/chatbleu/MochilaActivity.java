@@ -3,6 +3,7 @@ package com.galacticCat.chatbleu;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -35,7 +36,10 @@ public class MochilaActivity extends AppCompatActivity implements RecyclerView.O
 
     private TextView nameText;
     private TextView weightText;
-
+    private TextView title;
+    private TextView name;
+    private TextView weight;
+    private ConstraintLayout background;
     private TextView currentWeightView;
     private Button addButton;
 
@@ -51,7 +55,7 @@ public class MochilaActivity extends AppCompatActivity implements RecyclerView.O
         setContentView(R.layout.activity_mochila);
         dbmochila = new DataBase2Helper(this.mContext);
 
-        setLiteners();
+        setListeners();
         sharedPreferences = getSharedPreferences(SHARED_PREFS, Context.MODE_PRIVATE);
         items = populateListView();
 
@@ -94,13 +98,43 @@ public class MochilaActivity extends AppCompatActivity implements RecyclerView.O
         return l;
     }
 
-    public void setLiteners() {
+    public void setListeners() {
         listView = (RecyclerView) findViewById(R.id.listView);
+        background = findViewById(R.id.bakgroundMochila);
         nameText = findViewById(R.id.nameField);
         weightText = findViewById(R.id.weightField);
         addButton = findViewById(R.id.addItemButton);
         currentWeightView = findViewById(R.id.weightCurrent);
-//        listView.setHasFixedSize(true);
+        title = findViewById(R.id.title_list_objectives);
+        name = findViewById(R.id.nameItemViewObjective);
+        weight = findViewById(R.id.weightItemView);
+
+        Bundle extras = getIntent().getExtras();
+        boolean campMode = extras.getBoolean("campMode");
+        boolean day = extras.getBoolean("day");
+        if (campMode) {
+            if (day) {
+                addButton.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.plus_black));
+                nameText.setTextColor(getResources().getColor(R.color.defaultWhite));
+                title.setTextColor(getResources().getColor(R.color.defaultBlack));
+                background.setBackground(getResources().getDrawable(R.color.defaultWhite));
+                weightText.setTextColor(getResources().getColor(R.color.defaultWhite));
+                currentWeightView.setTextColor(getResources().getColor(R.color.defaultBlack));
+                title.setTextColor(getResources().getColor(R.color.defaultBlack));
+                name.setTextColor(getResources().getColor(R.color.defaultBlack));
+                weight.setTextColor(getResources().getColor(R.color.defaultBlack));
+            } else {
+                addButton.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.plus));
+                nameText.setTextColor(getResources().getColor(R.color.defaultWhite));
+                title.setTextColor(getResources().getColor(R.color.defaultWhite));
+                background.setBackground(getResources().getDrawable(R.color.defaultBlack));
+                weightText.setTextColor(getResources().getColor(R.color.defaultWhite));
+                currentWeightView.setTextColor(getResources().getColor(R.color.defaultWhite));
+                title.setTextColor(getResources().getColor(R.color.defaultBlack));
+                name.setTextColor(getResources().getColor(R.color.defaultWhite));
+                weight.setTextColor(getResources().getColor(R.color.defaultWhite));
+            }
+        }
     }
 
     public void addItem(String name, String weight) {

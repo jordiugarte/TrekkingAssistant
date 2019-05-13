@@ -97,6 +97,9 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     private RealTimeStats rStats;
     private SharedPreferences sharedPreferences;
 
+    private boolean campModeOn;
+    private boolean day;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //Basic Activity Set
@@ -184,6 +187,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MochilaActivity.class);
+                intent.putExtra("campMode", campModeOn);
+                intent.putExtra("day", day);
                 startActivity(intent);
             }
         });
@@ -208,6 +213,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ContactActivity.class);
+                intent.putExtra("campMode", campModeOn);
+                intent.putExtra("day", day);
                 startActivity(intent);
             }
         });
@@ -216,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, ObjectivesActivity.class);
+                intent.putExtra("campMode", campModeOn);
+                intent.putExtra("day", day);
                 startActivity(intent);
             }
         });
@@ -311,6 +320,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
     }
 
     private void campingMode(boolean active) {
+        campModeOn = active;
         int defaultColorText = 0;
         int defaultColorBackground = 0;
 
@@ -323,6 +333,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         int defaultUser = 0;
         int defaultContacts = 0;
         int defaultObjectives = 0;
+        int defaultBag = 0;
+        int defaultMap = 0;
 
         if (active) {
             //Settings
@@ -332,6 +344,7 @@ public class MainActivity extends AppCompatActivity implements TimerI {
 
             //Night
             if (currentHourIn24Format > 17 || currentHourIn24Format < 7) {
+                day = false;
                 defaultColorText = getResources().getColor(R.color.defaultWhite);
                 defaultColorBackground = getResources().getColor(R.color.defaultBlack);
 
@@ -346,9 +359,12 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultUser = R.drawable.user;
                 defaultContacts = R.drawable.contacts;
                 defaultObjectives = R.drawable.objectives;
+                defaultBag = R.drawable.mochila;
+                defaultMap = R.drawable.mapa;
 
                 //Day
             } else if (currentHourIn24Format < 18 || currentHourIn24Format > 6) {
+                day = true;
                 defaultColorText = getResources().getColor(R.color.defaultBlack);
                 defaultColorBackground = getResources().getColor(R.color.defaultWhite);
 
@@ -363,6 +379,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
                 defaultUser = R.drawable.user_black;
                 defaultContacts = R.drawable.contactsblack;
                 defaultObjectives = R.drawable.objectives_black;
+                defaultBag = R.drawable.mochila_black;
+                defaultMap = R.drawable.mapa_back;
 
             }
             layout.setBackgroundColor(defaultColorBackground);
@@ -381,6 +399,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
             defaultUser = R.drawable.user;
             defaultContacts = R.drawable.contacts;
             defaultObjectives = R.drawable.objectives;
+            defaultBag = R.drawable.mochila;
+            defaultMap = R.drawable.mapa;
 
             layout.setBackground(getResources().getDrawable(R.drawable.backgroundforest));
             new Notification(context, getResources().getString(R.string.camping_off), R.drawable.camp_mode);
@@ -394,6 +414,8 @@ public class MainActivity extends AppCompatActivity implements TimerI {
         personalDataButton.setBackground(this.getResources().getDrawable(defaultUser));
         contactsbutton.setBackground(this.getResources().getDrawable(defaultContacts));
         objectivesbutton.setBackground(this.getResources().getDrawable(defaultObjectives));
+        mapsButton.setBackground(this.getResources().getDrawable(defaultMap));
+        listsButton.setBackground(this.getResources().getDrawable(defaultBag));
 
         //Image Views
         compass.setImageResource(defaultCompass);

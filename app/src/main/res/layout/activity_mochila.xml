@@ -2,11 +2,21 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bakgroundMochila"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/backgroundmochila"
     tools:context=".MochilaActivity">
 
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/listView"
+        android:layout_width="0dp"
+        android:layout_height="619dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_list_objectives" />
 
     <TextView
         android:id="@+id/title_list_objectives"
@@ -45,6 +55,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:layout_weight="0.2"
             android:orientation="horizontal"
             android:weightSum="1">
@@ -58,8 +69,10 @@
             <EditText
                 android:id="@+id/nameField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:background="@color/grey"
                 android:ems="10"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -80,23 +93,14 @@
             <EditText
                 android:id="@+id/weightField"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="10dp"
                 android:layout_weight="1"
+                android:background="@color/grey"
                 android:ems="10"
                 android:inputType="number" />
         </LinearLayout>
     </LinearLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/listView"
-        android:layout_width="395dp"
-        android:layout_height="619dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="10dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_list_objectives" />
 
     <Button
         android:id="@+id/addItemButton"

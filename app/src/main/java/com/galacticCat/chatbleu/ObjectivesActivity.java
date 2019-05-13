@@ -2,11 +2,16 @@ package com.galacticCat.chatbleu;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.solver.widgets.ConstraintAnchor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Layout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -35,7 +40,12 @@ public class ObjectivesActivity extends AppCompatActivity implements RecyclerVie
 
     private ArrayList<ObjectivesItem> items;
     private TextView objectivesText;
+    private TextView title;
+    private TextView descriptionView;
+    private TextView descriptionField;
     private Button addButton;
+    private ConstraintLayout background;
+
     private DataBase3Helper dbobjetivos;
 
     @Override
@@ -78,6 +88,31 @@ public class ObjectivesActivity extends AppCompatActivity implements RecyclerVie
         listView = (RecyclerView) findViewById(R.id.objectiveView);
         objectivesText = findViewById(R.id.descriptionField);
         addButton = findViewById(R.id.addObjectiveButton);
+        background = findViewById(R.id.objectivesBackground);
+        title = findViewById(R.id.title_list_objectives);
+        descriptionView = findViewById(R.id.description);
+        descriptionField = findViewById(R.id.descriptionField);
+
+        Bundle extras = getIntent().getExtras();
+        boolean campMode = extras.getBoolean("campMode");
+        boolean day = extras.getBoolean("day");
+        if (campMode) {
+            if (day) {
+                addButton.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.plus_black));
+                objectivesText.setTextColor(getResources().getColor(R.color.defaultBlack));
+                title.setTextColor(getResources().getColor(R.color.defaultBlack));
+                background.setBackground(getResources().getDrawable(R.color.defaultWhite));
+                descriptionView.setTextColor(getResources().getColor(R.color.defaultBlack));
+                descriptionField.setTextColor(getResources().getColor(R.color.defaultBlack));
+            } else {
+                addButton.setBackgroundDrawable(this.getResources().getDrawable(R.drawable.plus));
+                objectivesText.setTextColor(getResources().getColor(R.color.defaultWhite));
+                title.setTextColor(getResources().getColor(R.color.defaultWhite));
+                background.setBackground(getResources().getDrawable(R.color.defaultBlack));
+                descriptionView.setTextColor(getResources().getColor(R.color.defaultWhite));
+                descriptionField.setTextColor(getResources().getColor(R.color.defaultWhite));
+            }
+        }
     }
 
     public void addObjective(String name) {
@@ -92,7 +127,7 @@ public class ObjectivesActivity extends AppCompatActivity implements RecyclerVie
         items.remove(item);
         listView.setAdapter(adapter);
         dbobjetivos.delete(item);
-        new Notification(this, name + " " + getResources().getString(R.string.removed_item), R.drawable.mochila);
+        new Notification(this, name + " " + getResources().getString(R.string.removed_item), R.drawable.objectives);
     }
 
     private ArrayList<ObjectivesItem> populateList() {
